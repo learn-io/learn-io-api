@@ -7,6 +7,7 @@ const userInfo=require('./models/userInfo');
 const signin=require('./controllers/signin');
 const register=require('./controllers/register');
 const setting=require('./controllers/setting');
+const admin=require('./controllers/admin');
 const url='mongodb://localhost:27017/learnio';
 // const url='mongodb+srv://xinchen2:chenxin@cluster0.vib1g.mongodb.net/learnio?retryWrites=true&w=majority';
 const dbName='learnio';
@@ -50,6 +51,7 @@ app.use(bodyParser.json());
 app.post("/signin",(req,res)=>{signin.handleSignin(req,res,userInfo,bcrypt)})
 app.post("/register",(req,res)=>{register.handleRegister(req,res,userInfo,bcrypt)})
 app.post("/setting",(req,res)=>{setting.handleSetting(req,res,userInfo,bcrypt)})
+app.post("/admin/users",(req,res)=>{admin.handleAdmin(req,res,userInfo)})
 // app.post('/register',(req,res)=>{
 // 	const newUser=new userInfo({
 // 		username:request.body.username,
