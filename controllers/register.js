@@ -1,8 +1,11 @@
 // const userInfo=require('../models/userInfo');
 const handleRegister=(req,res,userInfo,bcrypt)=>{
-	const {username,password,email,dateOfBirth}=req.body;
-	if(!username||!password||!email||!dateOfBirth){
+	const {username,password,verifyPassword, email,dateOfBirth}=req.body;
+	if(!username||!password||!verifyPassword||!email||!dateOfBirth){
 		return res.status(400).json('incorrect form submission');
+	}
+	if(password!=verifyPassword){
+		return res.status(400).json('password does not match ');
 	}
 	const hash=bcrypt.hashSync(password);
 	const newUser=new userInfo({
