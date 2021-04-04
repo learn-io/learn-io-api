@@ -27,6 +27,7 @@
     "chai": "^4.3.4",
     "connect-mongo": "^4.4.1",
     "express": "^4.17.1",
+    "express-session": "^1.17.1",
     "mocha": "^8.3.2",
     "mongodb": "^3.6.5",
     "mongoose": "^5.12.2"
