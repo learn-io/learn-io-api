@@ -16,9 +16,13 @@ const setting=require('./controllers/setting.js');
 const admin=require('./controllers/admin.js');
 const platform=require('./controllers/platform.js');
 
-const mongo_url='mongodb://localhost:27017/learnio';
-// const url='mongodb+srv://xinchen2:chenxin@cluster0.vib1g.mongodb.net/learnio?retryWrites=true&w=majority';
+const mongo_local='mongodb://localhost:27017/learnio';
+const mongo_dan='mongodb+srv://daniel:K1jTFA$9$&nlgpa9Gu&FVioUj%0wQO@learnio-dev1.s9z10.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+const mongo_xin='mongodb+srv://xinchen2:chenxin@cluster0.vib1g.mongodb.net/learnio?retryWrites=true&w=majority';
 
+//TODO: production environment variables
+
+const mongo_url=mongo_xin;
 
 const app=express();
 app.use(express.json()); //bodyparser is deprecated
