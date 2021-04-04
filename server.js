@@ -10,11 +10,11 @@ const MongoStore = require('connect-mongo');
 
 
 // Controllers
-const signin=require('./controllers/signin.js');
-const register=require('./controllers/register.js');
-const setting=require('./controllers/setting.js');
-const admin=require('./controllers/admin.js');
-const platform=require('./controllers/platform.js');
+const signin=require('./controllers/signin');
+const register=require('./controllers/register');
+const setting=require('./controllers/setting');
+const admin=require('./controllers/admin');
+const platform=require('./controllers/platform');
 
 const mongo_local='mongodb://localhost:27017/learnio';
 const mongo_dan="mongodb+srv://daniel:"+encodeURIComponent("K1jTFA$9$&nlgpa9Gu&FVioUj%0wQO")+"@learnio-dev1.s9z10.mongodb.net/learnio-dev?retryWrites=true&w=majority";

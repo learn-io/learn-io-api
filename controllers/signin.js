@@ -40,6 +40,6 @@ const handleSignin=(req,res)=>{
  	})
 }
 
-router.post("/",(req,res)=>{signin.handleSignin(req,res)})
+router.post("/",(req,res)=>{handleSignin(req,res)})
 
-module.exports=router;
+module.exports = router;
