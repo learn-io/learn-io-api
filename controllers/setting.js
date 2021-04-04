@@ -1,3 +1,10 @@
+var router = require('express').Router();
+const mongoose=require('mongoose');
+
+
+const userInfo=require('../models/userInfo.js');
+
+
 const handleSetting=(req,res,userInfo,bcrypt)=>{
 	const {username,email,dateOfBirth,oldPassword,newPassword,mute}=req.body;
 	if(!username){
@@ -61,6 +68,6 @@ const handleSetting=(req,res,userInfo,bcrypt)=>{
 	}
 }
 
-module.exports={
-	handleSetting: handleSetting
-};
+router.post("/setting",(req,res)=>{setting.handleSetting(req,res,userInfo,bcrypt)})
+
+module.exports=router;

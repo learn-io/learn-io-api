@@ -1,5 +1,11 @@
-// const userInfo=require('../models/userInfo');
-const handleSignin=(req,res,userInfo,bcrypt)=>{
+var router = require('express').Router();
+const mongoose=require('mongoose');
+
+const userInfo=require('../models/userInfo.js');
+const bcrypt=require('bcrypt-nodejs');
+
+
+const handleSignin=(req,res)=>{
 	const {username,password}=req.body;
 	if(!username||!password){
 		return res.status(400).json('incorrect form submission');
@@ -34,7 +40,6 @@ const handleSignin=(req,res,userInfo,bcrypt)=>{
  	})
 }
 
+router.post("/signin",(req,res)=>{signin.handleSignin(req,res)})
 
-module.exports={
-	handleSignin:handleSignin
-};
+module.exports=router;
