@@ -34,7 +34,7 @@ const handleSignin=(req,res)=>{
 			if(isValid){
 				res.json(result.username);
 			}else{
-				res.status(400).json('wrong password')
+				res.status(401).json('wrong password')
 			}
  		}
  	})
