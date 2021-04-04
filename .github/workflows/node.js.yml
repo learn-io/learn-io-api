@@ -7,7 +7,7 @@ on:
   push:
     branches: [ main ]
   pull_request:
-    branches: [ main ]
+    branches: [ staging ]
 
 jobs:
   build:
@@ -28,3 +28,4 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
+
