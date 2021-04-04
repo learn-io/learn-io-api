@@ -8,15 +8,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/xin0415/learn-io-api.git"
+    "url": "git+https://github.com/learn-io/learn-io-api.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/xin0415/learn-io-api/issues"
+    "url": "https://github.com/learn-io/learn-io-api/issues"
   },
-  "homepage": "https://github.com/xin0415/learn-io-api#readme",
+  "homepage": "https://github.com/learn-io/learn-io-api#readme",
   "devDependencies": {
     "nodemon": "^2.0.7"
   },
