@@ -18,11 +18,18 @@ const platform=require('./controllers/platform.js');
 
 const mongo_local='mongodb://localhost:27017/learnio';
 const mongo_dan='mongodb+srv://daniel:K1jTFA$9$&nlgpa9Gu&FVioUj%0wQO@learnio-dev1.s9z10.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
-const mongo_xin='mongodb+srv://xinchen2:chenxin@cluster0.vib1g.mongodb.net/learnio?retryWrites=true&w=majority';
+const mongo_xin='mongodb+srv://xinchen2:' + process.env.DB_PASS + ' + @cluster0.vib1g.mongodb.net/learnio?retryWrites=true&w=majority';
 
 //TODO: production environment variables
-
-const mongo_url=mongo_xin;
+let mongo_url;
+if (process.env.NODE_ENV == 'PROD')
+{
+	mongo_url=mongo_xin;
+}
+else
+{
+	mongo_url=mongo_dan;
+}
 
 const app=express();
 app.use(express.json()); //bodyparser is deprecated
@@ -56,4 +63,5 @@ app.use("/platform", platform)
 
 app.listen(3000,()=>{
 	console.log(`app is running on port 3000`);
+	console.log(process.env.NODE_ENV);
 })
