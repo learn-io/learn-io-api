@@ -21,6 +21,6 @@ const handlePlatform=(req,res)=>{
 	.catch(err=>res.status(400).json('unable to create new platform'));
 }
 
-router.post("/platform",(req,res)=>{platform.handlePlatform(req,res)})
+router.post("/",(req,res)=>{platform.handlePlatform(req,res)})
 
 module.exports=router;

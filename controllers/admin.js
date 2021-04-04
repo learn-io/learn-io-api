@@ -54,10 +54,10 @@ const handleDeletePlatform=(req,res)=>{
 		});
 }
 
-router.get("/admin/users",(req,res)=>{admin.handleShowUsers(req,res)})
-router.post("/admin/users/delete",(req,res)=>{admin.handleDeleteUser(req,res)})
-router.get("/admin/platforms",(req,res)=>{admin.handleShowPlatforms(req,res)})
-router.post("/admin/platforms/delete",(req,res)=>{admin.handleDeletePlatform(req,res)})
+router.get("/users",(req,res)=>{admin.handleShowUsers(req,res)})
+router.post("/users/delete",(req,res)=>{admin.handleDeleteUser(req,res)})
+router.get("/platforms",(req,res)=>{admin.handleShowPlatforms(req,res)})
+router.post("/platforms/delete",(req,res)=>{admin.handleDeletePlatform(req,res)})
 
 
 module.exports=router;

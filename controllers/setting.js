@@ -68,6 +68,6 @@ const handleSetting=(req,res,userInfo,bcrypt)=>{
 	}
 }
 
-router.post("/setting",(req,res)=>{setting.handleSetting(req,res,userInfo,bcrypt)})
+router.post("/",(req,res)=>{setting.handleSetting(req,res,userInfo,bcrypt)})
 
 module.exports=router;

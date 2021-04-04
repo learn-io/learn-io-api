@@ -30,6 +30,6 @@ const handleRegister=(req,res,userInfo,bcrypt)=>{
 }
 
 
-router.post("/register",(req,res)=>{register.handleRegister(req,res,userInfo,bcrypt)})
+router.post("/",(req,res)=>{register.handleRegister(req,res,userInfo,bcrypt)})
 
 module.exports=router;
