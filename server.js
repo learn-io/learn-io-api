@@ -10,11 +10,11 @@ const MongoStore = require('connect-mongo');
 
 
 // Controllers
-const signin=require('./controllers/signin.js');
-const register=require('./controllers/register.js');
-const setting=require('./controllers/setting.js');
-const admin=require('./controllers/admin.js');
-const platform=require('./controllers/platform.js');
+const signin=require('./controllers/signin');
+const register=require('./controllers/register');
+const setting=require('./controllers/setting');
+const admin=require('./controllers/admin');
+const platform=require('./controllers/platform');
 
 const mongo_local='mongodb://localhost:27017/learnio';
 const mongo_dan="mongodb+srv://daniel:"+encodeURIComponent("K1jTFA$9$&nlgpa9Gu&FVioUj%0wQO")+"@learnio-dev1.s9z10.mongodb.net/learnio-dev?retryWrites=true&w=majority";
@@ -45,17 +45,17 @@ const db=mongoose.connect(mongo_url,{useNewUrlParser: true,useUnifiedTopology: t
 	}
 });
 
-/*app.use(session({
+app.use(session({
 	store: MongoStore.create({
 	  mongoUrl: mongo_url,
 	  ttl: 60 * 60, //expire token after one hour
 	  touchAfter: 5 * 60, //only refresh token at most every 5 minutes 
-	  crypto: {
-		secret: 'TODO: move to env',
-	  }
-	})
+	}),
+	secret: 'TODO: move to env',
+  	resave: false,
+  	saveUninitialized: true,
   }));
-*/
+
 
 app.use("/signin", signin)
 app.use("/register", register)

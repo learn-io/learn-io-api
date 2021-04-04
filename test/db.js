@@ -1,12 +1,14 @@
 var expect = require("chai").expect;
 var axios = require("axios");
 
+const url="http://localhost:3000/"
+
 describe("DB Tests", function() {
     context('Sign In Errors', function() {
         it("No Username", function(){
             return axios({
                 method: 'post',
-                url: "http://localhost:3000/signin",
+                url: url+"signin",
                 data: {
                   password: 'Flintstone'
                 }
@@ -17,7 +19,7 @@ describe("DB Tests", function() {
         it("No Password", function(){
             return axios({
                 method: 'post',
-                url: "http://localhost:3000/signin",
+                url: url+"signin",
                 data: {
                   username: 'Fred',
                 }
@@ -28,7 +30,7 @@ describe("DB Tests", function() {
         it("Bad Password", function(){
             return axios({
                 method: 'post',
-                url: "http://localhost:3000/signin",
+                url: url+"signin",
                 data: {
                   username: 'Fred',
                   password: 'Flintstone'
@@ -40,7 +42,7 @@ describe("DB Tests", function() {
     });
 
 
-    context('Sign In', function() {
+    /*context('Sign In', function() {
         it("Register", function(){
             return axios({
                 method: 'post',
@@ -77,5 +79,5 @@ describe("DB Tests", function() {
                 expect(response.status).to.equal(401);
             });
         });
-    });
+    });*/
 });
