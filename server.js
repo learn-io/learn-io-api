@@ -45,17 +45,17 @@ const db=mongoose.connect(mongo_url,{useNewUrlParser: true,useUnifiedTopology: t
 	}
 });
 
-/*app.use(session({
+app.use(session({
 	store: MongoStore.create({
 	  mongoUrl: mongo_url,
 	  ttl: 60 * 60, //expire token after one hour
 	  touchAfter: 5 * 60, //only refresh token at most every 5 minutes 
-	  crypto: {
-		secret: 'TODO: move to env',
-	  }
-	})
+	}),
+	secret: 'TODO: move to env',
+  	resave: false,
+  	saveUninitialized: true,
   }));
-*/
+
 
 app.use("/signin", signin)
 app.use("/register", register)
