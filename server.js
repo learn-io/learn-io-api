@@ -33,8 +33,10 @@ app.use(bodyParser.json());
 app.post("/signin",(req,res)=>{signin.handleSignin(req,res,userInfo,bcrypt)})
 app.post("/register",(req,res)=>{register.handleRegister(req,res,userInfo,bcrypt)})
 app.post("/setting",(req,res)=>{setting.handleSetting(req,res,userInfo,bcrypt)})
-app.post("/admin/users",(req,res)=>{admin.handleDeleteUser(req,res,userInfo)})
-app.post("/admin/platforms",(req,res)=>{admin.handleDeletePlatform(req,res,platformSchame)})
+app.get("/admin/users",(req,res)=>{admin.handleShowUsers(req,res,userInfo)})
+app.post("/admin/users/delete",(req,res)=>{admin.handleDeleteUser(req,res,userInfo)})
+app.get("/admin/platforms",(req,res)=>{admin.handleShowPlatforms(req,res,platformSchame)})
+app.post("/admin/platforms/delete",(req,res)=>{admin.handleDeletePlatform(req,res,platformSchame)})
 app.post("/platform",(req,res)=>{platform.handlePlatform(req,res,platformSchame)})
 
 app.listen(3000,()=>{

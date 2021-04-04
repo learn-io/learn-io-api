@@ -1,4 +1,15 @@
-// Use to remove users
+
+const handleShowUsers=(req,res,userInfo)=>{
+	userInfo.find({},function(err,result){
+ 		if(err){res.status(400).json('err')}
+ 		if(!result){
+ 			res.status(400).json('user is not exist')
+ 		}else{
+ 			res.json(result);
+ 		}
+ 	})
+}
+
 const handleDeleteUser=(req,res,userInfo)=>{
 	const {username}=req.body;
 	if(!username){
@@ -11,6 +22,17 @@ const handleDeleteUser=(req,res,userInfo)=>{
 				res.json("Success remove user:"+username);
 			}
 		});
+}
+
+const handleShowPlatforms=(req,res,platformSchame)=>{
+	platformSchame.find({},function(err,result){
+ 		if(err){res.status(400).json('err')}
+ 		if(!result){
+ 			res.status(400).json('user is not exist')
+ 		}else{
+ 			res.json(result);
+ 		}
+ 	})
 }
 
 const handleDeletePlatform=(req,res,platformSchame)=>{
@@ -29,5 +51,7 @@ const handleDeletePlatform=(req,res,platformSchame)=>{
 
 module.exports={
 	handleDeleteUser: handleDeleteUser,
-	handleDeletePlatform:handleDeletePlatform
+	handleDeletePlatform:handleDeletePlatform,
+	handleShowUsers:handleShowUsers,
+	handleShowPlatforms:handleShowPlatforms
 };
