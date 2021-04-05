@@ -19,6 +19,7 @@ const platform=require('./controllers/platform');
 const mongo_local='mongodb://localhost:27017/learnio';
 const mongo_dan="mongodb+srv://daniel:"+encodeURIComponent("K1jTFA$9$&nlgpa9Gu&FVioUj%0wQO")+"@learnio-dev1.s9z10.mongodb.net/learnio-dev?retryWrites=true&w=majority";
 const mongo_xin='mongodb+srv://xinchen2:' + process.env.DB_PASS + ' + @cluster0.vib1g.mongodb.net/learnio?retryWrites=true&w=majority';
+const mongo_akshay="mongodb+srv://supaak:supaak@cluster0.xb0gr.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
 //TODO: production environment variables
 let mongo_url;
