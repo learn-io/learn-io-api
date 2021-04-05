@@ -63,6 +63,8 @@ app.use("/setting", setting)
 app.use("/admin", admin)
 app.use("/platform", platform)
 
+app.get("/",(req,res)=>{res.json("Pong!");});
+
 app.listen(3000,()=>{
 	console.log(`app is running on port 3000`);
 })

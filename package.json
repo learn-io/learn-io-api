@@ -4,7 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "mocha --reporter spec"
+    "start-server": "npm start",
+    "test": "mocha --reporter spec",
+    "runtest": "start-server-and-test start-server 3000 test"
   },
   "repository": {
     "type": "git",
@@ -30,6 +32,7 @@
     "express-session": "^1.17.1",
     "mocha": "^8.3.2",
     "mongodb": "^3.6.5",
-    "mongoose": "^5.12.2"
+    "mongoose": "^5.12.2",
+    "start-server-and-test": "^1.12.1"
   }
 }

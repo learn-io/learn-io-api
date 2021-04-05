@@ -5,7 +5,7 @@ const bcrypt=require('bcrypt-nodejs');
 const userInfo=require('../models/userInfo.js');
 
 
-const handleSetting=(req,res,userInfo,bcrypt)=>{
+const handleSetting=(req,res)=>{
 	const {username,email,dateOfBirth,oldPassword,newPassword,mute}=req.body;
 	if(!username){
 		return res.status(400).json('error');
@@ -68,6 +68,6 @@ const handleSetting=(req,res,userInfo,bcrypt)=>{
 	}
 }
 
-router.post("/",(req,res)=>{handleSetting(req,res,userInfo,bcrypt)})
+router.post("/",(req,res)=>{handleSetting(req,res)})
 
 module.exports=router;

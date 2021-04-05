@@ -28,7 +28,7 @@ const handleSignin=(req,res)=>{
  	userInfo.findOne({username:username},function(err,result){
  		if(err){res.status(400).json('err')}
  		if(!result){
- 			res.status(400).json('user is not exist')
+ 			res.status(401).json('user is not exist')
  		}else{
  			const isValid=bcrypt.compareSync(password, result.password);
 			if(isValid){

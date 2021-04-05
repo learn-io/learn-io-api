@@ -7,7 +7,7 @@ const bcrypt=require('bcrypt-nodejs');
 
 
 // const userInfo=require('../models/userInfo');
-const handleRegister=(req,res,userInfo,bcrypt)=>{
+const handleRegister=(req,res)=>{
 	const {username,password,verifyPassword, email,dateOfBirth}=req.body;
 	if(!username||!password||!verifyPassword||!email||!dateOfBirth){
 		return res.status(400).json('incorrect form submission');
@@ -30,6 +30,6 @@ const handleRegister=(req,res,userInfo,bcrypt)=>{
 }
 
 
-router.post("/",(req,res)=>{handleRegister(req,res,userInfo,bcrypt)})
+router.post("/",(req,res)=>{handleRegister(req,res)})
 
 module.exports=router;
