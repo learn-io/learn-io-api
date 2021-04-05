@@ -11,6 +11,7 @@ const MongoStore = require('connect-mongo');
 
 // Controllers
 const signin=require('./controllers/signin');
+const signout=require('./controllers/signout');
 const register=require('./controllers/register');
 const setting=require('./controllers/setting');
 const admin=require('./controllers/admin');
@@ -58,6 +59,7 @@ app.use(session({
 
 
 app.use("/signin", signin)
+app.use("/signout", signout)
 app.use("/register", register)
 app.use("/setting", setting)
 app.use("/admin", admin)

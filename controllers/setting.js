@@ -6,9 +6,10 @@ const userInfo=require('../models/userInfo.js');
 
 
 const handleSetting=(req,res)=>{
-	const {username,email,dateOfBirth,oldPassword,newPassword,mute}=req.body;
+	const {email,dateOfBirth,oldPassword,newPassword,mute}=req.body;
+	const username = req.session.username;
 	if(!username){
-		return res.status(400).json('error');
+		return res.status(401).json('error');
 	}
 	if(!email&&!dateOfBirth&&!newPassword&&!mute){
 		return res.status(400).json('nothing changed');
