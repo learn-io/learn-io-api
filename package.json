@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start-server": "npm start",
+    "start": "nodemon server.js",
     "test": "mocha --reporter spec",
     "runtest": "start-server-and-test start-server 3000 test"
   },

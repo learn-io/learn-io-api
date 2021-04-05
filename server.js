@@ -30,7 +30,7 @@ else
 {
 	mongo_url=mongo_dan;
 }
-
+// mongo_url=mongo_local;
 const app=express();
 app.use(express.json()); //bodyparser is deprecated
 
