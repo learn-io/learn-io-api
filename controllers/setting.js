@@ -20,7 +20,11 @@ const handleSetting=(req,res)=>{
 			if(err){
 				res.status(400).json('err')
 			}else{
-				res.json("Success Update Email");
+				if(!data){
+					res.status(400).json('user is not exist')
+				}else{
+					res.json("Success Update Email");
+				}
 			}
 		});
 	}
@@ -30,7 +34,11 @@ const handleSetting=(req,res)=>{
 			if(err){
 				res.status(400).json('err')
 			}else{
-				res.json("Success Update date of birth");
+				if(!data){
+					res.status(400).json('user is not exist')
+				}else{
+					res.json("Success Update date of birth");
+				}
 			}
 		});
 	}
@@ -40,7 +48,11 @@ const handleSetting=(req,res)=>{
 			if(err){
 				res.status(400).json('err')
 			}else{
-				res.json("Success mute setting");
+				if(!data){
+					res.status(400).json('user is not exist')
+				}else{
+					res.json("Success mute setting");
+				}
 			}
 		});
 	}
