@@ -43,8 +43,8 @@ describe("Setting Tests", function() {
                 url: url+"setting",
                 data: {
                 	username:"test",
-                  	oldPassword: "test23",
-                  	newPassword: "test123"
+                  	oldPassword: "test123",
+                  	newPassword: "test23"
                 }
               }).then(function(response){
                 expect(response.data).to.equal("Success update password");
