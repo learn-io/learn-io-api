@@ -23,10 +23,8 @@ describe("Sign In Controller", function() {
                     dateOfBirth: "11/9/1999" //TODO: formatting?
                 }
             }).then(function(response){
-                expect(response.status).to.equal(200);
+                expect(response.status).to.equal(200, response.data);
                 expect(response.data).to.deep.equal("test1");
-            }).catch(function(error){
-                expect(error.response.status).to.equal(200);
             });
         });
         it("Log Out", function(){
@@ -37,9 +35,7 @@ describe("Sign In Controller", function() {
                   username: 'test1',
                 }
             }).then(function(response){
-                expect(response.status).to.equal(200);
-            }).catch(function(error){
-                expect(error.response.status).to.equal(200);
+                expect(response.status).to.equal(200, response.data);
             });
         });
         it("Log In", function(){
@@ -51,66 +47,19 @@ describe("Sign In Controller", function() {
                   password: 'pass1'
                 }
             }).then(function(response){
-                expect(response.status).to.equal(200);
+                expect(response.status).to.equal(200, response.data);
                 expect(response.data).to.deep.equal("test1");
-            }).catch(function(error){
-                expect(error.response.status).to.equal(200);
             });
         });
-    });
-    context('Sign In Errors', function() {
-        it("No Username", function(){
+        it("Log Out", function(){
             return axios({
                 method: 'post',
-                url: signin_url,
-                data: {
-                  password: 'Flintstone'
-                }
-            }).then(function(response){
-                expect(response.status).to.equal(400);
-            }).catch(function(error){
-                expect(error.response.status).to.equal(400);
-            });
-        });
-        it("No Password", function(){
-            return axios({
-                method: 'post',
-                url: signin_url,
-                data: {
-                  username: 'Fred',
-                }
-            }).then(function(response){
-                expect(response.status).to.equal(400);
-            }).catch(function(error){
-                expect(error.response.status).to.equal(400);
-            });
-        });
-        it("Bad Password", function(){
-            return axios({
-                method: 'post',
-                url: signin_url,
+                url: signout_url,
                 data: {
                   username: 'test1',
-                  password: 'Flintstone'
                 }
             }).then(function(response){
-                expect(response.status).to.equal(401);
-            }).catch(function(error){
-                expect(error.response.status).to.equal(401);
-            });
-        });
-        it("Bad Username", function(){
-            return axios({
-                method: 'post',
-                url: signin_url,
-                data: {
-                  username: 'fakeuser',
-                  password: 'Flintstone'
-                }
-            }).then(function(response){
-                expect(response.status).to.equal(401);
-            }).catch(function(error){
-                expect(error.response.status).to.equal(401);
+                expect(response.status).to.equal(200, response.data);
             });
         });
     });
@@ -123,10 +72,8 @@ describe("Sign In Controller", function() {
                 data: {
                   username: 'test1'
                 }
-            }).catch(function(error){
-                expect(error.response.status).to.equal(200);
             }).then(function(response){
-                expect(response.status).to.equal(200);
+                expect(response.status).to.equal(200, response.data);
             });
         });
     });

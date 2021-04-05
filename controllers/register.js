@@ -13,7 +13,7 @@ const handleRegister=(req,res)=>{
 		return res.status(400).json('incorrect form submission');
 	}
 	if(password!=verifyPassword){
-		return res.status(400).json('password does not match ');
+		return res.status(401).json('password does not match ');
 	}
 	const hash=bcrypt.hashSync(password);
 	const newUser=new userInfo({
@@ -24,6 +24,8 @@ const handleRegister=(req,res)=>{
 	});
 	newUser.save()
 	.then(data=>{
+		req.session.username = result.username;
+		req.session.isAdmin = (result.username == 'admin'); // :)
 		res.json(username)
 	})
 	.catch(err=>res.status(400).json('unable to register'));

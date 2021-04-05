@@ -11,10 +11,12 @@ const MongoStore = require('connect-mongo');
 
 // Controllers
 const signin=require('./controllers/signin');
+const signout=require('./controllers/signout');
 const register=require('./controllers/register');
 const setting=require('./controllers/setting');
 const admin=require('./controllers/admin');
 const platform=require('./controllers/platform');
+const search=require('./controllers/search');
 
 const mongo_local='mongodb://localhost:27017/learnio';
 const mongo_dan="mongodb+srv://daniel:"+encodeURIComponent("K1jTFA$9$&nlgpa9Gu&FVioUj%0wQO")+"@learnio-dev1.s9z10.mongodb.net/learnio-dev?retryWrites=true&w=majority";
@@ -59,10 +61,12 @@ app.use(session({
 
 
 app.use("/signin", signin)
+app.use("/signout", signout)
 app.use("/register", register)
 app.use("/setting", setting)
 app.use("/admin", admin)
 app.use("/platform", platform)
+app.use("/search", search)
 
 app.get("/",(req,res)=>{res.json("Pong!");});
 

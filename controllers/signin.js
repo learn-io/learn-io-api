@@ -6,6 +6,10 @@ const bcrypt=require('bcrypt-nodejs');
 
 
 const handleSignin=(req,res)=>{
+	if(req.session.username)
+	{
+		return res.status(400).json('already logged in');
+	}
 	const {username,password}=req.body;
 	if(!username||!password){
 		return res.status(400).json('incorrect form submission');
@@ -32,6 +36,8 @@ const handleSignin=(req,res)=>{
  		}else{
  			const isValid=bcrypt.compareSync(password, result.password);
 			if(isValid){
+				req.session.username=result.username;
+				req.session.isAdmin = (result.username == 'admin'); // :)
 				res.json(result.username);
 			}else{
 				res.status(401).json('wrong password')
