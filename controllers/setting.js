@@ -1,6 +1,6 @@
 var router = require('express').Router();
 const mongoose=require('mongoose');
-
+const bcrypt=require('bcrypt-nodejs');
 
 const userInfo=require('../models/userInfo.js');
 
