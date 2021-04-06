@@ -62,8 +62,8 @@ const db=mongoose.connect(mongo_url,{useNewUrlParser: true,useUnifiedTopology: t
 	if(!error){
 		console.log("Connected to Mongo @ " + mongo_url);
 		new Promise(resolve => setTimeout(resolve, 3000)).then(()=>{
-		app.listen(3000,()=>{
-			console.log(`app is running on port 3000`);
+		app.listen(process.env.PORT || 3000,()=>{
+			console.log(`app is running on port ` + process.env.PORT || 3000);
 		});});
 		
 	}else{
