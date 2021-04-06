@@ -27,7 +27,6 @@ const handleSearchUsers=(req,res)=>{
 
     userInfo.find(query, "username email dateOfBirth").limit(parseInt(count)).skip(parseInt(skip)).exec()
 	.then(function(resp){
-		console.log(resp);
 		res.status(200).json(resp);
 	})
 	.catch(function(err){
