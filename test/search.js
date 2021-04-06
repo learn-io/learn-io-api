@@ -2,86 +2,63 @@ var expect = require("chai").expect;
 var axios = require("axios");
 
 
-const signin_url="http://localhost:3000/signin"
+const platform_url="http://localhost:3000/search/platforms"
+const user_url="http://localhost:3000/search/users"
 const signout_url="http://localhost:3000/signout"
 const register_url="http://localhost:3000/register"
 const delete_url = "http://localhost:3000/admin/users/delete"
 
-let cookie = "";
-
-describe("Sign In Controller", function() {
+describe("Search Controller", function() {
     context('Setting Up', function() {
         
     });
-    context('Sign In', function() {
+    context('Platform Search', function() {
+
+    });
+    context('Setting Up User Search', function() {
         it("Register", function(){
             return axios({
                 method: 'post',
                 url: register_url,
                 data: {
-                    username: "test1",
+                    username: "bob",
                     password: "pass1",
                     verifyPassword: "pass1", 
                     email: "email@email.email",
                     dateOfBirth: "11/9/1999" //TODO: formatting?
                 }
             }).then(function(response){
-                cookie = response.headers["set-cookie"][0]
-                expect(response.status).to.equal(200, response.data);
-                expect(response.data).to.deep.equal("test1");
-            });
-        });
-        it("Log Out", function(){
-            return axios({
-                method: 'post',
-                url: signout_url,
-                data: {
-                  username: 'test1',
-                },
-                headers: { Cookie: cookie }
-            }).then(function(response){
                 expect(response.status).to.equal(200, response.data);
             });
         });
-        it("Log In", function(){
+    });
+    context('User Search', function() {
+        it("Bob Search", function(){
             return axios({
-                method: 'post',
-                url: signin_url,
-                data: {
-                  username: 'test1',
-                  password: 'pass1'
-                },
-                headers: { Cookie: cookie }
+                method: 'get',
+                url: user_url+"/bob/0/5",
             }).then(function(response){
                 expect(response.status).to.equal(200, response.data);
-                expect(response.data).to.deep.equal("test1");
+                delete response.data[0]['_id'];
+                expect(response.data).to.deep.equal([{username:'bob', email: "email@email.email", dateOfBirth: "11/9/1999"}]);
             });
         });
-        it("Log Out", function(){
+        it("Skip Bob Search", function(){
             return axios({
-                method: 'post',
-                url: signout_url,
-                data: {
-                  username: 'test1',
-                },
-                headers: { Cookie: cookie }
+                method: 'get',
+                url: user_url+"/bob/1/5",
             }).then(function(response){
                 expect(response.status).to.equal(200, response.data);
+                expect(response.data).to.deep.equal([]);
             });
         });
-        it("Wrong Password", function(){
+        it("Not A User Search", function(){
             return axios({
-                method: 'post',
-                url: signin_url,
-                data: {
-                  username: 'test1',
-                  password: 'pass21'
-                },
-                headers: { Cookie: cookie }
+                method: 'get',
+                url: user_url+"/notauser/0/5",
             }).then(function(response){
-                expect(response.status).to.equal(401, response.data);
-            }).catch(function(err){
-                expect(err.response.status).to.equal(401, err.response.data);
+                expect(response.status).to.equal(200, response.data);
+                expect(response.data).to.deep.equal([]);
             });
         });
     });
@@ -92,9 +69,8 @@ describe("Sign In Controller", function() {
                 method: 'post',
                 url: delete_url,
                 data: {
-                  username: 'test1'
-                },
-                headers: { Cookie: cookie }
+                  username: 'bob'
+                }
             }).then(function(response){
                 expect(response.status).to.equal(200, response.data);
             }).catch(function(err){

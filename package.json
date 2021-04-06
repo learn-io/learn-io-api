@@ -4,10 +4,10 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start-server": "npm start",
-    "start": "nodemon server.js",
+    "start-server": "nodemon server.js",
+    "start": "node server.js",
     "test": "mocha --reporter spec",
-    "runtest": "start-server-and-test start-server 3000 test"
+    "runtest": "start-server-and-test start 3000 test"
   },
   "repository": {
     "type": "git",
@@ -29,6 +29,7 @@
     "body-parser": "^1.19.0",
     "chai": "^4.3.4",
     "connect-mongo": "^4.4.1",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "mocha": "^8.3.2",
