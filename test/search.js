@@ -39,7 +39,26 @@ describe("Search Controller", function() {
                 url: user_url+"/bob/0/5",
             }).then(function(response){
                 expect(response.status).to.equal(200, response.data);
+                delete response.data[0]['_id'];
                 expect(response.data).to.deep.equal([{username:'bob', email: "email@email.email", dateOfBirth: "11/9/1999"}]);
+            });
+        });
+        it("Skip Bob Search", function(){
+            return axios({
+                method: 'get',
+                url: user_url+"/bob/1/5",
+            }).then(function(response){
+                expect(response.status).to.equal(200, response.data);
+                expect(response.data).to.deep.equal([]);
+            });
+        });
+        it("Not A User Search", function(){
+            return axios({
+                method: 'get',
+                url: user_url+"/notauser/0/5",
+            }).then(function(response){
+                expect(response.status).to.equal(200, response.data);
+                expect(response.data).to.deep.equal([]);
             });
         });
     });

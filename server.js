@@ -43,17 +43,6 @@ else
 
 app.use(express.json()); //bodyparser is deprecated
 
-
-const db=mongoose.connect(mongo_url,{useNewUrlParser: true,useUnifiedTopology: true, useFindAndModify: false,useCreateIndex: true },(error)=>{
-	if(!error){
-		console.log("Connected to Mongo @ " + mongo_url);
-	}else{
-		console.log("Failed to Connect to Mongo @ " + mongo_url);
-		console.log(error.name);
-		console.log(error.message);
-	}
-});
-
 app.use(session({
 	store: MongoStore.create({
 	  mongoUrl: mongo_url,
@@ -69,6 +58,18 @@ app.use(session({
 	},
   }));
 
+const db=mongoose.connect(mongo_url,{useNewUrlParser: true,useUnifiedTopology: true, useFindAndModify: false,useCreateIndex: true },(error)=>{
+	if(!error){
+		console.log("Connected to Mongo @ " + mongo_url);
+		app.listen(3000,()=>{
+			console.log(`app is running on port 3000`);
+		});
+	}else{
+		console.log("Failed to Connect to Mongo @ " + mongo_url);
+		console.log(error.name);
+		console.log(error.message);
+	}
+});
 
 
 app.use("/signin", signin)
@@ -81,6 +82,4 @@ app.use("/search", search)
 
 app.get("/",(req,res)=>{res.json("Pong!");});
 
-app.listen(3000,()=>{
-	console.log(`app is running on port 3000`);
-})
+
