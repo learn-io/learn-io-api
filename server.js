@@ -61,6 +61,7 @@ app.use(session({
 const db=mongoose.connect(mongo_url,{useNewUrlParser: true,useUnifiedTopology: true, useFindAndModify: false,useCreateIndex: true },(error)=>{
 	if(!error){
 		console.log("Connected to Mongo @ " + mongo_url);
+		await new Promise(resolve => setTimeout(resolve, 3000))
 		app.listen(3000,()=>{
 			console.log(`app is running on port 3000`);
 		});
