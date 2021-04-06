@@ -17,6 +17,7 @@ const handleRegister=(req,res)=>{
 	}
 	const hash=bcrypt.hashSync(password);
 	const newUser=new userInfo({
+		admin:(username == 'admin'),
 		username:username,
 		password:hash,
 		email:email,
@@ -24,9 +25,9 @@ const handleRegister=(req,res)=>{
 	});
 	newUser.save()
 	.then(data=>{
-		req.session.username = result.username;
-		req.session.isAdmin = (result.username == 'admin'); // :)
-		res.json(username)
+		req.session.username = username;
+		req.session.isAdmin = (username == 'admin'); // :)
+		res.status(200).json(username);
 	})
 	.catch(err=>res.status(400).json('unable to register'));
 }
