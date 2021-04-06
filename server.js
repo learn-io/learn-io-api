@@ -1,44 +1,87 @@
-const mongoose=require('mongoose');
 const express=require('express');
-const bodyParser=require('body-parser');
-const bcrypt=require('bcrypt-nodejs');
+const mongoose=require('mongoose');
+
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
+var axios = require("axios");
+
+const cors=require('cors');
+
 // Models
-const userInfo=require('./models/userInfo');
-const platformSchame=require('./models/platform');
-const pageSchame=require('./models/page');
-const userPlatformInfoSchame=require('./models/userPlatformInfo');
-const mediaSchame=require('./models/media');
+//const pageSchame=require('./models/page');
+//const userPlatformInfoSchame=require('./models/userPlatformInfo');
+//const mediaSchame=require('./models/media');
+
+
 // Controllers
 const signin=require('./controllers/signin');
+const signout=require('./controllers/signout');
 const register=require('./controllers/register');
 const setting=require('./controllers/setting');
 const admin=require('./controllers/admin');
 const platform=require('./controllers/platform');
+const search=require('./controllers/search');
 
-const url='mongodb://localhost:27017/learnio';
-// const url='mongodb+srv://xinchen2:chenxin@cluster0.vib1g.mongodb.net/learnio?retryWrites=true&w=majority';
 const app=express();
-app.use(bodyParser.json());
 
+const mongo_local='mongodb://localhost:27017/learnio';
+const mongo_dan="mongodb+srv://daniel:"+encodeURIComponent("K1jTFA$9$&nlgpa9Gu&FVioUj%0wQO")+"@learnio-dev1.s9z10.mongodb.net/learnio-dev?retryWrites=true&w=majority";
+const mongo_xin='mongodb+srv://xinchen2:' + process.env.DB_PASS + ' + @cluster0.vib1g.mongodb.net/learnio?retryWrites=true&w=majority';
 
-const db=mongoose.connect(url,{useNewUrlParser: true,useUnifiedTopology: true, useFindAndModify: false,useCreateIndex: true },(error)=>{
+//TODO: production environment variables
+let mongo_url;
+
+if (process.env.NODE_ENV == 'PROD')
+{
+	app.use(cors({ credentials: true, origin:'learn-io-api.herokuapp.com'}));
+	mongo_url=mongo_xin;
+}
+else
+{
+	mongo_url=mongo_dan;
+}
+
+app.use(express.json()); //bodyparser is deprecated
+
+app.use(session({
+	store: MongoStore.create({
+	  mongoUrl: mongo_url,
+	  ttl: 60 * 60, //expire token after one hour
+	  touchAfter: 5 * 60, //only refresh token at most every 5 minutes 
+	}),
+	secret: 'TODO: move to env',
+  	resave: false,
+  	saveUninitialized: true,
+	cookie: {
+		httpOnly: false,
+		secure: false
+	},
+  }));
+
+const db=mongoose.connect(mongo_url,{useNewUrlParser: true,useUnifiedTopology: true, useFindAndModify: false,useCreateIndex: true },(error)=>{
 	if(!error){
-		console.log("Success");
+		console.log("Connected to Mongo @ " + mongo_url);
+		new Promise(resolve => setTimeout(resolve, 3000)).then(()=>{
+		app.listen(3000,()=>{
+			console.log(`app is running on port 3000`);
+		});});
+		
 	}else{
-		console.log("Error");
+		console.log("Failed to Connect to Mongo @ " + mongo_url);
+		console.log(error.name);
+		console.log(error.message);
 	}
 });
-app.use(bodyParser.json());
 
-app.post("/signin",(req,res)=>{signin.handleSignin(req,res,userInfo,bcrypt)})
-app.post("/register",(req,res)=>{register.handleRegister(req,res,userInfo,bcrypt)})
-app.post("/setting",(req,res)=>{setting.handleSetting(req,res,userInfo,bcrypt)})
-app.get("/admin/users",(req,res)=>{admin.handleShowUsers(req,res,userInfo)})
-app.post("/admin/users/delete",(req,res)=>{admin.handleDeleteUser(req,res,userInfo)})
-app.get("/admin/platforms",(req,res)=>{admin.handleShowPlatforms(req,res,platformSchame)})
-app.post("/admin/platforms/delete",(req,res)=>{admin.handleDeletePlatform(req,res,platformSchame)})
-app.post("/platform",(req,res)=>{platform.handlePlatform(req,res,platformSchame)})
 
-app.listen(3000,()=>{
-	console.log(`app is running on port 3000`);
-})
+app.use("/signin", signin)
+app.use("/signout", signout)
+app.use("/register", register)
+app.use("/setting", setting)
+app.use("/admin", admin)
+app.use("/platform", platform)
+app.use("/search", search)
+
+app.get("/",(req,res)=>{res.json("Pong!");});
+
+

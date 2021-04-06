@@ -1,7 +1,7 @@
 var expect = require("chai").expect;
 
 describe("This is an example test!", function() {
-    context('words', function() {
+    context('Context with two tests', function() {
         it("always passes", function(){
             expect(1).to.equal(1);
             expect(5).to.equal(5);
@@ -11,7 +11,7 @@ describe("This is an example test!", function() {
             expect(566).to.equal(566);
         });
     });
-    context('more words', function()
+    context('context with one test', function()
     {
         it("also also always passes", function(){
             expect(2).to.equal(2);

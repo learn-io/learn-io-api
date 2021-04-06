@@ -1,5 +1,15 @@
-// const userInfo=require('../models/userInfo');
-const handleSignin=(req,res,userInfo,bcrypt)=>{
+var router = require('express').Router();
+const mongoose=require('mongoose');
+
+const userInfo=require('../models/userInfo.js');
+const bcrypt=require('bcrypt-nodejs');
+
+
+const handleSignin=(req,res)=>{
+	if(req.session.username)
+	{
+		return res.status(400).json('already logged in');
+	}
 	const {username,password}=req.body;
 	if(!username||!password){
 		return res.status(400).json('incorrect form submission');
@@ -22,19 +32,20 @@ const handleSignin=(req,res,userInfo,bcrypt)=>{
  	userInfo.findOne({username:username},function(err,result){
  		if(err){res.status(400).json('err')}
  		if(!result){
- 			res.status(400).json('user is not exist')
+ 			res.status(401).json('user is not exist')
  		}else{
  			const isValid=bcrypt.compareSync(password, result.password);
 			if(isValid){
+				req.session.username=result.username;
+				req.session.isAdmin = (result.username == 'admin'); // :)
 				res.json(result.username);
 			}else{
-				res.status(400).json('wrong password')
+				res.status(401).json('wrong password')
 			}
  		}
  	})
 }
 
+router.post("/",(req,res)=>{handleSignin(req,res)})
 
-module.exports={
-	handleSignin:handleSignin
-};
+module.exports = router;

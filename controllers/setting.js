@@ -1,7 +1,15 @@
-const handleSetting=(req,res,userInfo,bcrypt)=>{
-	const {username,email,dateOfBirth,oldPassword,newPassword,mute}=req.body;
+var router = require('express').Router();
+const mongoose=require('mongoose');
+const bcrypt=require('bcrypt-nodejs');
+
+const userInfo=require('../models/userInfo.js');
+
+
+const handleSetting=(req,res)=>{
+	const {email,dateOfBirth,oldPassword,newPassword,mute}=req.body;
+	const username = req.session.username;
 	if(!username){
-		return res.status(400).json('error');
+		return res.status(401).json('error');
 	}
 	if(!email&&!dateOfBirth&&!newPassword&&!mute){
 		return res.status(400).json('nothing changed');
@@ -12,7 +20,11 @@ const handleSetting=(req,res,userInfo,bcrypt)=>{
 			if(err){
 				res.status(400).json('err')
 			}else{
-				res.json("Success Update Email");
+				if(!data){
+					res.status(400).json('user is not exist')
+				}else{
+					res.json("Success Update Email");
+				}
 			}
 		});
 	}
@@ -22,7 +34,11 @@ const handleSetting=(req,res,userInfo,bcrypt)=>{
 			if(err){
 				res.status(400).json('err')
 			}else{
-				res.json("Success Update date of birth");
+				if(!data){
+					res.status(400).json('user is not exist')
+				}else{
+					res.json("Success Update date of birth");
+				}
 			}
 		});
 	}
@@ -32,7 +48,11 @@ const handleSetting=(req,res,userInfo,bcrypt)=>{
 			if(err){
 				res.status(400).json('err')
 			}else{
-				res.json("Success mute setting");
+				if(!data){
+					res.status(400).json('user is not exist')
+				}else{
+					res.json("Success mute setting");
+				}
 			}
 		});
 	}
@@ -61,6 +81,6 @@ const handleSetting=(req,res,userInfo,bcrypt)=>{
 	}
 }
 
-module.exports={
-	handleSetting: handleSetting
-};
+router.post("/",(req,res)=>{handleSetting(req,res)})
+
+module.exports=router;
