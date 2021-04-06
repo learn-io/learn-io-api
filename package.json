@@ -4,10 +4,10 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start-server": "node server.js",
-    "start": "nodemon server.js",
+    "start-server": "nodemon server.js",
+    "start": "node server.js",
     "test": "mocha --reporter spec",
-    "runtest": "start-server-and-test start-server 3000 test"
+    "runtest": "start-server-and-test start 3000 test"
   },
   "repository": {
     "type": "git",
