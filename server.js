@@ -21,6 +21,7 @@ const setting=require('./controllers/setting');
 const admin=require('./controllers/admin');
 const platform=require('./controllers/platform');
 const search=require('./controllers/search');
+const media=require('./controllers/media');
 
 const app=express();
 
@@ -82,7 +83,7 @@ app.use("/setting", setting)
 app.use("/admin", admin)
 app.use("/platform", platform)
 app.use("/search", search)
-
+app.use("/media",media)
 app.get("/",(req,res)=>{res.json("Pong!");});
 
 

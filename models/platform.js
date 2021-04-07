@@ -1,14 +1,19 @@
 const mongoose=require('mongoose')
 
 const platformSchema=new mongoose.Schema({
-	name:{type:String,required:true,unique:true},
-	id:{type:String,required:true,unique:true},
+	platformName:{type:String,required:true,unique:true},
 	image:{type:String,default:""},
 	description:{type:String,default:""},
 	modules:[{
 		moduleName:{type:String},
 		moduleDescription:{type:String},
-		image:{type:String}
+		image:{type:String},
+		lockedby:[],
+		unlocks:[],
+		x:{type:Number},
+		y:{type:Number},
+		height:{type:Number},
+		width:{type:Number}
 	}],
 	owner:{type:String, required:true}
 });
