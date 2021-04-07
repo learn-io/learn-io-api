@@ -5,10 +5,10 @@ const mediaSchema=require('../models/media.js');
 const bcrypt = require('bcrypt-nodejs');
 
 const handleMedia=(req,res)=>{
-	const {hash,data,extension}=req.body;
+	const {data,extension}=req.body;
 	
  	const newMedia=new mediaSchema({
-		hash:hash,
+		hash:bcrypt.hashSync(data),
 		data:data,
 		extension:extension
 	});

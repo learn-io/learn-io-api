@@ -13,7 +13,8 @@ const handlePlatform=(req,res)=>{
 		platformName:platformName,
 		image:image,
 		description:description,
-		owner:owner
+		owner:owner,
+		modules:[]
 	});
 	newPlatform.save()
 	.then(data=>{
