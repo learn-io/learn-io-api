@@ -22,6 +22,7 @@ const admin=require('./controllers/admin');
 const platform=require('./controllers/platform');
 const search=require('./controllers/search');
 const media=require('./controllers/media');
+const userPlatform=require('./controllers/userPlatformInfo');
 
 const app=express();
 
@@ -76,6 +77,7 @@ const db=mongoose.connect(mongo_url,{useNewUrlParser: true,useUnifiedTopology: t
 });
 
 
+
 app.use("/signin", signin)
 app.use("/signout", signout)
 app.use("/register", register)
@@ -84,6 +86,7 @@ app.use("/admin", admin)
 app.use("/platform", platform)
 app.use("/search", search)
 app.use("/media",media)
+app.use("/play",userPlatform)
 app.get("/",(req,res)=>{res.json("Pong!");});
 
 
