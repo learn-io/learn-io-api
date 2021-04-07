@@ -2,7 +2,7 @@ const mongoose=require('mongoose')
 
 const userPlatformInfoSchema=new mongoose.Schema({
 	username:{type:String,required:true},
-	platformId:{type:Number,required:true},
+	platformName:{type:String,required:true},
 	completeId:[],
 	timeSpend:{type:Number,defalut:0},
 	widgetsClicked:{type:Number,defalut:0},
