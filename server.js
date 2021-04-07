@@ -22,6 +22,7 @@ const admin=require('./controllers/admin');
 const platform=require('./controllers/platform');
 const search=require('./controllers/search');
 const media=require('./controllers/media');
+// const widget=require('./controllers/widget');
 
 const app=express();
 
@@ -41,6 +42,7 @@ if (process.env.NODE_ENV == 'PROD')
 else
 {
 	mongo_url=mongo_dan;
+	// mongo_url=mongo_akshay;
 }
 
 app.use(express.json()); //bodyparser is deprecated
@@ -84,6 +86,7 @@ app.use("/admin", admin)
 app.use("/platform", platform)
 app.use("/search", search)
 app.use("/media",media)
+// app.use("/widget", widget)
 app.get("/",(req,res)=>{res.json("Pong!");});
 
 
