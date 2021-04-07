@@ -2,6 +2,8 @@ var router = require('express').Router();
 const mongoose=require('mongoose');
 const mediaSchema=require('../models/media.js');
 
+const bcrypt = require('bcrypt-nodejs');
+
 const handleMedia=(req,res)=>{
 	const {hash,data,extension}=req.body;
 	
