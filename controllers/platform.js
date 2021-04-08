@@ -43,11 +43,11 @@ const handleGetPlatform=(req,res)=>{
 }
 // After the player add new module into platform
 const handleNewModule=(req,res)=>{
-	const {platformName,moduleName,moduleDescription,image,lockedby,unlocks,x,y,height,width}=req.body;
-	if(!platformName){
+	const {_id,moduleName,moduleDescription,image,lockedby,unlocks,x,y,height,width}=req.body;
+	if(!_id){
 		return res.status(400).json('incorrect form submission');
 	}
-	platformSchema.findOneAndUpdate({platformName:platformName, owner:req.session.username},{$push:{modules:{			
+	platformSchema.findOneAndUpdate({_id:ObjectId(_id), owner:req.session.username},{$push:{modules:{			
 			moduleName:moduleName,
 			moduleDescription:moduleDescription,
 			image:image,
