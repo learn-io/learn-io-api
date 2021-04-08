@@ -23,32 +23,33 @@ let imagePath = "./image/bananaduck.jpg";
 let imageData = fs.readFileSync(imagePath,"utf8");
 let imageExtension = ".jpg";
 let imageHash = bcrypt.hashSync(imageData);
+let platformId = "606ebcb8849da9406410cb28";
 
 describe("Content Tests", function() {
-    context('Media Test', function() {
-        it("Uploads media to the server", function(){ 
-            return axios({
-                method: 'post',
-                url: media_url,
-                data:{
-                    data:imageData,
-                    extension:imageExtension
-                }
-            }).then(function(response){
-              	expect(response.status).to.equal(200, response.data);
-                expect(response.data).to.equal(imageData);
-            });
-        });
-        it("Return media based on hash", function(){ 
-            return axios({
-                method: 'get',
-                url: media_url+"/"+imageHash
-            }).then(function(response){
-              	expect(response.status).to.equal(200);
-                expect(response.data).to.deep.equal([{hash:imageHash, data:imageData, extension:imageExtension}]);
-            });
-        });
-    });
+    // context('Media Test', function() {
+    //     it("Uploads media to the server", function(){ 
+    //         return axios({
+    //             method: 'post',
+    //             url: media_url,
+    //             data:{
+    //                 data:imageData,
+    //                 extension:imageExtension
+    //             }
+    //         }).then(function(response){
+    //           	expect(response.status).to.equal(200, response.data);
+    //             expect(response.data).to.equal(imageData);
+    //         });
+    //     });
+    //     it("Return media based on hash", function(){ 
+    //         return axios({
+    //             method: 'get',
+    //             url: media_url+"/"+imageHash
+    //         }).then(function(response){
+    //           	expect(response.status).to.equal(200);
+    //             expect(response.data).to.deep.equal([{hash:imageHash, data:imageData, extension:imageExtension}]);
+    //         });
+    //     });
+    // });
     context('Setting Up User', function() {
         it("Register for Session", function(){
             return axios({
@@ -75,54 +76,65 @@ describe("Content Tests", function() {
         //Need to put pages into db
 
     });
-    // context("Platform Test", function() {
-    //     it("Create platform", function(){ 
-    //         return axios({
-    //             method: 'post',
-    //             url: platform_url,
-    //             data:{
-    //                 platformName:"All About Obscure Berries",
-    //                 image:"",
-    //                 description:"In this platform you'll learn all about berries that you didn't even know were berries.",
-    //                 owner:"bob",
-    //                 headers: { Cookie: cookie }
-    //             }
-    //         }).then(function(response){
-    //           	expect(response.status).to.equal(200, response.data);
-    //         }).catch(function(error){
-    //             expect(error.response.status).to.equal(400);
-    //         });
-    //     });
-    //    it("Update platform description", function(){ 
-    //         return axios({
-    //             method: 'post',
-    //             url: platform_url+"/606e1f0ad1c5b42180e198fe",
-    //             data:{
-    //                 platformName:"All About Obscure Berries",
-    //                 image:imageHash,
-    //                 description:"WEEEEW: In this platform you'll learn all about berries that you didn't even know were berries.",
-    //                 owner:"bob",
-    //                 modules:[],
-    //                 headers: { Cookie: cookie }
-    //             }
-    //         }).then(function(response){
-    //           	expect(response.status).to.equal(200, response.data);
-    //         }).catch(function(error){
-    //             expect(error.response.status).to.equal(400);
-    //         });
-    //     });
-    //     it("Get one platform by id", function(){ 
-    //         return axios({
-    //             method: 'get',
-    //             url: platform_url+"/1",
-    //         }).then(function(response){
-    //           	expect(response.status).to.equal(200, response.data);
-    //             expect(response.data).to.deep.equal([]);
-    //         }).catch(function(error){
-    //             expect(error.response.status).to.equal(400);
-    //         });
-    //     });
-    //     it("Updates a platform's about page and display information", function(){
+    context("Platform Test", function() {
+        it("Create platform", function(){ 
+            return axios({
+                method: 'post',
+                url: platform_url,
+                data:{
+                    platformName:"All Those Obscure Berries",
+                    image:"",
+                    description:"In platform you learn about berries.",
+                    owner:"bob"
+                }
+            }).then(function(response){
+              	expect(response.status).to.equal(200, response.data);
+                // platformId=response.data.platformId;
+            }).catch(function(error){
+                expect(error.response.status).to.equal(400);
+            });
+        });
+        it("Update platform about", function(){ 
+            return axios({
+                method: 'post',
+                url: platform_url+"/about",
+                data:{
+                    _id:platformId,
+                    platformName:"All About Obscure Berries",
+                    image:"",
+                    description:"In this platform you'll learn all about berries that you didn't even know were berries."
+                }
+            }).then(function(response){
+              	expect(response.status).to.equal(200, "Success Update Platform About");
+            }).catch(function(error){
+                expect(error.response.status).to.equal(400);
+            });
+        });
+
+        // it("Get one platform by valid id", function(){ 
+        //     return axios({
+        //         method: 'get',
+        //         url: platform_url+"/"+platformId,
+        //     }).then(function(response){
+        //       	expect(response.status).to.equal(200);
+        //         expect(response.data).to.deep.equal({platformName:"All About Obscure Berries",image:"",description:"In this platform you'll learn all about berries that you didn't even know were berries.","modules":[]});
+        //     });
+        // });
+        // it("Get one platform by invalid id", function(){ 
+        //     return axios({
+        //         method: 'get',
+        //         url: platform_url+"/1",
+        //     }).then(function(response){
+        //       	expect(response.status).to.equal(200, response.data);
+        //         expect(response.data).to.deep.equal([]);
+        //     }).catch(function(error){
+        //         expect(error.response.status).to.equal(500);
+        //     });
+        // });
+        
+
+        //WORKS UP TO HERE
+    //     it("Updates a platform's about page and display information by _id", function(){
     //         return axios({
     //             method: 'post',
     //             url: platform_url,
@@ -274,7 +286,7 @@ describe("Content Tests", function() {
     //             expect(error.response.status).to.equal(400);
     //         });
     //     });
-    // });
+    });
     context('Cleaning Up', function() {
         expect(process.env.NODE_ENV).to.not.equal('PROD');
         it("Deleting Registered User", function(){
