@@ -97,7 +97,7 @@ const handleUpdatePlatformAbout=(req,res)=>{
 		return res.status(400).json('nothing changed');
 	}
 	if(image){
-		platformSchema.findOneAndUpdate({_id:ObjectId(_id)},{image:image},(err,result)=>{
+		platformSchema.findOneAndUpdate({_id:ObjectId(_id)},{image:image,description:description,platformName:platformName},(err,result)=>{
 			if(err){res.status(400).json('err')}
 			if(!result){
 				res.status(404).json('platform is not exist')
@@ -109,28 +109,28 @@ const handleUpdatePlatformAbout=(req,res)=>{
 		});
 	}
 
-	if(description){
-		platformSchema.findOneAndUpdate({_id:ObjectId(_id)},{description:description},(err,result)=>{
-			if(err){res.status(400).json('err')}
-			if(!result){
-				res.status(404).json('platform does not exist')
-			}else{
-				res.json("Success Update Platform About");
-			}
+	// if(description){
+	// 	platformSchema.findOneAndUpdate({_id:ObjectId(_id)},{description:description},(err,result)=>{
+	// 		if(err){res.status(400).json('err')}
+	// 		if(!result){
+	// 			res.status(404).json('platform does not exist')
+	// 		}else{
+	// 			res.json("Success Update Platform About");
+	// 		}
 			
-		});
-	}
+	// 	});
+	// }
 
-	if(platformName){
-		platformSchema.findOneAndUpdate({_id:ObjectId(_id)},{platformName:platformName},(err,result)=>{
-			if(err){res.status(400).json('err')}
-			if(!result){
-				res.status(404).json('platform does not exist')
-			}else{
-				res.json("Success Update Platform About");
-			}
-		});
-	}
+	// if(platformName){
+	// 	platformSchema.findOneAndUpdate({_id:ObjectId(_id)},{platformName:platformName},(err,result)=>{
+	// 		if(err){res.status(400).json('err')}
+	// 		if(!result){
+	// 			res.status(404).json('platform does not exist')
+	// 		}else{
+	// 			res.json("Success Update Platform About");
+	// 		}
+	// 	});
+	// }
 	
 }
 
