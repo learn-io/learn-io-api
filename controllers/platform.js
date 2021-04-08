@@ -6,7 +6,7 @@ const platformSchema=require('../models/platform.js');
 
 // Every time it creates a platform without module
 const handlePlatform=(req,res)=>{
-	const {platformName,image,description,owner}=req.body;
+	const {platformName,image,description}=req.body;
 	if(!platformName){
 		return res.status(400).json('incorrect form submission');
 	}
@@ -14,7 +14,7 @@ const handlePlatform=(req,res)=>{
 		platformName:platformName,
 		image:image,
 		description:description,
-		owner:owner,
+		owner:req.session.username,
 		modules:[]
 	});
 	// console.log("****NEW PLATFORM ID"+newPlatform._id);
@@ -47,7 +47,7 @@ const handleNewModule=(req,res)=>{
 	if(!platformName){
 		return res.status(400).json('incorrect form submission');
 	}
-	platformSchema.findOneAndUpdate({platformName:platformName},{$push:{modules:{			
+	platformSchema.findOneAndUpdate({platformName:platformName, owner:req.session.username},{$push:{modules:{			
 			moduleName:moduleName,
 			moduleDescription:moduleDescription,
 			image:image,
@@ -113,7 +113,7 @@ const handleUpdatePlatformAbout=(req,res)=>{
 		query.platformName = platformName;
 	}
 	
-	platformSchema.findOneAndUpdate({_id:ObjectId(_id)},query,(err,result)=>{
+	platformSchema.findOneAndUpdate({_id:ObjectId(_id), owner:req.session.username},query,(err,result)=>{
 		if(err){return res.status(400).json('err')}
 		if(!result){
 			res.status(404).json('platform is not exist')
