@@ -65,9 +65,7 @@ describe("Content Tests", function() {
             }).then(function(response){
                 cookie = response.headers["set-cookie"][0];
                 expect(response.status).to.equal(200, response.data);
-            }).catch(function(err){
-                expect(err.response.status).to.equal(200, err.response.data);
-            });;
+            });
         });
     });
     context('Setting Up', function() {
@@ -86,12 +84,11 @@ describe("Content Tests", function() {
                     image:"",
                     description:"In platform you learn about berries.",
                     owner:"bob"
-                }
+                },
+                headers: { Cookie: cookie }
             }).then(function(response){
               	expect(response.status).to.equal(200, response.data);
                 // platformId=response.data.platformId;
-            }).catch(function(error){
-                expect(error.response.status).to.equal(400);
             });
         });
         it("Update platform about", function(){ 
@@ -103,11 +100,10 @@ describe("Content Tests", function() {
                     platformName:"All About Obscure Berries",
                     image:"",
                     description:"In this platform you'll learn all about berries that you didn't even know were berries."
-                }
+                },
+                headers: { Cookie: cookie }
             }).then(function(response){
               	expect(response.status).to.equal(200, "Success Update Platform About");
-            }).catch(function(error){
-                expect(error.response.status).to.equal(400);
             });
         });
 
