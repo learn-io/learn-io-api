@@ -36,5 +36,26 @@ const handleUserPlay=(req,res)=>{
  	
 }
 
+
+// use for profile page
+const handleGetUserPlatformInfo=(req,res)=>{
+	const {username}=req.body;
+	// const {username}=req.session.username;
+	if(!username){
+		return res.status(400).json('not username');
+	}
+	userPlatformInfoSchema.find({username:username},function(err,result){
+ 		if(err){res.status(400).json('err')}
+ 		if(!result.length){
+ 			res.status(401).json('The user does not have play record');
+ 		}else{
+			res.json(result);
+ 		}
+ 	})
+ 	
+}
+
+
 router.post("/",(req,res)=>{handleUserPlay(req,res)})
+router.get("/profile",(req,res)=>{handleGetUserPlatformInfo(req,res)})
 module.exports=router;
