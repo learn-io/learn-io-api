@@ -10,7 +10,7 @@ const handleUserPlay=(req,res)=>{
 		return res.status(400).json('incorrect form submission');
 	}
 	if(!username){
-		return res.json("guest");
+		return res.status(200).json("guest");
 	}
 	var platformOwner=false;
 	platformSchema.findOne({platformName:platformName},function(err,result){
@@ -28,7 +28,7 @@ const handleUserPlay=(req,res)=>{
 			});
 			newPlatformUser.save()
 			.then(data=>{
-				res.json("create new platform user")
+				res.status(200).json("create new platform user")
 			})
 			.catch(err=>res.status(400).json('unable to create new platform user'));
  		}
@@ -66,7 +66,7 @@ const handleGetUserPlatformInfo=(req,res)=>{
  		if(!result.length){
  			res.status(401).json('The user does not have play record');
  		}else{
-			res.json(result);
+			res.status(200).json(result);
  		}
  	})
 }

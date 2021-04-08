@@ -11,6 +11,7 @@ const widgets_url="http://localhost:3000/widgets";
 const media_url="http://localhost:3000/media";
 const register_url="http://localhost:3000/register"
 const delete_url = "http://localhost:3000/admin/users/delete"
+const deletePlatform_url = "http://localhost:3000/platforms/delete";
 
 let cookie = "";
 
@@ -31,7 +32,7 @@ let imageExtension = ".jpg";
 let imageHash = crypto.createHash('sha256').update(imageData).digest('utf8');
 
 
-let platformId = "606ebcb8849da9406410cb28";
+let platformId = "";
 
 describe("Content Tests", function() {
     context('Media Test', function() {
@@ -102,7 +103,7 @@ describe("Content Tests", function() {
                 headers: { Cookie: cookie }
             }).then(function(response){
               	expect(response.status).to.equal(200, response.data);
-                // platformId=response.data.platformId;
+                platformId=response.data.platformId;
             });
         });
         it("Update platform about", function(){ 
@@ -121,27 +122,26 @@ describe("Content Tests", function() {
             });
         });
 
-        // it("Get one platform by valid id", function(){ 
-        //     return axios({
-        //         method: 'get',
-        //         url: platform_url+"/"+platformId,
-        //     }).then(function(response){
-        //       	expect(response.status).to.equal(200);
-        //         expect(response.data).to.deep.equal({platformName:"All About Obscure Berries",image:"",description:"In this platform you'll learn all about berries that you didn't even know were berries.","modules":[]});
-        //     });
-        // });
-        // it("Get one platform by invalid id", function(){ 
-        //     return axios({
-        //         method: 'get',
-        //         url: platform_url+"/1",
-        //     }).then(function(response){
-        //       	expect(response.status).to.equal(200, response.data);
-        //         expect(response.data).to.deep.equal([]);
-        //     }).catch(function(error){
-        //         expect(error.response.status).to.equal(500);
-        //     });
-        // });
-        
+        it("Get one platform by valid id", function(){ 
+            return axios({
+                method: 'get',
+                url: platform_url+"/"+platformId,
+            }).then(function(response){
+              	expect(response.status).to.equal(200);
+                expect(response.data).to.deep.equal({platformName:"All About Obscure Berries",image:"",description:"In this platform you'll learn all about berries that you didn't even know were berries.","modules":[]});
+            });
+        });
+        it("Get one platform by invalid id", function(){ 
+            return axios({
+                method: 'get',
+                url: platform_url+"/111111111111111111111111"
+            }).then(function(response){
+              	expect(response.status).to.equal(200, response.data);
+            }).catch(function(error){
+                expect(error.response.status).to.equal(404);
+                expect(error.response.data).to.equal("platform does not exist");
+            })
+        });
 
         //WORKS UP TO HERE
     //     it("Updates a platform's about page and display information by _id", function(){
@@ -299,6 +299,17 @@ describe("Content Tests", function() {
     });
     context('Cleaning Up', function() {
         expect(process.env.NODE_ENV).to.not.equal('PROD');
+        it("Clean up platform",function(){
+            return axios({
+                method:'post',
+                url:deletePlatform_url,
+                _id:platformId,
+                headers: { Cookie: cookie }
+            }).then(function(response){
+                expect(response.status).to.equal(200);
+                expect(response.status.data).to.equal("Success remove platform");
+            });
+        });
         it("Deleting Registered User", function(){
             return axios({
                 method: 'post',
@@ -309,8 +320,6 @@ describe("Content Tests", function() {
                 headers: { Cookie: cookie }
             }).then(function(response){
                 expect(response.status).to.equal(200, response.data);
-            }).catch(function(err){
-                expect(err.response.status).to.equal(200, err.response.data);
             });
         });
     });

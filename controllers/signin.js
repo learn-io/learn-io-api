@@ -22,7 +22,7 @@ const handleSignin=(req,res)=>{
  //  				.forEach((user)=>{
  //  					const isValid=bcrypt.compareSync(password, user.password);
  //  					if(isValid){
- //  						res.json(user.username);
+ //  						res.status(200).json(user.username);
  //  					}else{
  //  						res.status(400).json('wrong credentials')
  //  					}
@@ -38,7 +38,7 @@ const handleSignin=(req,res)=>{
 			if(isValid){
 				req.session.username=result.username;
 				req.session.isAdmin = (result.username == 'admin'); // :)
-				res.json(result.username);
+				res.status(200).json(result.username);
 			}else{
 				res.status(401).json('wrong password')
 			}

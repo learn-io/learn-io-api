@@ -6,7 +6,7 @@ const handleSignout=(req,res)=>{
         return res.status(401).json("Not Logged In");
     req.session.username = undefined;
     req.session.isAdmin = false;
-    res.json("Logged Out");
+    res.status(200).json("Logged Out");
 };
 
 router.post("/",(req,res)=>{handleSignout(req,res)})
