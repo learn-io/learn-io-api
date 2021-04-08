@@ -91,7 +91,7 @@ app.use("/search", search)
 app.use("/media",media)
 app.use("/widgets", widget)
 app.use("/page", page)
-app.use("/play",userPlatform)
+app.use("/profile",userPlatform)
 app.get("/",(req,res)=>{res.json("Pong!");});
 
 
