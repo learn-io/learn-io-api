@@ -38,6 +38,14 @@ const handleGetPage=(req,res)=>{
  	})
 }
 
+router.post("*", (req,res,next)=>{
+	if(req.session.username)
+		next();
+	else
+		res.status(401).json("Must be logged in to post data");
+
+})
+
 router.post("/",(req,res)=>{handleNewPage(req,res)})
 router.get("/:platformName/:moduleName/:pageName",(req,res)=>{handleGetPage(req,res)})
 module.exports=router;

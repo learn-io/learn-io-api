@@ -6,12 +6,13 @@ var fs = require("fs");
 
 const FormData = require('form-data');
 
+const helper=require('../controllers/testHelper');
+
 const platform_url="http://localhost:3000/platform";
 const widgets_url="http://localhost:3000/widgets";
 const media_url="http://localhost:3000/media";
-const register_url="http://localhost:3000/register"
-const delete_url = "http://localhost:3000/admin/users/delete"
-const deletePlatform_url = "http://localhost:3000/platforms/delete";
+const register_url="http://localhost:3000/register";
+
 
 let cookie = "";
 
@@ -35,16 +36,36 @@ let imageHash = crypto.createHash('sha256').update(imageData).digest('utf8');
 let platformId = "";
 
 describe("Content Tests", function() {
+    context('Setting Up User', function() {
+        it("Register for Session", function(){
+            return axios({
+                method: 'post',
+                url: register_url,
+                data: {
+                    username: "bob",
+                    password: "pass1",
+                    verifyPassword: "pass1", 
+                    email: "email@email.email",
+                    dateOfBirth: "11/9/1999" //TODO: formatting?
+                }
+            }).then(function(response){
+                cookie = response.headers["set-cookie"][0];
+                expect(response.status).to.equal(200, response.data);
+            });
+        });
+    });
     context('Media Test', function() {
         it("Uploads media to the server", function(){ 
             let form = new FormData();
             form.append('data', imageStream);
             form.append('extension', imageExtension);
+            let headers = form.getHeaders();
+            headers.Cookie = cookie;
             return axios({
                 method: 'post',
                 url: media_url,
                 data:form,
-                headers: form.getHeaders()
+                headers: headers
             }).then(function(response){
               	expect(response.status).to.equal(200, response.data.hash);
                 expect(response.data.hash).to.equal(imageHash);
@@ -65,24 +86,6 @@ describe("Content Tests", function() {
           })*/;
         });
     });
-    context('Setting Up User', function() {
-        it("Register for Session", function(){
-            return axios({
-                method: 'post',
-                url: register_url,
-                data: {
-                    username: "bob",
-                    password: "pass1",
-                    verifyPassword: "pass1", 
-                    email: "email@email.email",
-                    dateOfBirth: "11/9/1999" //TODO: formatting?
-                }
-            }).then(function(response){
-                cookie = response.headers["set-cookie"][0];
-                expect(response.status).to.equal(200, response.data);
-            });
-        });
-    });
     context('Setting Up', function() {
         //Need to put platform into db
 
@@ -97,8 +100,7 @@ describe("Content Tests", function() {
                 data:{
                     platformName:"All Those Obscure Berries",
                     image:"",
-                    description:"In platform you learn about berries.",
-                    owner:"bob"
+                    description:"In platform you learn about berries."
                 },
                 headers: { Cookie: cookie }
             }).then(function(response){
@@ -311,14 +313,8 @@ describe("Content Tests", function() {
             });
         });
         it("Deleting Registered User", function(){
-            return axios({
-                method: 'post',
-                url: delete_url,
-                data: {
-                  username: 'bob'
-                },
-                headers: { Cookie: cookie }
-            }).then(function(response){
+            return helper.deleteUser("bob")
+            .then(function(response){
                 expect(response.status).to.equal(200, response.data);
             });
         });

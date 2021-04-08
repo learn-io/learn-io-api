@@ -71,6 +71,14 @@ const handleGetUserPlatformInfo=(req,res)=>{
  	})
 }
 
+router.post("*", (req,res,next)=>{
+	if(req.session.username)
+		next();
+	else
+		res.status(401).json("Must be logged in to post data");
+
+})
+
 
 router.post("/stats",(req,res)=>{handleUserPlay(req,res)})
 router.get("/stats", (req,res)=>{handleSearchUserPlatformInfo(req, res)});

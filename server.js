@@ -79,8 +79,6 @@ const db=mongoose.connect(mongo_url,{useNewUrlParser: true,useUnifiedTopology: t
 	}
 });
 
-
-
 app.use("/signin", signin)
 app.use("/signout", signout)
 app.use("/register", register)

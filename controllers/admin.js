@@ -54,13 +54,13 @@ const handleDeletePlatform=(req,res)=>{
 	});
 }
 
-/*router.use("/", (req,res)=>{
-	if (req.isAdmin)
+router.use("*", (req,res, next)=>{
+	if (req.session.isAdmin)
 		next();
 	else
 		res.status(401).json("Must be admin");
 
-})*/
+})
 
 router.get("/users",(req,res)=>{handleShowUsers(req,res)})
 router.post("/users/delete",(req,res)=>{handleDeleteUser(req,res)})
