@@ -69,7 +69,7 @@ const db=mongoose.connect(mongo_url,{useNewUrlParser: true,useUnifiedTopology: t
 		console.log("Connected to Mongo @ " + mongo_url);
 		new Promise(resolve => setTimeout(resolve, 3000)).then(()=>{
 		app.listen(process.env.PORT || 3000,()=>{
-			console.log(`app is running on port ` + process.env.PORT || 3000);
+			console.log(`app is running on port ` + (process.env.PORT || 3000));
 		});});
 		
 	}else{
