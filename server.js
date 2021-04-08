@@ -22,8 +22,8 @@ const admin=require('./controllers/admin');
 const platform=require('./controllers/platform');
 const search=require('./controllers/search');
 const media=require('./controllers/media');
-// const widget=require('./controllers/widget');
-// const widget=require('./controllers/page');
+const widget=require('./controllers/widget');
+const page=require('./controllers/page');
 const userPlatform=require('./controllers/userPlatformInfo');
 
 const app=express();
@@ -89,8 +89,8 @@ app.use("/admin", admin)
 app.use("/platform", platform)
 app.use("/search", search)
 app.use("/media",media)
-// app.use("/widget", widget)
-// app.use("/page", page)
+app.use("/widgets", widget)
+app.use("/page", page)
 app.use("/play",userPlatform)
 app.get("/",(req,res)=>{res.json("Pong!");});
 
