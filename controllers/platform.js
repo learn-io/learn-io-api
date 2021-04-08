@@ -29,10 +29,10 @@ const handleGetPlatform=(req,res)=>{
 		return res.status(400).json('incorrect form submission');
 	}
 	
-	platformSchema.findOne({platformName:platformName},function(err,result){
+	platformSchema.findOne({_id:platformName},function(err,result){
  		if(err){res.status(400).json('err')}
  		if(!result){
- 			res.status(401).json('platform is not exist')
+ 			res.status(401).json('platform does not exist')
  		}else{
 			res.json(result);
  		}
