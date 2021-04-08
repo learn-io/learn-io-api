@@ -1,6 +1,6 @@
 var router = require('express').Router();
 const mongoose=require('mongoose');
-const bcrypt=require('bcrypt-nodejs');
+const bcrypt=require('bcrypt');
 
 const userInfo=require('../models/userInfo.js');
 
@@ -23,7 +23,7 @@ const handleSetting=(req,res)=>{
 				if(!data){
 					res.status(400).json('user is not exist')
 				}else{
-					res.json("Success Update Email");
+					res.status(200).json("Success Update Email");
 				}
 			}
 		});
@@ -37,7 +37,7 @@ const handleSetting=(req,res)=>{
 				if(!data){
 					res.status(400).json('user is not exist')
 				}else{
-					res.json("Success Update date of birth");
+					res.status(200).json("Success Update date of birth");
 				}
 			}
 		});
@@ -51,7 +51,7 @@ const handleSetting=(req,res)=>{
 				if(!data){
 					res.status(400).json('user is not exist')
 				}else{
-					res.json("Success mute setting");
+					res.status(200).json("Success mute setting");
 				}
 			}
 		});
@@ -65,12 +65,12 @@ const handleSetting=(req,res)=>{
 	 		}else{
 	 			const isValid=bcrypt.compareSync(oldPassword, result.password);
 				if(isValid){
-					const hash=bcrypt.hashSync(newPassword);
+					const hash=bcrypt.hashSync(newPassword, 5);
 					userInfo.findOneAndUpdate({username:username},{password:hash},(err,data)=>{
 						if(err){
 							res.status(400).json('err')
 						}else{
-							res.json("Success update password");
+							res.status(200).json("Success update password");
 						}
 					});
 				}else{
@@ -80,6 +80,14 @@ const handleSetting=(req,res)=>{
 	 	})
 	}
 }
+
+router.post("*", (req,res,next)=>{
+	if(req.session.username)
+		next();
+	else
+		res.status(401).json("Must be logged in to post data");
+
+})
 
 router.post("/",(req,res)=>{handleSetting(req,res)})
 

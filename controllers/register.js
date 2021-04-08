@@ -3,7 +3,7 @@ const mongoose=require('mongoose');
 
 
 const userInfo=require('../models/userInfo.js');
-const bcrypt=require('bcrypt-nodejs');
+const bcrypt=require('bcrypt');
 
 
 // const userInfo=require('../models/userInfo');
@@ -15,7 +15,7 @@ const handleRegister=(req,res)=>{
 	if(password!=verifyPassword){
 		return res.status(401).json('password does not match ');
 	}
-	const hash=bcrypt.hashSync(password);
+	const hash=bcrypt.hashSync(password, 5);
 	const newUser=new userInfo({
 		admin:(username == 'admin'),
 		username:username,

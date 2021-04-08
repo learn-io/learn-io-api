@@ -9,9 +9,9 @@ const handleSearchPlatforms=(req,res)=>{
     let query = {};
     if (user != 'all')
         query = { owner: new RegExp(user, 'i')}
-    query.platformName = new RegExp(name, 'i');
+    query.name = new RegExp(name, 'i');
 
-    platformSchema.find(query, "platformName image description").limit(parseInt(count)).skip(parseInt(skip)).exec()
+    platformSchema.find(query, "name image description").limit(parseInt(count)).skip(parseInt(skip)).exec()
 	.then(function(resp){
 		res.status(200).json(resp);
 	})

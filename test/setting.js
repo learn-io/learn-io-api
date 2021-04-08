@@ -1,12 +1,11 @@
 var expect = require("chai").expect;
 var axios = require("axios");
 
+const helper=require('../controllers/testHelper');
 
 
 const setting_url="http://localhost:3000/setting"
-const signout_url="http://localhost:3000/signout"
 const register_url="http://localhost:3000/register"
-const delete_url = "http://localhost:3000/admin/users/delete"
 
 let cookie = "";
 
@@ -136,27 +135,11 @@ describe("Setting Tests", function() {
     context('Cleaning Up', function() {
         expect(process.env.NODE_ENV).to.not.equal('PROD');
         it("Deleting Registered User", function(){
-            return axios({
-                method: 'post',
-                url: delete_url,
-                data: {
-                  username: 'test1'
-                },
-                headers: { Cookie: cookie }
-            }).then(function(response){
+            return helper.deleteUser("test1")
+            .then(function(response){
                 expect(response.status).to.equal(200, response.data);
-            })
-        });
-        it("Log Out", function(){
-            return axios({
-                method: 'post',
-                url: signout_url,
-                data: {
-                  username: 'test1',
-                },
-                headers: { Cookie: cookie }
-            }).then(function(response){
-                expect(response.status).to.equal(200, response.data);
+            }).catch(function(err){
+                expect(err.response.status).to.equal(200, err.response.data);
             });
         });
     });

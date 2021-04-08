@@ -10,7 +10,7 @@ const handleShowUsers=(req,res)=>{
  		if(!result){
  			res.status(400).json('user is not exist')
  		}else{
- 			res.json(result);
+ 			res.status(200).json(result);
  		}
  	})
 }
@@ -24,35 +24,43 @@ const handleDeleteUser=(req,res)=>{
 			if(err){
 				res.status(400).json('err')
 			}else{
-				res.json("Success remove user:"+username);
+				res.status(200).json("Success remove user:"+username);
 			}
 		});
 }
 
 const handleShowPlatforms=(req,res)=>{
-	platformSchame.find({},function(err,result){
+	platformSchema.find({},function(err,result){
  		if(err){res.status(400).json('err')}
  		if(!result){
  			res.status(400).json('user is not exist')
  		}else{
- 			res.json(result);
+ 			res.status(200).json(result);
  		}
  	})
 }
 
 const handleDeletePlatform=(req,res)=>{
-	const {platformName}=req.body;
-	if(!platformName){
+	const {_id}=req.body;
+	if(!_id){
 		return res.status(400).json('not platform');
 	}
-	platformSchame.findOneAndRemove({platformName:platformName}, (err,data)=>{
-			if(err){
-				res.status(400).json('err')
-			}else{
-				res.json("Success remove platform:"+platformName);
-			}
-		});
+	platformSchema.findOneAndRemove({_id:_id}, (err,data)=>{
+		if(err){
+			res.status(400).json('err')
+		}else{
+			res.status(200).json("Success remove platform");
+		}
+	});
 }
+
+router.use("*", (req,res, next)=>{
+	if (req.session.isAdmin)
+		next();
+	else
+		res.status(401).json("Must be admin");
+
+})
 
 router.get("/users",(req,res)=>{handleShowUsers(req,res)})
 router.post("/users/delete",(req,res)=>{handleDeleteUser(req,res)})

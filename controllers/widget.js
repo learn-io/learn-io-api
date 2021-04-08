@@ -93,7 +93,8 @@ var emptyWidgets = [
 }];
 
 const handleGetEmptyWidgets=(req,res)=>{
-    
+    res.status(200).json(emptyWidgets);
 }
 
-router.get("/widgets",(req,res)=>{handleGetEmptyWidgets(req,res)})
+router.get("/",(req,res)=>{handleGetEmptyWidgets(req,res)})
+module.exports=router;

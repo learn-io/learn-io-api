@@ -22,8 +22,8 @@ const admin=require('./controllers/admin');
 const platform=require('./controllers/platform');
 const search=require('./controllers/search');
 const media=require('./controllers/media');
-// const widget=require('./controllers/widget');
-// const widget=require('./controllers/page');
+const widget=require('./controllers/widget');
+const page=require('./controllers/page');
 const userPlatform=require('./controllers/userPlatformInfo');
 
 const app=express();
@@ -44,7 +44,7 @@ if (process.env.NODE_ENV == 'PROD')
 else
 {
 	mongo_url=mongo_dan;
-	// mongo_url=mongo_akshay;
+	//mongo_url=mongo_akshay;
 }
 
 app.use(express.json()); //bodyparser is deprecated
@@ -69,7 +69,7 @@ const db=mongoose.connect(mongo_url,{useNewUrlParser: true,useUnifiedTopology: t
 		console.log("Connected to Mongo @ " + mongo_url);
 		new Promise(resolve => setTimeout(resolve, 3000)).then(()=>{
 		app.listen(process.env.PORT || 3000,()=>{
-			console.log(`app is running on port ` + process.env.PORT || 3000);
+			console.log(`app is running on port ` + (process.env.PORT || 3000));
 		});});
 		
 	}else{
@@ -79,8 +79,6 @@ const db=mongoose.connect(mongo_url,{useNewUrlParser: true,useUnifiedTopology: t
 	}
 });
 
-
-
 app.use("/signin", signin)
 app.use("/signout", signout)
 app.use("/register", register)
@@ -89,9 +87,10 @@ app.use("/admin", admin)
 app.use("/platform", platform)
 app.use("/search", search)
 app.use("/media",media)
-// app.use("/widget", widget)
-// app.use("/page", page)
-app.use("/play",userPlatform)
-app.get("/",(req,res)=>{res.json("Pong!");});
+app.use("/widgets", widget)
+app.use("/page", page)
+app.use("/profile",userPlatform)
+
+app.get("/",(req,res)=>{res.status(200).json("Pong!");});
 
 
