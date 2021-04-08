@@ -93,7 +93,7 @@ var emptyWidgets = [
 }];
 
 const handleGetEmptyWidgets=(req,res)=>{
-    res.json(emptyWidgets);
+    res.status(200).json(emptyWidgets);
 }
 
 router.get("/",(req,res)=>{handleGetEmptyWidgets(req,res)})

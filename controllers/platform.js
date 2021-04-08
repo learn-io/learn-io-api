@@ -17,9 +17,11 @@ const handlePlatform=(req,res)=>{
 		owner:req.session.username,
 		modules:[]
 	});
+	// console.log("****NEW PLATFORM ID"+newPlatform._id);
+	var platformId=newPlatform._id;
 	newPlatform.save()
 	.then(data=>{
-		res.json({platformId:newPlatform._id}) //platformName
+		res.status(200).json({platformId:platformId}) ////platformId:newPlatform._id
 	})
 	.catch(err=>res.status(400).json('unable to create new platform'));
 }
@@ -31,11 +33,11 @@ const handleGetPlatform=(req,res)=>{
 	}
 	
 	platformSchema.findOne({"_id":ObjectId(_id)},function(err,result){
- 		if(err){res.status(400).json('err')}
- 		if(!result){
- 			res.status(404).json('platform does not exist')
+ 		if(err){return res.status(400).json('err')}
+ 		if(result){
+			res.status(200).json({"platformName":result.platformName,"image":"","description":result.description,"modules":result.modules});
  		}else{
-			res.json({"platformName":result.platformName,"image":"","description":result.description,"modules":result.modules});
+			res.status(404).json('platform does not exist')
  		}
  	})
 }
@@ -62,7 +64,7 @@ const handleNewModule=(req,res)=>{
 			if(!data){
 				res.status(400).json('platform is not exist')
 			}else{
-				res.json("Success Update module");
+				res.status(200).json("Success Update module");
 			}
 		}
 	});
@@ -82,7 +84,7 @@ const handleGetPlatformModule=(req,res)=>{
 			if(!found){
 				res.status(404).json('module is not exist')
 			}else{
-				res.json(found);
+				res.status(200).json(found);
 			}
  		}
  	})
@@ -116,9 +118,7 @@ const handleUpdatePlatformAbout=(req,res)=>{
 		if(!result){
 			res.status(404).json('platform is not exist')
 		}else{
-			if(!description){
-				res.json("Success Update Platform About");
-			}
+			res.status(200).json("Success Update Platform About");
 		}
 	});
 }
@@ -134,7 +134,7 @@ const handleGetPlatformAbout=(req,res)=>{
  		if(!result){
  			res.status(404).json('platform does not exist')
  		}else{
-			res.json({
+			res.status(200).json({
 				platformName:result.platformName,
 				image:result.image,
 				description:result.description

@@ -10,7 +10,7 @@ const handleShowUsers=(req,res)=>{
  		if(!result){
  			res.status(400).json('user is not exist')
  		}else{
- 			res.json(result);
+ 			res.status(200).json(result);
  		}
  	})
 }
@@ -24,7 +24,7 @@ const handleDeleteUser=(req,res)=>{
 			if(err){
 				res.status(400).json('err')
 			}else{
-				res.json("Success remove user:"+username);
+				res.status(200).json("Success remove user:"+username);
 			}
 		});
 }
@@ -35,23 +35,23 @@ const handleShowPlatforms=(req,res)=>{
  		if(!result){
  			res.status(400).json('user is not exist')
  		}else{
- 			res.json(result);
+ 			res.status(200).json(result);
  		}
  	})
 }
 
 const handleDeletePlatform=(req,res)=>{
-	const {platformName}=req.body;
-	if(!platformName){
+	const {_id}=req.body;
+	if(!_id){
 		return res.status(400).json('not platform');
 	}
-	platformSchame.findOneAndRemove({platformName:platformName}, (err,data)=>{
-			if(err){
-				res.status(400).json('err')
-			}else{
-				res.json("Success remove platform:"+platformName);
-			}
-		});
+	platformSchame.findOneAndRemove({_id:ObjectId(_id)}, (err,data)=>{
+		if(err){
+			res.status(400).json('err')
+		}else{
+			res.status(200).json("Success remove platform");
+		}
+	});
 }
 
 router.use("*", (req,res, next)=>{
