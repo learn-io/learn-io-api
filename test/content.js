@@ -1,7 +1,10 @@
 var expect = require("chai").expect;
 var axios = require("axios");
-var bcrypt = require("bcrypt-nodejs");
+var bcrypt = require("bcrypt");
+var crypto = require('crypto');
 var fs = require("fs");
+
+const FormData = require('form-data');
 
 const platform_url="http://localhost:3000/platform";
 const widgets_url="http://localhost:3000/widgets";
@@ -20,36 +23,47 @@ let platform = {
 }
 
 let imagePath = "./image/bananaduck.jpg";
-let imageData = fs.readFileSync(imagePath,"utf8");
+let imageStream = fs.createReadStream(imagePath, "utf8");
+let imageData = fs.readFileSync(imagePath,"utf8"); 
+//console.log("BASE64: ", imageData);
 let imageExtension = ".jpg";
-let imageHash = bcrypt.hashSync(imageData);
+
+let imageHash = crypto.createHash('sha256').update(imageData).digest('utf8');
+
+
 let platformId = "606ebcb8849da9406410cb28";
 
 describe("Content Tests", function() {
-    // context('Media Test', function() {
-    //     it("Uploads media to the server", function(){ 
-    //         return axios({
-    //             method: 'post',
-    //             url: media_url,
-    //             data:{
-    //                 data:imageData,
-    //                 extension:imageExtension
-    //             }
-    //         }).then(function(response){
-    //           	expect(response.status).to.equal(200, response.data);
-    //             expect(response.data).to.equal(imageData);
-    //         });
-    //     });
-    //     it("Return media based on hash", function(){ 
-    //         return axios({
-    //             method: 'get',
-    //             url: media_url+"/"+imageHash
-    //         }).then(function(response){
-    //           	expect(response.status).to.equal(200);
-    //             expect(response.data).to.deep.equal([{hash:imageHash, data:imageData, extension:imageExtension}]);
-    //         });
-    //     });
-    // });
+    context('Media Test', function() {
+        it("Uploads media to the server", function(){ 
+            let form = new FormData();
+            form.append('data', imageStream);
+            form.append('extension', imageExtension);
+            return axios({
+                method: 'post',
+                url: media_url,
+                data:form,
+                headers: form.getHeaders()
+            }).then(function(response){
+              	expect(response.status).to.equal(200, response.data.hash);
+                expect(response.data.hash).to.equal(imageHash);
+            })
+        });
+        it("Return media based on hash", function(){ 
+            return axios({
+                method: 'get',
+                url: media_url+"/"+encodeURIComponent(imageHash)
+            }).then(function(response){
+              	expect(response.status).to.equal(200, response.data);
+                delete response.data['_id'];
+                delete response.data['__v'];
+                expect(response.data).to.deep.equal({hash:imageHash, data:imageData, extension:imageExtension});
+            })/*.catch(function(err){
+                expect(err.response.status).to.equal(200, err.response.data);
+                expect(err.response.data).to.deep.equal([{hash:imageHash, data:imageData, extension:imageExtension}]);
+          })*/;
+        });
+    });
     context('Setting Up User', function() {
         it("Register for Session", function(){
             return axios({
