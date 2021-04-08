@@ -1,6 +1,6 @@
 var router = require('express').Router();
 const mongoose=require('mongoose');
-const bcrypt=require('bcrypt-nodejs');
+const bcrypt=require('bcrypt');
 
 const userInfo=require('../models/userInfo.js');
 
@@ -65,7 +65,7 @@ const handleSetting=(req,res)=>{
 	 		}else{
 	 			const isValid=bcrypt.compareSync(oldPassword, result.password);
 				if(isValid){
-					const hash=bcrypt.hashSync(newPassword);
+					const hash=bcrypt.hashSync(newPassword, 5);
 					userInfo.findOneAndUpdate({username:username},{password:hash},(err,data)=>{
 						if(err){
 							res.status(400).json('err')

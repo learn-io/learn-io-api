@@ -57,7 +57,7 @@ const handleNewModule=(req,res)=>{
 			width:width
 		}}},(err,data)=>{
 		if(err){
-			res.status(400).json('err')
+			return res.status(400).json('err')
 		}else{
 			if(!data){
 				res.status(400).json('platform is not exist')
@@ -74,7 +74,7 @@ const handleGetPlatformModule=(req,res)=>{
 		return res.status(400).json('incorrect form submission');
 	}
 	platformSchema.findOne({platformName:platformName},function(err,result){
- 		if(err){res.status(400).json('err')}
+ 		if(err){return res.status(400).json('err')}
  		if(!result){
  			res.status(404).json('platform is not exist')
  		}else{
@@ -96,42 +96,31 @@ const handleUpdatePlatformAbout=(req,res)=>{
 	if(!image&&!description&&!platformName){
 		return res.status(400).json('nothing changed');
 	}
-	if(image){
-		platformSchema.findOneAndUpdate({_id:ObjectId(_id)},{image:image,description:description,platformName:platformName},(err,result)=>{
-			if(err){res.status(400).json('err')}
-			if(!result){
-				res.status(404).json('platform is not exist')
-			}else{
-				if(!description){
-					res.json("Success Update Platform About");
-				}
-			}
-		});
+	let query = {}
+	if (image)
+	{
+		query.image = image;
+		//image:image,description:description,platformName:platformName}
 	}
-
-	// if(description){
-	// 	platformSchema.findOneAndUpdate({_id:ObjectId(_id)},{description:description},(err,result)=>{
-	// 		if(err){res.status(400).json('err')}
-	// 		if(!result){
-	// 			res.status(404).json('platform does not exist')
-	// 		}else{
-	// 			res.json("Success Update Platform About");
-	// 		}
-			
-	// 	});
-	// }
-
-	// if(platformName){
-	// 	platformSchema.findOneAndUpdate({_id:ObjectId(_id)},{platformName:platformName},(err,result)=>{
-	// 		if(err){res.status(400).json('err')}
-	// 		if(!result){
-	// 			res.status(404).json('platform does not exist')
-	// 		}else{
-	// 			res.json("Success Update Platform About");
-	// 		}
-	// 	});
-	// }
+	if(description)
+	{
+		query.description = description;
+	}
+	if(platformName)
+	{
+		query.platformName = platformName;
+	}
 	
+	platformSchema.findOneAndUpdate({_id:ObjectId(_id)},query,(err,result)=>{
+		if(err){return res.status(400).json('err')}
+		if(!result){
+			res.status(404).json('platform is not exist')
+		}else{
+			if(!description){
+				res.json("Success Update Platform About");
+			}
+		}
+	});
 }
 
 const handleGetPlatformAbout=(req,res)=>{
@@ -141,7 +130,7 @@ const handleGetPlatformAbout=(req,res)=>{
 	}
 	
 	platformSchema.findOne({_id:ObjectId(_id)},function(err,result){
- 		if(err){res.status(400).json('err')}
+ 		if(err){return res.status(400).json('err')}
  		if(!result){
  			res.status(404).json('platform does not exist')
  		}else{

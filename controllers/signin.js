@@ -2,7 +2,7 @@ var router = require('express').Router();
 const mongoose=require('mongoose');
 
 const userInfo=require('../models/userInfo.js');
-const bcrypt=require('bcrypt-nodejs');
+const bcrypt=require('bcrypt');
 
 
 const handleSignin=(req,res)=>{
