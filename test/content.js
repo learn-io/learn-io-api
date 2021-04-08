@@ -14,6 +14,7 @@ const media_url="http://localhost:3000/media";
 const register_url="http://localhost:3000/register";
 
 
+
 let cookie = "";
 
 let platform = {
@@ -100,12 +101,14 @@ describe("Content Tests", function() {
                 data:{
                     platformName:"All Those Obscure Berries",
                     image:"",
-                    description:"In platform you learn about berries."
+                    description:"In platform you learn about berries." 
                 },
                 headers: { Cookie: cookie }
             }).then(function(response){
               	expect(response.status).to.equal(200, response.data);
                 platformId=response.data.platformId;
+            }).catch(function(error){
+                expect(error.response.status).to.equal(200, error.response.data);
             });
         });
         it("Update platform about", function(){ 
@@ -123,7 +126,6 @@ describe("Content Tests", function() {
               	expect(response.status).to.equal(200, "Success Update Platform About");
             });
         });
-
         it("Get one platform by valid id", function(){ 
             return axios({
                 method: 'get',
@@ -302,14 +304,9 @@ describe("Content Tests", function() {
     context('Cleaning Up', function() {
         expect(process.env.NODE_ENV).to.not.equal('PROD');
         it("Clean up platform",function(){
-            return axios({
-                method:'post',
-                url:deletePlatform_url,
-                _id:platformId,
-                headers: { Cookie: cookie }
-            }).then(function(response){
-                expect(response.status).to.equal(200);
-                expect(response.status.data).to.equal("Success remove platform");
+            return helper.deletePlatform(platformId)
+            .then(function(response){
+                expect(response.status).to.equal(200, response.data);
             });
         });
         it("Deleting Registered User", function(){
