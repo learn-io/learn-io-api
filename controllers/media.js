@@ -86,6 +86,15 @@ const handleGetMedia=(req,res)=>{
 		}
  	})
 }
+
+router.post("*", (req,res, next)=>{
+	if(req.session.username)
+		next();
+	else
+		res.status(401).json("Must be logged in to post data");
+
+})
+
 router.post("/",(req,res)=>{handleMedia(req,res)})
 router.get("/:hash",(req,res)=>{handleGetMedia(req,res)})
 module.exports=router;

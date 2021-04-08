@@ -143,6 +143,15 @@ const handleGetPlatformAbout=(req,res)=>{
  	})
 }
 
+router.post("*", (req,res,next)=>{
+	if(req.session.username)
+		next();
+	else
+		res.status(401).json("Must be logged in to post data");
+
+})
+
+
 router.post("/",(req,res)=>{handlePlatform(req,res)})
 router.get("/:_id",(req,res)=>{handleGetPlatform(req,res)})
 router.post("/newModule",(req,res)=>{handleNewModule(req,res)})

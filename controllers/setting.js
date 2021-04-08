@@ -81,6 +81,14 @@ const handleSetting=(req,res)=>{
 	}
 }
 
+router.post("*", (req,res,next)=>{
+	if(req.session.username)
+		next();
+	else
+		res.status(401).json("Must be logged in to post data");
+
+})
+
 router.post("/",(req,res)=>{handleSetting(req,res)})
 
 module.exports=router;
