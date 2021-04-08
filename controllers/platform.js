@@ -6,7 +6,7 @@ const platformSchema=require('../models/platform.js');
 
 // Every time it creates a platform without module
 const handlePlatform=(req,res)=>{
-	const {platformName,image,description,owner}=req.body;
+	const {platformName,image,description}=req.body;
 	if(!platformName){
 		return res.status(400).json('incorrect form submission');
 	}

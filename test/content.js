@@ -302,14 +302,9 @@ describe("Content Tests", function() {
     context('Cleaning Up', function() {
         expect(process.env.NODE_ENV).to.not.equal('PROD');
         it("Clean up platform",function(){
-            return axios({
-                method:'post',
-                url:deletePlatform_url,
-                _id:platformId,
-                headers: { Cookie: cookie }
-            }).then(function(response){
-                expect(response.status).to.equal(200);
-                expect(response.status.data).to.equal("Success remove platform");
+            return helper.deletePlatform(platformId)
+            .then(function(response){
+                expect(response.status).to.equal(200, response.data);
             });
         });
         it("Deleting Registered User", function(){

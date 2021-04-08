@@ -4,7 +4,7 @@ var axios = require("axios");
 const signin_url="http://localhost:3000/signin"
 const signout_url="http://localhost:3000/signout"
 const deleteusr_url = "http://localhost:3000/admin/users/delete"
-const deleteplat_url = "http://localhost:3000/admin/platform/delete"
+const deleteplat_url = "http://localhost:3000/admin/platforms/delete"
 
 function deletePlatform(id)
 {

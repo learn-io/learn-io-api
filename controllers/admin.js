@@ -30,7 +30,7 @@ const handleDeleteUser=(req,res)=>{
 }
 
 const handleShowPlatforms=(req,res)=>{
-	platformSchame.find({},function(err,result){
+	platformSchema.find({},function(err,result){
  		if(err){res.status(400).json('err')}
  		if(!result){
  			res.status(400).json('user is not exist')
@@ -45,7 +45,7 @@ const handleDeletePlatform=(req,res)=>{
 	if(!_id){
 		return res.status(400).json('not platform');
 	}
-	platformSchame.findOneAndRemove({_id:ObjectId(_id)}, (err,data)=>{
+	platformSchema.findOneAndRemove({_id:_id}, (err,data)=>{
 		if(err){
 			res.status(400).json('err')
 		}else{
