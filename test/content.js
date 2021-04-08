@@ -303,7 +303,7 @@ describe("Content Tests", function() {
     context('Cleaning Up', function() {
         expect(process.env.NODE_ENV).to.not.equal('PROD');
         it("Deleting Registered User", function(){
-            return helper.deleteUser("test1")
+            return helper.deleteUser("bob")
             .then(function(response){
                 expect(response.status).to.equal(200, response.data);
             }).catch(function(err){
