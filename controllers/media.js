@@ -3,7 +3,6 @@ const mongoose=require('mongoose');
 const mediaSchema=require('../models/media.js');
 
 const bcrypt = require('bcrypt-nodejs');
-const { response } = require('express');
 
 const handleMedia=(req,res)=>{
 	const {data,extension}=req.body;
@@ -36,7 +35,7 @@ const handleGetMedia=(req,res)=>{
 			 res.status(400).json('err')
 		} else {
 			if(!result){
-				res.status(401).json('hash does not exist');
+				res.status(404).json('hash does not exist');
 			}else{
 				res.status(200).json(result);
 			}

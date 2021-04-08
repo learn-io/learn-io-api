@@ -1,12 +1,11 @@
 var expect = require("chai").expect;
 var axios = require("axios");
 var bcrypt = require("bcrypt-nodejs");
-var FileReader = require("filereader"), fileReader = new FileReader();
 var fs = require("fs");
 
 const platform_url="http://localhost:3000/platform";
-const widgets_url="https://localhost:3000/widgets";
-const media_url="https://localhost:3000/media";
+const widgets_url="http://localhost:3000/widgets";
+const media_url="http://localhost:3000/media";
 const register_url="http://localhost:3000/register"
 const delete_url = "http://localhost:3000/admin/users/delete"
 
@@ -43,8 +42,7 @@ describe("Content Tests", function() {
         it("Return media based on hash", function(){ 
             return axios({
                 method: 'get',
-                url: media_url+"/"+imageHash,
-                headers: { Cookie: cookie }
+                url: media_url+"/"+imageHash
             }).then(function(response){
               	expect(response.status).to.equal(200);
                 expect(response.data).to.deep.equal([{hash:imageHash, data:imageData, extension:imageExtension}]);
