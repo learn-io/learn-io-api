@@ -36,6 +36,11 @@ let imageHash = crypto.createHash('sha256').update(imageData).digest('utf8');
 
 let platformId = "";
 
+
+// .catch(function(error){
+//     expect(error.response.status).to.equal(200,error.response.data);
+// })
+
 describe("Content Tests", function() {
     context('Setting Up User', function() {
         it("Register for Session", function(){
@@ -126,6 +131,19 @@ describe("Content Tests", function() {
               	expect(response.status).to.equal(200, "Success Update Platform About");
             });
         });
+
+        it("Gets a platform's about page and display information", function(){
+            return axios({
+                method: 'get',
+                url: platform_url+"/about/"+platformId,
+            }).then(function(response){
+              	expect(response.status).to.equal(200);
+                expect(response.data).to.deep.equal({platformName:"All About Obscure Berries",image:"",description:"In this platform you'll learn all about berries that you didn't even know were berries."});
+            }).catch(function(error){
+                expect(error.response.data).to.equal(200, error.response)
+            });
+        });
+
         it("Get one platform by valid id", function(){ 
             return axios({
                 method: 'get',
@@ -146,36 +164,44 @@ describe("Content Tests", function() {
                 expect(error.response.data).to.equal("platform does not exist");
             })
         });
-
-        //WORKS UP TO HERE
-    //     it("Updates a platform's about page and display information by _id", function(){
-    //         return axios({
-    //             method: 'post',
-    //             url: platform_url,
-    //             data:{
-    //                 id="1",
-    //                 title="",
-    //                 mediaHash="",
-    //                 desc=""
-    //             }
-    //         }).then(function(response){
-    //           	expect(response.status).to.equal(200, response.data);
-    //             expect(response.data).to.deep.equal([]);
-    //         }).catch(function(error){
-    //             expect(error.response.status).to.equal(400);
-    //         });
-    //     });
-    //     it("Gets a platform's about page and display information", function(){
-    //         return axios({
-    //             method: 'get',
-    //             url: platform_url+"/1/about",
-    //         }).then(function(response){
-    //           	expect(response.status).to.equal(200, response.data);
-    //             expect(response.data).to.deep.equal([]);
-    //         }).catch(function(error){
-    //             expect(error.response.status).to.equal(400);
-    //         });
-    //     });
+        it("Create module", function(){ 
+            return axios({
+                method: "post",
+                url: platform_url+"/newModule",
+                data:{
+                    _id:platformId,
+                    moduleName:"What are Botany Berries?",
+                    moduleDescription:"In this Module you'll learn about the",
+                    image:imageHash,
+                    lockedby:[],
+                    unlocks:[],
+                    x:50,
+                    y:50,
+                    height:350,
+                    width:350
+                },
+                headers: { Cookie: cookie }
+            }).then(function(response){
+              	expect(response.status).to.equal(200, response.data);
+            })
+        });
+        // it("Get platform's module", function(){ 
+        //     return axios({
+        //         method:"get",
+        //         url: platform_url+"/"+platformId+""
+        //     }).then(function(response){
+        //         expect(response.status).to.equal(200);
+        //     })
+        // });
+        // it("Update platform's module", function(){ 
+        //     return axios({
+        //         method:"post",
+        //         url: platform_url+"/"+platformId+""
+        //     }).then(function(response){
+        //         expect(response.status).to.equal(200);
+        //     })
+        // })
+   
     //     it("Get all pages for a specific platform's module", function(){ 
     //         return axios({
     //             method: 'get',
