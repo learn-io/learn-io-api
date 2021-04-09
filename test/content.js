@@ -12,9 +12,7 @@ const platform_url="http://localhost:3000/platform";
 const widgets_url="http://localhost:3000/widgets";
 const media_url="http://localhost:3000/media";
 const register_url="http://localhost:3000/register";
-const page_url=""
-
-
+const page_url="http://localhost:3000/page";
 
 let cookie = "";
 
@@ -36,6 +34,7 @@ let imageHash = crypto.createHash('sha256').update(imageData).digest('utf8');
 
 
 let platformId = "";
+let moduleId = "";
 let pageId = "";
 
 // .catch(function(error){
@@ -189,6 +188,7 @@ describe("Content Tests", function() {
                 headers: { Cookie: cookie }
             }).then(function(response){
               	expect(response.status).to.equal(200, response.data);
+                moduleId=response.data.moduleId;
             })
             // .catch(function(error){
             //     expect(error.response.status).to.equal(200,error.response.data);
@@ -197,7 +197,7 @@ describe("Content Tests", function() {
         it("Get platform's module", function(){ 
             return axios({
                 method:"get",
-                url: platform_url+"/"+platformId+"/"+encodeURIComponent("What are Bootany Berries?")
+                url: platform_url+"/"+platformId+"/"+encodeURIComponent("What are Bootany Berries?") //moduleId  //encodeURIComponent("What are Bootany Berries?")
             }).then(function(response){
                 expect(response.status).to.equal(200, response.data);
                 expect(response.data).to.deep.equal({
@@ -249,8 +249,7 @@ describe("Content Tests", function() {
                 url: page_url,
                 data:{
                     platformId:platformId, 
-                    platformName:"All About Obscure Berries", //@TODO we can get rid of this field
-                    moduleName:"What are Botany Berries?", //@TODO need to have moduleName be module._id
+                    moduleId:moduleId, //@TODO need to have moduleName be module._id
                     pageName:"New Page",
                     widgets:[]
                 },
@@ -259,141 +258,154 @@ describe("Content Tests", function() {
               	expect(response.status).to.equal(200, response);
                 pageId=response.data.pageId;
             })
+            .catch(function(error){
+                expect(error.response.status).to.equal(200, error.response.data);
+            });
+        });
+        it("Get a specific page for a platform's module", function(){ 
+            return axios({
+                method: 'get',
+                url: page_url+"/"+platformId+"/"+moduleId+"/"+encodeURIComponent("New Page"), //"/pageId",
+            }).then(function(response){
+              	expect(response.status).to.equal(200, response.data);
+                delete response.data['__v'];
+                expect(response.data).to.deep.equal({
+                    _id:pageId,
+                    platformId:platformId, 
+                    moduleId:moduleId,
+                    pageName:"New Page",
+                    widgets:[],
+                    entry:false,
+                    rank:0
+                });
+            })
             // .catch(function(error){
-            //     expect(error.response.status).to.equal(200, error.response);
+            //     expect(error.response.status).to.equal(400);
             // });
         });
-        // it("Get a specific page for a platform's module", function(){ 
-        //     return axios({
-        //         method: 'get',
-        //         url: page_url+"/"+platformId+"/"+encodeURIComponent("What are Botany Berries?")+"/"+encodeURIComponent("New Page"), //"/pageId",
-        //     }).then(function(response){
-        //       	expect(response.status).to.equal(200, response.data);
-        //         expect(response.data).to.deep.equal({
-        //              platformId:platformId, 
-        //              platformName:"All About Obscure Berries", //@TODO we can get rid of this field
-        //              moduleName:"What are Botany Berries?", //@TODO need to have moduleName be module._id
-        //              pageName:"New Page",
-        //              widgets:[]
-        //         });
-        //     }).catch(function(error){
-        //         expect(error.response.status).to.equal(400);
-        //     });
-        // });
-    //     it("Get all pages for a specific platform's module", function(){ 
-    //         return axios({
-    //             method: 'get',
-    //             url: platform_url+"/"+platformId+"/"+encodeURIComponent("What are Botany Berries?"),
-    //         }).then(function(response){
-    //           	expect(response.status).to.equal(200, response.data);
-    //             expect(response.data).to.deep.equal([]);
-    //         }).catch(function(error){
-    //             expect(error.response.status).to.equal(400);
-    //         });
-    //     });
+        it("Get all pages for a specific platform's module", function(){ 
+            return axios({
+                method: 'get',
+                url: page_url+"/"+platformId+"/"+moduleId //encodeURIComponent("What are Botany Berries?")
+            }).then(function(response){
+              	expect(response.status).to.equal(200, response.data);
+                delete response.data[0]['__v'];
+                expect(response.data).to.deep.equal([{
+                    _id:pageId,
+                    platformId:platformId, 
+                    moduleId:moduleId,
+                    pageName:"New Page",
+                    widgets:[],
+                    entry:false,
+                    rank:0
+                }]);
+            })
+            // .catch(function(error){
+            //     expect(error.response.status).to.equal(200, error.response.data);
+            // });
+        });
     
-    // });
-    // context("Widget Test", function(){
-    //     it("Get empty widget templates", function(){
-    //         return axios({
-    //             method: 'get',
-    //             url: "/widgets",
-    //         }).then(function(response){
-    //             expect(response.status).to.equal(200, response.data);
-    //             expect(response.data).to.deep.equal([
-    //             {
-    //                 widgetFlavor:"Flashcard",
-    //                 text:[
-    //                     {
-    //                         front:"Text"
-    //                     },{
-    //                         back:"Text"
-    //                     }
-    //                 ]
-    //             },{
-    //                 widgetFlavor:"Image",
-    //                 hash:""
-    //             },{
-    //                 widgetFlavor:"Sound",
-    //                 hash:"" 
-    //             },{
-    //                 widgetFlavor:"MultipleChoice",
-    //                 options:[
-    //                     {option:"Text",isCorrect:true},
-    //                     {option:"Text",isCorrect:false},
-    //                     {option:"Text",isCorrect:false},
-    //                     {option:"Text",isCorrect:false}                            
-    //                 ],
-    //                 buttonText:"Text",
-    //                 rightAnswer:{
-    //                     actionType:"S",
-    //                     target:""
-    //                 },
-    //                 wrongAnswer:{
-    //                     actionType:"P",
-    //                     target:""
-    //                 }
-    //             },{
-    //                 widgetFlavor:"Matching",
-    //                 options:[
-    //                     {
-    //                         left:"Text",
-    //                         right:"Text"
-    //                     }
-    //                 ],
-    //                 buttonText:"Text",
-    //                 rightAnswer:{
-    //                     actionType:"S",
-    //                     target:""
-    //                 },
-    //                 wrongAnswer:{
-    //                     actionType:"P",
-    //                     target:""
-    //                 }
-    //             },{
-    //                 widgetFlavor:"Snacksnake",
-    //                 options:[{
-    //                     rightImage:"",
-    //                     wrongImage:""
-    //                 }],
-    //                 rightAnswer:{
-    //                     actionType:"S",
-    //                     target:""
-    //                 }
-    //             },{
-    //                 widgetFlavor:"Quicktime",
-    //                 options:[
-    //                     {text:"Text",actionType:"P",target:""},
-    //                     {text:"Text",actionType:"P",target:""},
-    //                     {text:"Text",actionType:"P",target:""},
-    //                     {text:"Text",actionType:"P",target:""}
-    //                 ],
-    //                 timeout:{
-    //                     actionType:"P",
-    //                     target:"",
-    //                     seconds:3
-    //                 },
-    //                 startText:"Start Text",
-    //                 question:"Question Text"
-    //             },{
-    //                 widgetFlavor:"ImageButton",
-    //                 hash:"",
-    //                 click:{
-    //                     actionType:"P",
-    //                     target:""
-    //                 }
-    //             },{
-    //                 widgetFlavor:"TextButton",
-    //                 text:"",
-    //                 click:{
-    //                     actionType:"P",
-    //                     target:""
-    //                 }
-    //             }]);
-    //         }).catch(function(error){
-    //             expect(error.response.status).to.equal(400);
-    //         });
-    //     });
+    });
+    context("Widget Test", function(){
+        it("Get empty widget templates", function(){
+            return axios({
+                method: 'get',
+                url: widgets_url,
+            }).then(function(response){
+                expect(response.status).to.equal(200, response.data);
+                expect(response.data.emptyWidgets).to.deep.equal([
+                {
+                    widgetFlavor:"Flashcard",
+                    text:[
+                        {
+                            front:"Text",
+                            back:"Text"
+                        }
+                    ]
+                },{
+                    widgetFlavor:"Image",
+                    hash:""
+                },{
+                    widgetFlavor:"Sound",
+                    hash:"" 
+                },{
+                    widgetFlavor:"MultipleChoice",
+                    options:[
+                        {option:"Text",isCorrect:true},
+                        {option:"Text",isCorrect:false},
+                        {option:"Text",isCorrect:false},
+                        {option:"Text",isCorrect:false}                            
+                    ],
+                    buttonText:"Text",
+                    rightAnswer:{
+                        actionType:"S",
+                        target:""
+                    },
+                    wrongAnswer:{
+                        actionType:"P",
+                        target:""
+                    }
+                },{
+                    widgetFlavor:"Matching",
+                    options:[
+                        {
+                            left:"Text",
+                            right:"Text"
+                        }
+                    ],
+                    buttonText:"Text",
+                    rightAnswer:{
+                        actionType:"S",
+                        target:""
+                    },
+                    wrongAnswer:{
+                        actionType:"P",
+                        target:""
+                    }
+                },{
+                    widgetFlavor:"Snacksnake",
+                    options:[{
+                        rightImage:"",
+                        wrongImage:""
+                    }],
+                    rightAnswer:{
+                        actionType:"S",
+                        target:""
+                    }
+                },{
+                    widgetFlavor:"Quicktime",
+                    options:[
+                        {text:"Text",actionType:"P",target:""},
+                        {text:"Text",actionType:"P",target:""},
+                        {text:"Text",actionType:"P",target:""},
+                        {text:"Text",actionType:"P",target:""}
+                    ],
+                    timeout:{
+                        actionType:"P",
+                        target:"",
+                        seconds:3
+                    },
+                    startText:"Start Text",
+                    question:"Question Text"
+                },{
+                    widgetFlavor:"ImageButton",
+                    hash:"",
+                    click:{
+                        actionType:"P",
+                        target:""
+                    }
+                },{
+                    widgetFlavor:"TextButton",
+                    text:"",
+                    click:{
+                        actionType:"P",
+                        target:""
+                    }
+                }]);
+            }).catch(function(error){
+                expect(error.response.status).to.equal(200, error.response.data);
+            });
+        });
     });
     context('Cleaning Up', function() {
         expect(process.env.NODE_ENV).to.not.equal('PROD');
