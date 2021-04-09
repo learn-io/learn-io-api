@@ -38,6 +38,48 @@ const handleGetPage=(req,res)=>{
  	})
 }
 
+const handleUpdatePage=(req,res)=>{
+	const {platformName,moduleName,pageName,widgets}=req.params;
+    let query = {}
+	if (platformName)
+	{
+		query.platformName = platformName;
+		//image:image,description:description,platformName:platformName}
+	}
+	if(moduleName)
+	{
+		query.moduleName = moduleName;
+	}
+	if(pageName)
+	{
+		query.pageName = pageName;
+	}
+	if(widgets)
+	{
+		query.widgets = widgets;
+	}
+	// pageSchema.findOneAndUpdate({_id:ObjectId(_id)},query,(err,result)=>{
+	// 	if(err){return res.status(400).json('err')}
+	// 	if(!result){
+	// 		res.status(404).json('page is not exist')
+	// 	}else{
+	// 		res.status(200).json("Success Update page");
+	// 	}
+	// });
+
+	pageSchema.findOneAndUpdate({username:username},{email:email},(err,data)=>{
+		if(err){
+			res.status(400).json('err')
+		}else{
+			if(!data){
+				res.status(400).json('user is not exist')
+			}else{
+				res.status(200).json("Success Update Email");
+			}
+		}
+	});
+}
+
 router.post("*", (req,res,next)=>{
 	if(req.session.username)
 		next();

@@ -71,11 +71,11 @@ const handleNewModule=(req,res)=>{
 }
 // return the specific module in platform
 const handleGetPlatformModule=(req,res)=>{
-	const {platformName,moduleName}=req.params;
-	if(!platformName||!moduleName){
+	const {_id,moduleName}=req.params;
+	if(!_id||!moduleName){
 		return res.status(400).json('incorrect form submission');
 	}
-	platformSchema.findOne({platformName:platformName},function(err,result){
+	platformSchema.findOne({_id:ObjectId(_id)},function(err,result){
  		if(err){return res.status(400).json('err')}
  		if(!result){
  			res.status(404).json('platform is not exist')
@@ -85,6 +85,54 @@ const handleGetPlatformModule=(req,res)=>{
 				res.status(404).json('module is not exist')
 			}else{
 				res.status(200).json(found);
+			}
+ 		}
+ 	})
+}
+
+const handleUpdatePlatformModule=(req,res)=>{
+	const {_id,oldModuleName,newModuleName, moduleDescription,image,lockedby,unlocks,x,y,height,width}=req.body;
+	if(!_id||!moduleName){
+		return res.status(400).json('incorrect form submission');
+	}
+	platformSchema.findOne({_id:ObjectId(_id)},function(err,result){
+ 		if(err){return res.status(400).json('err')}
+ 		if(!result){
+ 			res.status(404).json('platform is not exist')
+ 		}else{
+			const found=result.modules.find(element=>element.moduleName==oldModuleName);
+			if(!found){
+				res.status(404).json('module is not exist');
+			}else{
+				if(newModuleName){
+					found.moduleName=newModuleName;
+				}
+				if(moduleDescription){
+					found.moduleDescription=moduleDescription;
+				}
+				if(image){
+					found.image=image;
+				}
+				if(lockedby){
+					found.lockedby=lockedby;
+				}
+				if(unlocks){
+					found.unlocks=unlocks;
+				}
+				if(x){
+					found.x=x;
+				}
+				if(y){
+					found.y=y;
+				}
+				if(height){
+					found.height=height;
+				}
+				if(width){
+					found.width=width;
+				}
+				result.save();
+				res.status(200).json('module updated');
 			}
  		}
  	})
@@ -158,4 +206,5 @@ router.post("/newModule",(req,res)=>{handleNewModule(req,res)})
 router.post("/about",(req,res)=>{handleUpdatePlatformAbout(req,res)})
 router.get("/about/:_id",(req,res)=>{handleGetPlatformAbout(req,res)})
 router.get("/:platformName/:moduleName",(req,res)=>{handleGetPlatformModule(req,res)})
+router.post("/update",(req,res)=>{handleUpdatePlatformModule(req,res)})
 module.exports=router;
