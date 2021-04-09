@@ -3,6 +3,7 @@ const mongoose=require('mongoose');
 
 const platformSchema=require('../models/platform.js');
 const userInfo=require('../models/userInfo.js');
+const pageSchema=require('../models/page.js');
 
 const handleShowUsers=(req,res)=>{
 	userInfo.find({},function(err,result){
@@ -50,6 +51,13 @@ const handleDeletePlatform=(req,res)=>{
 			res.status(400).json('err')
 		}else{
 			res.status(200).json("Success remove platform");
+		}
+	});
+	pageSchema.findAndRemove({platformId:_id}, (err,data)=>{
+		if(err){
+			res.status(400).json('err')
+		}else{
+			res.status(200).json("Success remove page");
 		}
 	});
 }
