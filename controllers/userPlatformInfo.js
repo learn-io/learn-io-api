@@ -4,8 +4,8 @@ const mongoose=require('mongoose');
 const userPlatformInfoSchema=require('../models/userPlatformInfo.js');
 const platformSchema=require('../models/platform.js');
 
-const handleUserPlay=(req,res)=>{
-	const {username,platformName}=req.body;
+const handleUserPlay=(req,res)=>{ 
+	const {username,platformName}=req.body; // Shouldn't handleUserPlay also have fields for completedId, timeSpend, widgetsClicked, pageVisited, and badges
 	if(!platformName){
 		return res.status(400).json('incorrect form submission');
 	}
@@ -24,6 +24,11 @@ const handleUserPlay=(req,res)=>{
 			const newPlatformUser=new userPlatformInfoSchema({
 		 		username:username,
 				platformName:platformName,
+				completedId:[],
+				timeSpend:0,
+				widgetsClicked:0,
+				pageVisited:0,
+				badges:[],
 				ownPlatform:platformOwner
 			});
 			newPlatformUser.save()
