@@ -1,11 +1,16 @@
 var expect = require("chai").expect;
 var axios = require("axios");
+var crypto = require('crypto');
 
 const helper=require('../controllers/testHelper');
 
 const signin_url="http://localhost:3000/signin"
 const signout_url="http://localhost:3000/signout"
 const register_url="http://localhost:3000/register"
+
+const reset_get_url="http://localhost:3000/reset/request"
+const reset_set_url="http://localhost:3000/reset/password"
+
 
 let cookie = "";
 
@@ -127,6 +132,44 @@ describe("Sign In Controller", function() {
             }).then(function(response){
                 expect(response.status).to.equal(401, response.data);
             }).catch(function(err){
+                expect(err.response.status).to.equal(401, err.response.data);
+            });
+        });
+        it("Reset Password and Log In", function(){ 
+            return axios({
+                method: 'post',
+                url: reset_get_url,
+                data: {
+                  username: 'test1',
+                  email: 'email@email.email'
+                },
+                headers: { Cookie: cookie }
+            }).then(function(response){
+                expect(response.status).to.equal(200, response.data);
+                return axios({
+                    method: 'post',
+                    url: reset_set_url,
+                    data: {
+                      key: crypto.createHash('sha256').update('test1').update('email@email.email').digest('utf8'),
+                      newpass: 'bobby'
+                    },
+                    headers: { Cookie: cookie }
+                });
+            }).then(function(response){
+                expect(response.status).to.equal(200, response.data);
+                return axios({
+                    method: 'post',
+                    url: signin_url,
+                    data: {
+                      username: 'test1',
+                      password: 'bobby'
+                    },
+                    headers: { Cookie: cookie }
+                });
+            }).then(function(response){
+                expect(response.status).to.equal(200, response.data);
+            }).catch(function(err){
+                expect(err.response).to.not.equal(undefined, err);
                 expect(err.response.status).to.equal(401, err.response.data);
             });
         });
