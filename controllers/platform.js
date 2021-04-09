@@ -205,6 +205,6 @@ router.get("/:_id",(req,res)=>{handleGetPlatform(req,res)})
 router.post("/newModule",(req,res)=>{handleNewModule(req,res)})
 router.post("/about",(req,res)=>{handleUpdatePlatformAbout(req,res)})
 router.get("/about/:_id",(req,res)=>{handleGetPlatformAbout(req,res)})
-router.get("/:platformName/:moduleName",(req,res)=>{handleGetPlatformModule(req,res)})
+router.get("/:_id/:moduleName",(req,res)=>{handleGetPlatformModule(req,res)})
 router.post("/update",(req,res)=>{handleUpdatePlatformModule(req,res)})
 module.exports=router;

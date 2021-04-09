@@ -5,11 +5,12 @@ const platformSchema=require('../models/platform.js');
 const pageSchema=require('../models/page.js');
 
 const handleNewPage=(req,res)=>{
-	const {platformName,moduleName,pageName,widgets}=req.body;
-    if(!platformName||!moduleName||!pageName){
+	const {platformId, platformName,moduleName,pageName,widgets}=req.body;
+    if(!platformId||!platformName||!moduleName||!pageName){
 		return res.status(400).json('incorrect form submission');
 	}
 	const newPage=new pageSchema({
+		platformId:platformId,
 		platformName:platformName,
 		moduleName:moduleName,
 		pageName:pageName,
@@ -24,14 +25,14 @@ const handleNewPage=(req,res)=>{
 }
 
 const handleGetPage=(req,res)=>{
-	const {platformName,moduleName,pageName}=req.params;
-    if(!platformName||!moduleName||!pageName){
+	const {platformId,moduleName,pageName}=req.params;
+    if(!platformId||!moduleName||!pageName){
 		return res.status(400).json('incorrect form submission');
 	}
-	pageSchema.findOne({platformName:platformName,moduleName:moduleName},function(err,result){
+	pageSchema.findOne({platformId:platformId,moduleName:moduleName,pageName:pageName},function(err,result){
  		if(err){res.status(400).json('err')}
  		if(!result){
- 			res.status(401).json('platform is not exist')
+ 			res.status(401).json('page is not exist')
  		}else{
  			res.status(200).json(result);
  		}
@@ -39,7 +40,7 @@ const handleGetPage=(req,res)=>{
 }
 
 const handleUpdatePage=(req,res)=>{
-	const {platformName,moduleName,pageName,widgets}=req.params;
+	const {platformId, platformName,moduleName,pageName,widgets}=req.body;
     let query = {}
 	if (platformName)
 	{
@@ -58,24 +59,12 @@ const handleUpdatePage=(req,res)=>{
 	{
 		query.widgets = widgets;
 	}
-	// pageSchema.findOneAndUpdate({_id:ObjectId(_id)},query,(err,result)=>{
-	// 	if(err){return res.status(400).json('err')}
-	// 	if(!result){
-	// 		res.status(404).json('page is not exist')
-	// 	}else{
-	// 		res.status(200).json("Success Update page");
-	// 	}
-	// });
-
-	pageSchema.findOneAndUpdate({username:username},{email:email},(err,data)=>{
-		if(err){
-			res.status(400).json('err')
+	pageSchema.findOneAndUpdate({platformId:platformId},query,(err,result)=>{
+		if(err){return res.status(400).json('err')}
+		if(!result){
+			res.status(404).json('page is not exist')
 		}else{
-			if(!data){
-				res.status(400).json('user is not exist')
-			}else{
-				res.status(200).json("Success Update Email");
-			}
+			res.status(200).json("Success Update page");
 		}
 	});
 }
@@ -89,5 +78,6 @@ router.post("*", (req,res,next)=>{
 })
 
 router.post("/",(req,res)=>{handleNewPage(req,res)})
-router.get("/:platformName/:moduleName/:pageName",(req,res)=>{handleGetPage(req,res)})
+router.get("/:platformId/:moduleName/:pageName",(req,res)=>{handleGetPage(req,res)})
+router.post("/update",(req,res)=>{handleUpdatePage(req,res)})
 module.exports=router;
