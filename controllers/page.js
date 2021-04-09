@@ -5,17 +5,15 @@ const platformSchema=require('../models/platform.js');
 const pageSchema=require('../models/page.js');
 
 const handleNewPage=(req,res)=>{
-	const {platformId, platformName,moduleName,pageName,widgets}=req.body;
-    if(!platformId||!platformName||!moduleName||!pageName){
+	const {platformId,moduleId,pageName,widgets}=req.body;
+    if(!platformId||!moduleId||!pageName){
 		return res.status(400).json('incorrect form submission');
 	}
 	const newPage=new pageSchema({
 		platformId:platformId,
-		platformName:platformName, //@TODO we can get rid of this field
-		moduleName:moduleName, //@TODO need to have moduleName be module._id
+		moduleId:moduleId,
 		pageName:pageName,
-		widgets:widgets,
-		rank:0
+		widgets:widgets
 	});
 	var pageId = newPage._id;
 	console.log("****NEW PAGE ID"+pageId);
@@ -27,11 +25,11 @@ const handleNewPage=(req,res)=>{
 }
 
 const handleGetPage=(req,res)=>{
-	const {platformId,moduleName,pageName}=req.params;
-    if(!platformId||!moduleName||!pageName){
+	const {platformId,moduleId,pageName}=req.params;
+    if(!platformId||!moduleId||!pageName){
 		return res.status(400).json('incorrect form submission');
 	}
-	pageSchema.findOne({platformId:platformId,moduleName:moduleName,pageName:pageName},function(err,result){
+	pageSchema.findOne({platformId:platformId,moduleId:moduleId,pageName:pageName},function(err,result){
  		if(err){res.status(400).json('err')}
  		if(!result){
  			res.status(401).json('page is not exist')
@@ -42,30 +40,35 @@ const handleGetPage=(req,res)=>{
 }
 
 const handleGetPages=(req,res)=>{ //@TODO need to get all pages for a specific platform's module using platform._id and module._id 
-
+	const {platformId,moduleId}=req.params;
+    if(!platformId||!moduleId){
+		return res.status(400).json('incorrect form submission');
+	}
+	pageSchema.find({platformId:platformId,moduleId:moduleId},function(err,result){
+ 		if(err){res.status(400).json('err')}
+ 		if(!result){
+ 			res.status(401).json('page is not exist')
+ 		}else{
+ 			res.status(200).json(result);
+ 		}
+ 	})
 }
 
 const handleUpdatePage=(req,res)=>{
-	const {platformId, platformName,moduleName,pageName,widgets}=req.body;
+	const {platformId, moduleId,oldPageName,newPageName,widgets}=req.body;
+	if(!platformId||!moduleId||!oldPageName){
+		return res.status(400).json('incorrect form submission');
+	}
     let query = {}
-	if (platformName)
+	if(newPageName)
 	{
-		query.platformName = platformName;
-		//image:image,description:description,platformName:platformName}
-	}
-	if(moduleName)
-	{
-		query.moduleName = moduleName;
-	}
-	if(pageName)
-	{
-		query.pageName = pageName;
+		query.pageName = newPageName;
 	}
 	if(widgets)
 	{
 		query.widgets = widgets;
 	}
-	pageSchema.findOneAndUpdate({platformId:platformId},query,(err,result)=>{
+	pageSchema.findOneAndUpdate({platformId:platformId,moduleId:moduleId,pageName:oldPageName},query,(err,result)=>{
 		if(err){return res.status(400).json('err')}
 		if(!result){
 			res.status(404).json('page is not exist')
@@ -84,7 +87,7 @@ router.post("*", (req,res,next)=>{
 })
 
 router.post("/",(req,res)=>{handleNewPage(req,res)})
-router.get("/:platformId/:moduleName/:pageName",(req,res)=>{handleGetPage(req,res)}) //@TODO :moduleName to :moduleId
+router.get("/:platformId/:moduleId/:pageName",(req,res)=>{handleGetPage(req,res)}) //@TODO :moduleName to :moduleId
 router.get("/:platformId/:moduleId", (req,res)=>{handleGetPages(req,res)}) //@TODO :moduleName to :moduleId
 router.post("/update",(req,res)=>{handleUpdatePage(req,res)})
 module.exports=router;
