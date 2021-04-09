@@ -31,6 +31,26 @@ describe("Sign In Controller", function() {
                 expect(response.data).to.deep.equal("test1");
             });
         });
+        it("Register Twice", function(){
+            return axios({
+                method: 'post',
+                url: register_url,
+                data: {
+                    username: "test1",
+                    password: "pass1",
+                    verifyPassword: "pass1", 
+                    email: "email@email.email",
+                    dateOfBirth: "11/9/1999" //TODO: formatting?
+                },
+                headers: { Cookie: cookie }
+            }).then(function(response){
+                expect(response.status).to.equal(200, response.data);
+                expect(response.data).to.deep.equal("test1");
+            }).catch(function(err){
+                expect(err.response).to.not.equal(undefined, err);
+                expect(err.response.status).to.equal(401, err.response.data);
+            });
+        });
         it("Log Out", function(){
             return axios({
                 method: 'post',
@@ -38,6 +58,26 @@ describe("Sign In Controller", function() {
                 headers: { Cookie: cookie }
             }).then(function(response){
                 expect(response.status).to.equal(200, response.data);
+            });
+        });
+        it("Account Already Exists", function(){
+            return axios({
+                method: 'post',
+                url: register_url,
+                data: {
+                    username: "test1",
+                    password: "pass1",
+                    verifyPassword: "pass1", 
+                    email: "email@email.email",
+                    dateOfBirth: "11/9/1999" //TODO: formatting?
+                },
+                headers: { Cookie: cookie }
+            }).then(function(response){
+                expect(response.status).to.equal(200, response.data);
+                expect(response.data).to.deep.equal("test1");
+            }).catch(function(err){
+                expect(err.response).to.not.equal(undefined, err);
+                expect(err.response.status).to.equal(400, err.response.data);
             });
         });
         it("Log In", function(){
@@ -61,6 +101,18 @@ describe("Sign In Controller", function() {
                 headers: { Cookie: cookie }
             }).then(function(response){
                 expect(response.status).to.equal(200, response.data);
+            });
+        });
+        it("Log Out Twice", function(){
+            return axios({
+                method: 'post',
+                url: signout_url,
+                headers: { Cookie: cookie }
+            }).then(function(response){
+                expect(response.status).to.equal(200, response.data);
+            }).catch(function(err){
+                expect(err.response).to.not.equal(undefined, err);
+                expect(err.response.status).to.equal(401, err.response.data);
             });
         });
         it("Wrong Password", function(){

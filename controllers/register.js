@@ -8,6 +8,9 @@ const bcrypt=require('bcrypt');
 
 // const userInfo=require('../models/userInfo');
 const handleRegister=(req,res)=>{
+	if(req.session.username){
+		return res.status(401).json('already logged in');
+	}
 	const {username,password,verifyPassword, email,dateOfBirth}=req.body;
 	if(!username||!password||!verifyPassword||!email||!dateOfBirth){
 		return res.status(400).json('incorrect form submission');
