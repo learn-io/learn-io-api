@@ -12,6 +12,7 @@ const platform_url="http://localhost:3000/platform";
 const widgets_url="http://localhost:3000/widgets";
 const media_url="http://localhost:3000/media";
 const register_url="http://localhost:3000/register";
+const page_url=""
 
 
 
@@ -35,7 +36,7 @@ let imageHash = crypto.createHash('sha256').update(imageData).digest('utf8');
 
 
 let platformId = "";
-
+let pageId = "";
 
 // .catch(function(error){
 //     expect(error.response.status).to.equal(200,error.response.data);
@@ -189,9 +190,9 @@ describe("Content Tests", function() {
             }).then(function(response){
               	expect(response.status).to.equal(200, response.data);
             })
-            .catch(function(error){
-                expect(error.response.status).to.equal(200,error.response.data);
-            })
+            // .catch(function(error){
+            //     expect(error.response.status).to.equal(200,error.response.data);
+            // })
         });
         it("Get platform's module", function(){ 
             return axios({
@@ -241,8 +242,44 @@ describe("Content Tests", function() {
             // .catch(function(error){
             //     expect(error.response.status).to.equal(200,error.response);
             // })
-        })
-   
+        });
+        it("Create a page for a platform's module", function(){ 
+            return axios({
+                method: 'post',
+                url: page_url,
+                data:{
+                    platformId:platformId, 
+                    platformName:"All About Obscure Berries", //@TODO we can get rid of this field
+                    moduleName:"What are Botany Berries?", //@TODO need to have moduleName be module._id
+                    pageName:"New Page",
+                    widgets:[]
+                },
+                headers: { Cookie: cookie }
+            }).then(function(response){
+              	expect(response.status).to.equal(200, response);
+                pageId=response.data.pageId;
+            })
+            // .catch(function(error){
+            //     expect(error.response.status).to.equal(200, error.response);
+            // });
+        });
+        // it("Get a specific page for a platform's module", function(){ 
+        //     return axios({
+        //         method: 'get',
+        //         url: page_url+"/"+platformId+"/"+encodeURIComponent("What are Bootany Berries?")+"/"+encodeURIComponent("New Page"), //"/pageId",
+        //     }).then(function(response){
+        //       	expect(response.status).to.equal(200, response.data);
+        //         expect(response.data).to.deep.equal({
+        //              platformId:platformId, 
+        //              platformName:"All About Obscure Berries", //@TODO we can get rid of this field
+        //              moduleName:"What are Botany Berries?", //@TODO need to have moduleName be module._id
+        //              pageName:"New Page",
+        //              widgets:[]
+        //         });
+        //     }).catch(function(error){
+        //         expect(error.response.status).to.equal(400);
+        //     });
+        // });
     //     it("Get all pages for a specific platform's module", function(){ 
     //         return axios({
     //             method: 'get',
@@ -254,17 +291,7 @@ describe("Content Tests", function() {
     //             expect(error.response.status).to.equal(400);
     //         });
     //     });
-    //     it("Get a specific page for a platform's module", function(){ 
-    //         return axios({
-    //             method: 'get',
-    //             url: platform_url+"/1/2/3",
-    //         }).then(function(response){
-    //           	expect(response.status).to.equal(200, response.data);
-    //             expect(response.data).to.deep.equal([]);
-    //         }).catch(function(error){
-    //             expect(error.response.status).to.equal(400);
-    //         });
-    //     });
+    
     // });
     // context("Widget Test", function(){
     //     it("Get empty widget templates", function(){
