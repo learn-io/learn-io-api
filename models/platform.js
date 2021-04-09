@@ -5,6 +5,7 @@ const platformSchema=new mongoose.Schema({
 	image:{type:String,default:""},
 	description:{type:String,default:""},
 	modules:[{
+		platformId:{type:String},
 		moduleName:{type:String},
 		moduleDescription:{type:String},
 		image:{type:String},

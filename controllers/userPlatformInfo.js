@@ -1,19 +1,20 @@
 var router = require('express').Router();
+const { ObjectId } = require('bson');
 const mongoose=require('mongoose');
 
 const userPlatformInfoSchema=require('../models/userPlatformInfo.js');
 const platformSchema=require('../models/platform.js');
 
-const handleUserPlay=(req,res)=>{
-	const {username,platformName}=req.body;
-	if(!platformName){
+const handleUserPlay=(req,res)=>{ 
+	const {username,platformId}=req.body; // Shouldn't handleUserPlay also have fields for completedId, timeSpend, widgetsClicked, pageVisited, and badges
+	if(!platformId){
 		return res.status(400).json('incorrect form submission');
 	}
 	if(!username){
 		return res.status(200).json("guest");
 	}
 	var platformOwner=false;
-	platformSchema.findOne({platformName:platformName},function(err,result){
+	platformSchema.findOne({"_id":ObjectId(platformId)},function(err,result){
  		if(err){res.status(400).json('err')}
  		if(!result){
  			res.status(401).json('platform is not exist')
@@ -23,14 +24,14 @@ const handleUserPlay=(req,res)=>{
 			}
 			const newPlatformUser=new userPlatformInfoSchema({
 		 		username:username,
-				platformName:platformName,
+				platformId:platformId,
 				ownPlatform:platformOwner
 			});
 			newPlatformUser.save()
 			.then(data=>{
 				res.status(200).json("create new platform user")
 			})
-			.catch(err=>res.status(400).json('unable to create new platform user'));
+			.catch(err=>{res.status(400).json('unable to create new platform user')});
  		}
  	})
  	
