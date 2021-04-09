@@ -1,7 +1,7 @@
 const mongoose=require('mongoose')
 
 const platformSchema=new mongoose.Schema({
-	platformName:{type:String,required:true,unique:true},
+	platformId:{type:String,required:true,unique:true},
 	image:{type:String,default:""},
 	description:{type:String,default:""},
 	modules:[{
