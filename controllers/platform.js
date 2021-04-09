@@ -48,6 +48,7 @@ const handleNewModule=(req,res)=>{
 		return res.status(400).json('incorrect form submission');
 	}
 	platformSchema.findOneAndUpdate({_id:ObjectId(_id), owner:req.session.username},{$push:{modules:{			
+			platformId:_id,
 			moduleName:moduleName,
 			moduleDescription:moduleDescription,
 			image:image,
@@ -75,15 +76,18 @@ const handleGetPlatformModule=(req,res)=>{
 	if(!_id||!moduleName){
 		return res.status(400).json('incorrect form submission');
 	}
+	let theModuleName = decodeURIComponent(moduleName);
+	// console.log("********* _id: "+_id+" moduleName: "+decodeURI(moduleName)+" theModuleName: "+theModuleName);
 	platformSchema.findOne({_id:ObjectId(_id)},function(err,result){
  		if(err){return res.status(400).json('err')}
  		if(!result){
  			res.status(404).json('platform is not exist')
  		}else{
-			const found=result.modules.find(element=>element.moduleName==moduleName);
+			const found=result.modules.find(element=>element.moduleName===theModuleName);
 			if(!found){
 				res.status(404).json('module is not exist')
 			}else{
+				// console.log("Module: "+found);
 				res.status(200).json(found);
 			}
  		}
@@ -92,18 +96,16 @@ const handleGetPlatformModule=(req,res)=>{
 
 const handleUpdatePlatformModule=(req,res)=>{
 	const {_id,oldModuleName,newModuleName, moduleDescription,image,lockedby,unlocks,x,y,height,width}=req.body;
-	if(!_id||!moduleName){
+	if(!_id||!oldModuleName){
 		return res.status(400).json('incorrect form submission');
 	}
-	platformSchema.findOne({_id:ObjectId(_id)},function(err,result){
+	platformSchema.findOne({_id:ObjectId(_id), owner:req.session.username},function(err,result){
  		if(err){return res.status(400).json('err')}
  		if(!result){
  			res.status(404).json('platform is not exist')
  		}else{
 			const found=result.modules.find(element=>element.moduleName==oldModuleName);
-			if(!found){
-				res.status(404).json('module is not exist');
-			}else{
+			if(found){
 				if(newModuleName){
 					found.moduleName=newModuleName;
 				}
@@ -133,6 +135,8 @@ const handleUpdatePlatformModule=(req,res)=>{
 				}
 				result.save();
 				res.status(200).json('module updated');
+			}else{
+				res.status(404).json('module is not exist');
 			}
  		}
  	})
@@ -205,6 +209,6 @@ router.get("/:_id",(req,res)=>{handleGetPlatform(req,res)})
 router.post("/newModule",(req,res)=>{handleNewModule(req,res)})
 router.post("/about",(req,res)=>{handleUpdatePlatformAbout(req,res)})
 router.get("/about/:_id",(req,res)=>{handleGetPlatformAbout(req,res)})
-router.get("/:platformName/:moduleName",(req,res)=>{handleGetPlatformModule(req,res)})
+router.get("/:_id/:moduleName",(req,res)=>{handleGetPlatformModule(req,res)})
 router.post("/update",(req,res)=>{handleUpdatePlatformModule(req,res)})
 module.exports=router;

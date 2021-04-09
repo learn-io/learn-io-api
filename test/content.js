@@ -112,9 +112,10 @@ describe("Content Tests", function() {
             }).then(function(response){
               	expect(response.status).to.equal(200, response.data);
                 platformId=response.data.platformId;
-            }).catch(function(error){
-                expect(error.response.status).to.equal(200, error.response.data);
-            });
+            })
+            // .catch(function(error){
+            //     expect(error.response.status).to.equal(200, error.response.data);
+            // });
         });
         it("Update platform about", function(){ 
             return axios({
@@ -129,7 +130,10 @@ describe("Content Tests", function() {
                 headers: { Cookie: cookie }
             }).then(function(response){
               	expect(response.status).to.equal(200, "Success Update Platform About");
-            });
+            })
+            // .catch(function(error){
+            //     expect(error.response.status).to.equal(200, error.response);
+            // });
         });
 
         it("Gets a platform's about page and display information", function(){
@@ -139,9 +143,10 @@ describe("Content Tests", function() {
             }).then(function(response){
               	expect(response.status).to.equal(200);
                 expect(response.data).to.deep.equal({platformName:"All About Obscure Berries",image:"",description:"In this platform you'll learn all about berries that you didn't even know were berries."});
-            }).catch(function(error){
-                expect(error.response.data).to.equal(200, error.response)
-            });
+            })
+            // .catch(function(error){
+            //     expect(error.response.data).to.equal(200, error.response)
+            // });
         });
 
         it("Get one platform by valid id", function(){ 
@@ -170,7 +175,7 @@ describe("Content Tests", function() {
                 url: platform_url+"/newModule",
                 data:{
                     _id:platformId,
-                    moduleName:"What are Botany Berries?",
+                    moduleName:"What are Bootany Berries?",
                     moduleDescription:"In this Module you'll learn about the",
                     image:imageHash,
                     lockedby:[],
@@ -184,23 +189,59 @@ describe("Content Tests", function() {
             }).then(function(response){
               	expect(response.status).to.equal(200, response.data);
             })
+            .catch(function(error){
+                expect(error.response.status).to.equal(200,error.response.data);
+            })
         });
-        // it("Get platform's module", function(){ 
-        //     return axios({
-        //         method:"get",
-        //         url: platform_url+"/"+platformId+""
-        //     }).then(function(response){
-        //         expect(response.status).to.equal(200);
-        //     })
-        // });
-        // it("Update platform's module", function(){ 
-        //     return axios({
-        //         method:"post",
-        //         url: platform_url+"/"+platformId+""
-        //     }).then(function(response){
-        //         expect(response.status).to.equal(200);
-        //     })
-        // })
+        it("Get platform's module", function(){ 
+            return axios({
+                method:"get",
+                url: platform_url+"/"+platformId+"/"+encodeURIComponent("What are Bootany Berries?")
+            }).then(function(response){
+                expect(response.status).to.equal(200, response.data);
+                expect(response.data).to.deep.equal({
+                    _id:response.data._id,
+                    lockedby:[],
+                    unlocks:[],
+                    platformId:platformId,
+                    moduleName:"What are Bootany Berries?",
+                    moduleDescription:"In this Module you'll learn about the",
+                    image:imageHash,
+                    x:50,
+                    y:50,
+                    height:350,
+                    width:350
+                });
+            })
+            // .catch(function(error){
+            //     expect(error.response.status).to.equal(200,error.response.data);
+            // })
+        });
+        it("Update platform's module", function(){ 
+            return axios({
+                method:"post",
+                url: platform_url+"/update",
+                data:{
+                    _id:platformId,
+                    oldModuleName:"What are Bootany Berries?",
+                    newModuleName:"What are Botany Berries?", 
+                    moduleDescription:"In this Module you'll learn about the the wonderful and fascinating world of Botany Berries.",
+                    image:imageHash,
+                    lockedby:[],
+                    unlocks:[],
+                    x:50,
+                    y:50,
+                    height:350,
+                    width:350
+                },
+                headers: { Cookie: cookie }
+            }).then(function(response){
+                expect(response.status).to.equal(200, response.data);
+            })
+            // .catch(function(error){
+            //     expect(error.response.status).to.equal(200,error.response);
+            // })
+        })
    
     //     it("Get all pages for a specific platform's module", function(){ 
     //         return axios({
