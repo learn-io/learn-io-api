@@ -12,7 +12,7 @@ const profile_url="http://localhost:3000/profile";
 //             }).then(function(response){
 //               	expect(response.status).to.equal(200, response.data);
 //                 delete response.data[0]['_id'];
-//                 expect(response.data).to.deep.equal([{},{}]); //profile @TODO
+//                 expect(response.data).to.deep.equal({}); //profile @TODO
 //             }).catch(function(error){
 //                 expect(error.response.status).to.equal(400);
 //             });

@@ -61,10 +61,10 @@ const handleNewModule=(req,res)=>{
 		if(err){
 			return res.status(400).json('err')
 		}else{
-			if(!data){
-				res.status(400).json('platform is not exist')
+			if(data){
+				res.status(200).json("Success Update module");	
 			}else{
-				res.status(200).json("Success Update module");
+				res.status(400).json('platform is not exist')
 			}
 		}
 	});
