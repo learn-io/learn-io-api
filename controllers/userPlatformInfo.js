@@ -31,7 +31,7 @@ const handleUserPlay=(req,res)=>{
 			.then(data=>{
 				res.status(200).json("create new platform user")
 			})
-			.catch(err=>res.status(400).json('unable to create new platform user'));
+			.catch(err=>{res.status(400).json('unable to create new platform user')});
  		}
  	})
  	

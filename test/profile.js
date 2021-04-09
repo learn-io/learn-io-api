@@ -49,7 +49,7 @@ describe("Profile Tests", function(){
     });
     
     context("Retrieve Platform Info", function(){
-        it("Set one user's platform info", function(){ // Shouldn't handleUserPlay also have fields for completedId, timeSpend, widgetsClicked, pageVisited, and badges
+        it("Set one user's platform info", function(){ // Shouldn't handleUserPlay also have fields for completedId, timeSpend, widgetsClicked, pageVisited, and badges //yes
             return axios({
                 method: 'post',
                 url: profile_url+"/stats",
