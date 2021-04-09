@@ -16,7 +16,7 @@ const handleNewPage=(req,res)=>{
 		widgets:widgets
 	});
 	var pageId = newPage._id;
-	console.log("****NEW PAGE ID"+pageId);
+	// console.log("****NEW PAGE ID"+pageId);
 	newPage.save()
 	.then(data=>{
 		res.status(200).json({pageId:pageId});
@@ -29,7 +29,8 @@ const handleGetPage=(req,res)=>{
     if(!platformId||!moduleId||!pageName){
 		return res.status(400).json('incorrect form submission');
 	}
-	pageSchema.findOne({platformId:platformId,moduleId:moduleId,pageName:pageName},function(err,result){
+	var thePageName = decodeURIComponent(pageName);
+	pageSchema.findOne({platformId:platformId,moduleId:moduleId,pageName:thePageName},function(err,result){
  		if(err){res.status(400).json('err')}
  		if(!result){
  			res.status(401).json('page is not exist')

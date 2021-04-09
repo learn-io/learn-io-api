@@ -6,8 +6,7 @@ var emptyWidgets = [
     widgetFlavor:"Flashcard",
     text:[
         {
-            front:"Text"
-        },{
+            front:"Text",
             back:"Text"
         }
     ]
@@ -93,7 +92,7 @@ var emptyWidgets = [
 }];
 
 const handleGetEmptyWidgets=(req,res)=>{
-    res.status(200).json(emptyWidgets);
+    res.status(200).json({emptyWidgets:emptyWidgets});
 }
 
 router.get("/",(req,res)=>{handleGetEmptyWidgets(req,res)})
