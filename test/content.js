@@ -266,7 +266,7 @@ describe("Content Tests", function() {
         // it("Get a specific page for a platform's module", function(){ 
         //     return axios({
         //         method: 'get',
-        //         url: page_url+"/"+platformId+"/"+encodeURIComponent("What are Bootany Berries?")+"/"+encodeURIComponent("New Page"), //"/pageId",
+        //         url: page_url+"/"+platformId+"/"+encodeURIComponent("What are Botany Berries?")+"/"+encodeURIComponent("New Page"), //"/pageId",
         //     }).then(function(response){
         //       	expect(response.status).to.equal(200, response.data);
         //         expect(response.data).to.deep.equal({
@@ -283,7 +283,7 @@ describe("Content Tests", function() {
     //     it("Get all pages for a specific platform's module", function(){ 
     //         return axios({
     //             method: 'get',
-    //             url: platform_url+"/1/2",
+    //             url: platform_url+"/"+platformId+"/"+encodeURIComponent("What are Botany Berries?"),
     //         }).then(function(response){
     //           	expect(response.status).to.equal(200, response.data);
     //             expect(response.data).to.deep.equal([]);
