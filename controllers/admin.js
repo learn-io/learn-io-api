@@ -51,7 +51,7 @@ const handleDeletePlatform=(req,res)=>{
         if(err){
             res.status(400).json('err')
         }else{
-            pageSchema.findAndRemove({platformId:_id}, (err,data)=>{
+            pageSchema.deleteMany({platformId:_id}, (err,data)=>{
                 if(err){
                     res.status(400).json('err')
                 }else{

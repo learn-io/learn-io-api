@@ -55,7 +55,7 @@ describe("Profile Tests", function(){
                 url: profile_url+"/stats",
                 data:{
                     username:"bob",
-                    platformName:"All DEM Obscure Berries" 
+                    platformId:platformId 
                 },
                 headers: { Cookie: cookie }
             }).then(function(response){
