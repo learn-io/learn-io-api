@@ -94,6 +94,24 @@ describe("Search Controller", function() {
                 expect(response.data.length).to.equal(2, response.data);
             });
         });
+        it("User Filtered Berr Search", function(){
+            return axios({
+                method: 'get',
+                url: platform_url+"/test1/berr/0/5",
+            }).then(function(response){
+                expect(response.status).to.equal(200, response.data);
+                expect(response.data.length).to.equal(2, response.data);
+            });
+        });
+        it("Wrong User Filtered Berr Search", function(){
+            return axios({
+                method: 'get',
+                url: platform_url+"/bob/berr/0/5",
+            }).then(function(response){
+                expect(response.status).to.equal(200, response.data);
+                expect(response.data.length).to.equal(0, response.data);
+            });
+        });
         it("Not A Platform Search", function(){
             return axios({
                 method: 'get',
