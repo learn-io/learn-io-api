@@ -1,6 +1,7 @@
 const mongoose=require('mongoose')
 
 const pageSchema=new mongoose.Schema({
+	platformId:{type:String,required:true},
 	platformName:{type:String,required:true},
 	moduleName:{type:String,required:true},
 	pageName:{type:String,required:true},
