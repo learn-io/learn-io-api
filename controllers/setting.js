@@ -81,6 +81,21 @@ const handleSetting=(req,res)=>{
 	}
 }
 
+const handleGetSetting=(req,res)=>{
+	const {username}=req.body;
+	userInfo.findOne({username:username},(err,data)=>{
+			if(err){
+				res.status(400).json('err')
+			}else{
+				if(!data){
+					res.status(400).json('user is not exist')
+				}else{
+					res.status(200).json({"email":data.email,"dateOfBirth":data.dateOfBirth,"mute":data.mute});
+				}
+			}
+		});
+}
+
 router.post("*", (req,res,next)=>{
 	if(req.session.username)
 		next();
@@ -90,5 +105,6 @@ router.post("*", (req,res,next)=>{
 })
 
 router.post("/",(req,res)=>{handleSetting(req,res)})
+router.get("/",(req,res)=>{handleGetSetting(req,res)})
 
 module.exports=router;
