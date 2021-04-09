@@ -47,6 +47,7 @@ const handleNewModule=(req,res)=>{
 	if(!_id){
 		return res.status(400).json('incorrect form submission');
 	}
+	var moduleId="";
 	platformSchema.findOneAndUpdate({_id:ObjectId(_id), owner:req.session.username},{$push:{modules:{			
 			platformId:_id,
 			moduleName:moduleName,
@@ -63,7 +64,8 @@ const handleNewModule=(req,res)=>{
 			return res.status(400).json('err')
 		}else{
 			if(data){
-				res.status(200).json("Success Update module");	
+				moduleId=data._id;
+				res.status(200).json({moduleId:moduleId});	
 			}else{
 				res.status(400).json('platform is not exist')
 			}
