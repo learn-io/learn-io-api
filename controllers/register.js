@@ -1,6 +1,6 @@
-var router = require('express').Router();
-const mongoose=require('mongoose');
+var register = require('express').Router();
 
+const mongoose=require('mongoose');
 
 const userInfo=require('../models/userInfo.js');
 const bcrypt=require('bcrypt');
@@ -35,7 +35,7 @@ const handleRegister=(req,res)=>{
 	.catch(err=>res.status(400).json('unable to register'));
 }
 
+register.post("/",(req,res)=>{handleRegister(req,res)})
 
-router.post("/",(req,res)=>{handleRegister(req,res)})
 
-module.exports=router;
+module.exports = register;
