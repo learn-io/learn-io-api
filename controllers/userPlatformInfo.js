@@ -50,7 +50,40 @@ const handleSearchUserPlatformInfo=(req,res)=>{
 		res.status(400).json(err);
 	})
 }
+const handleUpdateUserPlatformInfo=(req,res)=>{
+    const {username, platformId, completeId,timeSpend,widgetsClicked,modulesCompleted,pageVisited,badges} = req.body;
+	query = {}
+	if(!username||!platformId){
+		return res.status(400).json('incorrect form submission');
+	}
+	if(completeId){
+		query.completeId=completeId;
+	}
+    if(timeSpend){
+		query.timeSpend=timeSpend;
+	}
+	if(widgetsClicked){
+		query.widgetsClicked=widgetsClicked;
+	}
+	if(modulesCompleted){
+		query.modulesCompleted=modulesCompleted;
+	}
+	if(pageVisited){
+		query.pageVisited=pageVisited;
+	}
+	if(badges){
+		query.badges=badges;
+	}
 
+ 	userPlatformInfoSchema.findOneAndUpdate({username:username, platformId:platformId},query,(err,result)=>{
+		if(err){return res.status(400).json('err')}
+		if(!result){
+			res.status(404).json('user platform information is not exist');
+		}else{
+			res.status(200).json("Success update user platform information");
+		}
+	});
+}
 
 // use for profile page
 const handleGetUserPlatformInfo=(req,res)=>{
@@ -84,4 +117,5 @@ router.post("*", (req,res,next)=>{
 router.post("/stats",(req,res)=>{handleUserPlay(req,res)})
 router.get("/stats", (req,res)=>{handleSearchUserPlatformInfo(req, res)});
 router.get("/play",(req,res)=>{handleGetUserPlatformInfo(req,res)})
+router.post("/update",(req,res)=>{handleUpdateUserPlatformInfo(req,res)})
 module.exports=router;
