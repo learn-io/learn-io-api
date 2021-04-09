@@ -46,20 +46,35 @@ const handleDeletePlatform=(req,res)=>{
 	if(!_id){
 		return res.status(400).json('not platform');
 	}
+
 	platformSchema.findOneAndRemove({_id:_id}, (err,data)=>{
-		if(err){
-			res.status(400).json('err')
-		}else{
-			res.status(200).json("Success remove platform");
-		}
-	});
-	pageSchema.findAndRemove({platformId:_id}, (err,data)=>{
-		if(err){
-			res.status(400).json('err')
-		}else{
-			res.status(200).json("Success remove page");
-		}
-	});
+        if(err){
+            res.status(400).json('err')
+        }else{
+            pageSchema.findAndRemove({platformId:_id}, (err,data)=>{
+                if(err){
+                    res.status(400).json('err')
+                }else{
+                    res.status(200).json("Success remove page");
+                }
+            });
+        }
+    });
+
+	// platformSchema.findOneAndRemove({_id:_id}, (err,data)=>{
+	// 	if(err){
+	// 		res.status(400).json('err')
+	// 	}else{
+	// 		res.status(200).json("Success remove platform");
+	// 	}
+	// });
+	// pageSchema.findAndRemove({platformId:_id}, (err,data)=>{
+	// 	if(err){
+	// 		res.status(400).json('err')
+	// 	}else{
+	// 		res.status(200).json("Success remove page");
+	// 	}
+	// });
 }
 
 router.use("*", (req,res, next)=>{
