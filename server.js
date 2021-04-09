@@ -16,7 +16,7 @@ const cors=require('cors');
 // Controllers
 const signin=require('./controllers/signin');
 const signout=require('./controllers/signout');
-const reset = require('./controllers/resetPass');
+const reset = require('./controllers/resetpass');
 const register = require('./controllers/register');
 
 const setting=require('./controllers/setting');

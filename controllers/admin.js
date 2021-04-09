@@ -5,17 +5,6 @@ const platformSchema=require('../models/platform.js');
 const userInfo=require('../models/userInfo.js');
 const pageSchema=require('../models/page.js');
 
-const handleShowUsers=(req,res)=>{
-	userInfo.find({},function(err,result){
- 		if(err){res.status(400).json('err')}
- 		if(!result){
- 			res.status(400).json('user is not exist')
- 		}else{
- 			res.status(200).json(result);
- 		}
- 	})
-}
-
 const handleDeleteUser=(req,res)=>{
 	const {username}=req.body;
 	if(!username){
@@ -28,17 +17,6 @@ const handleDeleteUser=(req,res)=>{
 				res.status(200).json("Success remove user:"+username);
 			}
 		});
-}
-
-const handleShowPlatforms=(req,res)=>{
-	platformSchema.find({},function(err,result){
- 		if(err){res.status(400).json('err')}
- 		if(!result){
- 			res.status(400).json('user is not exist')
- 		}else{
- 			res.status(200).json(result);
- 		}
- 	})
 }
 
 const handleDeletePlatform=(req,res)=>{
@@ -85,9 +63,7 @@ router.use("*", (req,res, next)=>{
 
 })
 
-router.get("/users",(req,res)=>{handleShowUsers(req,res)})
 router.post("/users/delete",(req,res)=>{handleDeleteUser(req,res)})
-router.get("/platforms",(req,res)=>{handleShowPlatforms(req,res)})
 router.post("/platforms/delete",(req,res)=>{handleDeletePlatform(req,res)})
 
 
