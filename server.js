@@ -51,8 +51,8 @@ if (process.env.NODE_ENV == 'PROD')
 }
 else
 {
-	// mongo_url=mongo_dan;
-	mongo_url=mongo_akshay;
+	mongo_url=mongo_dan;
+	//mongo_url=mongo_akshay;
 	// mongo_url=mongo_local;
 }
 
