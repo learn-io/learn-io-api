@@ -34,8 +34,23 @@ const handleSearchUsers=(req,res)=>{
 	})
 }
 
+const handleSearchPlatformsByUser=(req,res)=>{
+    const {owner} = req.params;
+	query = {}
+    query.owner = owner;
+
+    platformSchema.find(query,function(err,result){
+ 		if(err){res.status(400).json('err')}
+ 		if(!result){
+ 			res.status(400).json('not platform')
+ 		}else{
+ 			res.status(200).json(result);
+ 		}
+ 	})
+}
 
 router.get("/platforms/:user/:name/:skip/:count",(req,res)=>{handleSearchPlatforms(req,res)})
+router.get("/platforms/:owner",(req,res)=>{handleSearchPlatformsByUser(req,res)})
 router.get("/users/:user/:skip/:count",(req,res)=>{handleSearchUsers(req,res)})
 
 
