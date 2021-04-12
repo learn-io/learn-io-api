@@ -40,11 +40,12 @@ const handleUserPlay=(req,res)=>{
 const handleSearchUserPlatformInfo=(req,res)=>{
     const {user, skip, count} = req.body;
 	query = {}
-    query.username = user;
-
-    platformSchema.find(query).limit(parseInt(count)).skip(parseInt(skip)).exec()
+    req.username = user;
+	
+	userPlatformInfoSchema.find(query, "platformId completeId timeSpend widgetsClicked modulesCompleted pageVisited badges").limit(parseInt(count)).skip(parseInt(skip)).exec()
+    // platformSchema.find(query).limit(parseInt(count)).skip(parseInt(skip)).exec()
 	.then(function(resp){
-		res.status(200).json(resp);
+		res.status(200).json({resp});
 	})
 	.catch(function(err){
 		res.status(400).json(err);
@@ -115,7 +116,7 @@ router.post("*", (req,res,next)=>{
 
 
 router.post("/stats",(req,res)=>{handleUserPlay(req,res)})
-router.get("/stats", (req,res)=>{handleSearchUserPlatformInfo(req, res)});
+router.get("/stats/:skip/:count", (req,res)=>{handleSearchUserPlatformInfo(req, res)});
 router.get("/play",(req,res)=>{handleGetUserPlatformInfo(req,res)})
 router.post("/update",(req,res)=>{handleUpdateUserPlatformInfo(req,res)})
 module.exports=router;
