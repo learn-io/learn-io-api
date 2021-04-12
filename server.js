@@ -43,10 +43,20 @@ const mongo_akshay="mongodb+srv://supaak:supaak@cluster0.xb0gr.mongodb.net/myFir
 
 //TODO: production environment variables
 let mongo_url;
-
+var whitelist = ['localhost:3000', 'learn-io.herokuapp.com']
 if (process.env.NODE_ENV == 'PROD')
 {
-	app.use(cors({ credentials: true, origin:'learn-io-api.herokuapp.com'}));
+	app.use(cors(
+		{ 
+			credentials: true, 
+			origin:function (origin, callback) {
+				if (whitelist.indexOf(origin) !== -1) {
+					callback(null, true)
+				} else {
+					callback(new Error('Not allowed by CORS'))
+				}
+	  		}
+		}));
 	mongo_url=mongo_xin;
 }
 else
