@@ -10,25 +10,17 @@ const handleSearchPlatforms=(req,res)=>{
     if (user != 'all')
         query = { owner: new RegExp(user, 'i')}
     if(name==' '){
-    	platformSchema.find(query,function(err,result){
-	 		if(err){res.status(400).json('err')}
-	 		if(!result){
-	 			res.status(400).json('not platform')
-	 		}else{
-	 			res.status(200).json(result);
-	 		}
-	 	})
+
     }else{
 		query.platformName = new RegExp(name, 'i');
-
-	    platformSchema.find(query, "platformName image description").limit(parseInt(count)).skip(parseInt(skip)).exec()
-		.then(function(resp){
-			res.status(200).json(resp);
-		})
-		.catch(function(err){
-			res.status(400).json('Error Searching');
-		})
 	}
+	platformSchema.find(query, "platformName image description").limit(parseInt(count)).skip(parseInt(skip)).exec()
+	.then(function(resp){
+		res.status(200).json(resp);
+	})
+	.catch(function(err){
+		res.status(400).json('Error Searching');
+	})
 }
 
 const handleSearchUsers=(req,res)=>{
