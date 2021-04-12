@@ -10,7 +10,7 @@ const handleSearchPlatforms=(req,res)=>{
     if (user != 'all')
         query = { owner: new RegExp(user, 'i')}
     if(name==' '){
-    	platformSchema.find({},function(err,result){
+    	platformSchema.find(query,function(err,result){
 	 		if(err){res.status(400).json('err')}
 	 		if(!result){
 	 			res.status(400).json('not platform')
