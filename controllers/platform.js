@@ -197,6 +197,17 @@ const handleGetPlatformAbout=(req,res)=>{
  	})
 }
 
+const handleShowPlatforms=(req,res)=>{
+	platformSchema.find({},function(err,result){
+ 		if(err){res.status(400).json('err')}
+ 		if(!result){
+ 			res.status(400).json('not platform')
+ 		}else{
+ 			res.status(200).json(result);
+ 		}
+ 	})
+}
+
 router.post("*", (req,res,next)=>{
 	if(req.session.username)
 		next();
@@ -213,4 +224,5 @@ router.post("/about",(req,res)=>{handleUpdatePlatformAbout(req,res)})
 router.get("/about/:_id",(req,res)=>{handleGetPlatformAbout(req,res)})
 router.get("/:_id/:moduleName",(req,res)=>{handleGetPlatformModule(req,res)})
 router.post("/update",(req,res)=>{handleUpdatePlatformModule(req,res)})
+router.get("/",(req,res)=>{handleShowPlatforms(req,res)})
 module.exports=router;
