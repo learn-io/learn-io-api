@@ -39,6 +39,26 @@ describe("Setting Tests", function() {
             });
         });
     });
+
+    context('Get Setting', function() {
+        it("Check setting vlaue", function(){
+            return axios({
+                method: 'get',
+                url: setting_url,
+                data: {
+                    username: "test1"
+                },
+                headers: { Cookie: cookie }
+            }).then(function(response){
+                expect(response.status).to.equal(200);
+                expect(response.data.email).to.equal("email@email.email");
+                expect(response.data.dateOfBirth).to.equal("11/9/1999");
+                expect(response.data.mute).to.equal(false);
+            }).catch(function(err){
+                expect(error.response.status).to.equal(200);
+            });
+        });
+    });
     context('Setting change', function() {
         it("change email", function(){
             return axios({
@@ -98,6 +118,25 @@ describe("Setting Tests", function() {
               	expect(response.status).to.equal(200);
                 expect(response.data).to.equal("Success mute setting");
             }).catch(function(error){
+                expect(error.response.status).to.equal(200);
+            });
+        });
+    });
+    context('Check setting after changed', function() {
+        it("Check setting vlaue", function(){
+            return axios({
+                method: 'get',
+                url: setting_url,
+                data: {
+                    username: "test1"
+                },
+                headers: { Cookie: cookie }
+            }).then(function(response){
+                expect(response.status).to.equal(200);
+                expect(response.data.email).to.equal("tes@gmail.com");
+                expect(response.data.dateOfBirth).to.equal("02/02/2000");
+                expect(response.data.mute).to.equal(true);
+            }).catch(function(err){
                 expect(error.response.status).to.equal(200);
             });
         });
