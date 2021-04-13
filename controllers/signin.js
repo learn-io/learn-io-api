@@ -4,6 +4,9 @@ const mongoose=require('mongoose');
 const userInfo=require('../models/userInfo.js');
 const bcrypt=require('bcrypt');
 
+const handleWho=(req,res)=>{
+	res.status(200).json([req.session.username, req.session.isAdmin]);
+}
 
 const handleSignin=(req,res)=>{
 	if(req.session.username)
@@ -47,5 +50,7 @@ const handleSignin=(req,res)=>{
 }
 
 router.post("/",(req,res)=>{handleSignin(req,res)})
+
+router.get("/whoami",(req,res)=>{handleWho(req,res)})
 
 module.exports = router;

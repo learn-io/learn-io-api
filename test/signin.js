@@ -99,6 +99,16 @@ describe("Sign In Controller", function() {
                 expect(response.data).to.deep.equal("test1");
             });
         });
+        it("Who Am I?", function(){
+            return axios({
+                method: 'get',
+                url: signin_url+"/whoami",
+                headers: { Cookie: cookie }
+            }).then(function(response){
+                expect(response.status).to.equal(200, response.data);
+                expect(response.data).to.deep.equal(["test1", false]);
+            });
+        });
         it("Log Out", function(){
             return axios({
                 method: 'post',
