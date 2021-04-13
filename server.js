@@ -44,7 +44,7 @@ const mongo_akshay="mongodb+srv://supaak:supaak@cluster0.xb0gr.mongodb.net/myFir
 //TODO: production environment variables
 let mongo_url;
 var whitelist = ['localhost:3000', 'learn-io.herokuapp.com']
-if (process.env.NODE_ENV == 'PROD')
+if (process.env.NODE_ENV == 'production')
 {
 	app.use(cors(
 		{ 
@@ -118,6 +118,6 @@ app.use("/media",media)
 
 app.use("/profile",userPlatform)
 
-app.get("/",(req,res)=>{res.status(200).json("Pong!" + process.env.NODE_ENV);});
+app.get("/",(req,res)=>{res.status(200).json("Pong!");});
 
 
