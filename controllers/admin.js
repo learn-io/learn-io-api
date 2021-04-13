@@ -15,6 +15,31 @@ const handleDeleteUser=(req,res)=>{
 			if(err){
 				res.status(400).json('err')
 			}else{
+				// delete user platform information with this user
+				userPlatformInfoSchema.deleteMany({username:username}, (err,data)=>{
+	                if(err){
+	                    res.status(400).json('err')
+	                }
+	            });
+	            platformSchema.find({owner:username},(err,data)=>{
+	            	data.forEach(d=>{
+	            		pageSchema.deleteMany({platformId:d._id}, (err,data)=>{
+			                if(err){
+			                    res.status(400).json('err')
+			                }
+			            });
+			            userPlatformInfoSchema.deleteMany({platformId:d._id}, (err,data)=>{
+			                if(err){
+			                    res.status(400).json('err')
+			                }
+			            });
+	            	})
+	            })
+	            platformSchema.deleteMany({owner:username}, (err,data)=>{
+	                if(err){
+	                    res.status(400).json('err')
+	                }
+	            });
 				res.status(200).json("Success remove user:"+username);
 			}
 		});
