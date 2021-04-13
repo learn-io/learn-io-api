@@ -44,8 +44,15 @@ const mongo_akshay="mongodb+srv://supaak:supaak@cluster0.xb0gr.mongodb.net/myFir
 //TODO: production environment variables
 let mongo_url;
 var whitelist = ['http://localhost:3000', 'https://learn-io.herokuapp.com']
+let cookieOpts;
 if (process.env.NODE_ENV == 'production')
 {
+	cookieOpts = {
+		httpOnly: false,
+		secure: true,
+		sameSite: 'none'
+	};
+	app.set('trust proxy', 1);
 	app.use(cors(
 		{ 
 			credentials: true, 
@@ -64,6 +71,11 @@ if (process.env.NODE_ENV == 'production')
 }
 else
 {
+	cookieOpts = {
+		httpOnly: false,
+		secure: false,
+		sameSite: 'none'
+	};
 	app.use(cors());
 	mongo_url=mongo_dan;
 	// mongo_url=mongo_akshay;
@@ -81,11 +93,7 @@ app.use(session({
 	secret: 'TODO: move to env',
   	resave: false,
   	saveUninitialized: true,
-	cookie: {
-		httpOnly: false,
-		secure: true,
-		sameSite: 'none'
-	},
+	cookie: cookieOpts,
   }));
 
 const db=mongoose.connect(mongo_url,{useNewUrlParser: true,useUnifiedTopology: true, useFindAndModify: false,useCreateIndex: true },(error)=>{
