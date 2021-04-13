@@ -54,6 +54,7 @@ if (process.env.NODE_ENV == 'production')
 				if (whitelist.indexOf(origin) !== -1) {
 					callback(null, true)
 				} else {
+
 					callback(new Error('Not allowed by CORS'))
 				}
 	  		}
@@ -81,7 +82,7 @@ app.use(session({
   	saveUninitialized: true,
 	cookie: {
 		httpOnly: false,
-		secure: true,
+		secure: false,
 		sameSite: false,
 	},
   }));
