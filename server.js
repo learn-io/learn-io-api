@@ -57,7 +57,8 @@ if (process.env.NODE_ENV == 'production')
 
 					callback(new Error('Not allowed by CORS'))
 				}
-	  		}
+	  		},
+			exposedHeaders: ["set-cookie"]
 		}));
 	mongo_url=mongo_xin;
 }
