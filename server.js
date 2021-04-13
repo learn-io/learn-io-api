@@ -83,8 +83,7 @@ app.use(session({
 	cookie: {
 		httpOnly: false,
 		secure: true,
-		sameSite: false,
-		domain: "learn-io.herokuapp.com"
+		sameSite: false
 	},
   }));
 
