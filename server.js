@@ -46,7 +46,7 @@ let mongo_url;
 var whitelist = ['localhost:3000', 'learn-io.herokuapp.com']
 if (process.env.NODE_ENV == 'production')
 {
-	app.use(cors(
+	/*app.use(cors(
 		{ 
 			credentials: true, 
 			origin:function (origin, callback) {
@@ -56,7 +56,8 @@ if (process.env.NODE_ENV == 'production')
 					callback(new Error('Not allowed by CORS'))
 				}
 	  		}
-		}));
+		}));*/
+	app.use(cors());
 	mongo_url=mongo_xin;
 }
 else
