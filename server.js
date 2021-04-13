@@ -50,7 +50,7 @@ if (process.env.NODE_ENV == 'production')
 		{ 
 			credentials: true, 
 			origin:function (origin, callback) {
-				if (origin.includes(whitelist[0]) || origin.includes(whitelist[1])) {
+				if (origin && (origin.includes(whitelist[0]) || origin.includes(whitelist[1]))) {
 					callback(null, true)
 				} else {
 					callback(new Error('Not allowed by CORS'))
