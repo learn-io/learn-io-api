@@ -118,6 +118,6 @@ app.use("/media",media)
 
 app.use("/profile",userPlatform)
 
-app.get("/",(req,res)=>{res.status(200).json("Pong!");});
+app.get("/",(req,res)=>{res.status(200).json("Pong!" + process.env.NODE_ENV);});
 
 
