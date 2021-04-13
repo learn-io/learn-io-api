@@ -84,7 +84,7 @@ app.use(session({
 		httpOnly: false,
 		secure: true,
 		sameSite: false,
-		domain: learn-io.herokuapp.com
+		domain: "learn-io.herokuapp.com"
 	},
   }));
 
