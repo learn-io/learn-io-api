@@ -48,7 +48,7 @@ describe("Profile Tests", function(){
         });
     });
     
-    context("Retrieve Platform Info", function(){
+    context("User's Platform Info", function(){
         it("Set one user's platform info", function(){ // Shouldn't handleUserPlay also have fields for completedId, timeSpend, widgetsClicked, pageVisited, and badges //yes
             return axios({
                 method: 'post',
@@ -60,34 +60,53 @@ describe("Profile Tests", function(){
                 headers: { Cookie: cookie }
             }).then(function(response){
               	expect(response.status).to.equal(200, response.data);
-            }).catch(function(error){
+            })
+            .catch(function(error){
                 expect(error.response.status).to.equal(200, error.response.data);
             });
         });
-        // it("Get one user's platform info", function(){
-        //     return axios({
-        //         method: 'get',
-        //         url: profile_url+"/stats",
-        //     }).then(function(response){
-        //       	expect(response.status).to.equal(200, response.data);
-        //         delete response.data[0]['_id'];
-        //         expect(response.data).to.deep.equal({
-        //             _id:response.data._id,
-        //             username:"bob",
-        //             platformName:"All About Obscure Berries",
-        //             completeId:[],
-        //             timeSpend:0,
-        //             widgetsClicked:0,
-        //             modulesCompleted:0,
-        //             pageVisited:0,
-        //             badges:[],
-        //             ownPlatform:{type:Boolean}
-        //         });
-        //     })
-        //  //   .catch(function(error){
-        //  //       expect(error.response.status).to.equal(400);
-        //  //   });
-        // });
+        it("Update one user's platform info", function(){
+            return axios({
+                method: 'post',
+                url: profile_url+"/update",
+                data:{
+                    username:"bob",
+                    platformId:platformId,
+                    timeSpend:5,
+                    modulesCompleted:0,
+                    pageVisited:1
+                },
+                headers: { Cookie: cookie}
+            }).then(function(response){
+                expect(response.status).to.equal(200, response.data);
+            })
+            // .catch(function(error){
+            //     expect(error.response.status).to.equal(200, error.response.data);
+            // });
+        });
+        it("Get one user's platform info", function(){
+            return axios({
+                method: 'get',
+                url: profile_url+"/stats/0/10",
+            }).then(function(response){
+              	expect(response.status).to.equal(200, response.data);
+                delete response.data.resp[0]['_id'];
+                expect(response.data).to.deep.equal({resp:[
+                    {
+                        platformId:platformId,
+                        completeId:[],
+                        timeSpend:5,
+                        widgetsClicked:0,
+                        modulesCompleted:0,
+                        pageVisited:1,
+                        badges:[]
+                    }
+                ]});
+            })
+            // .catch(function(error){
+            //     expect(error.response.status).to.equal(200, error.response.data);
+            // });
+        });
     });
     context('Cleaning Up', function() {
         expect(process.env.NODE_ENV).to.not.equal('PROD');

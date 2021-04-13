@@ -3,6 +3,8 @@ const { ObjectId } = require('bson');
 const mongoose=require('mongoose');
 
 const platformSchema=require('../models/platform.js');
+const pageSchema=require('../models/page.js');
+const userPlatformInfoSchema=require('../models/userPlatformInfo.js');
 
 // Every time it creates a platform without module
 const handlePlatform=(req,res)=>{
@@ -197,15 +199,40 @@ const handleGetPlatformAbout=(req,res)=>{
  	})
 }
 
-const handleShowPlatforms=(req,res)=>{
-	platformSchema.find({},function(err,result){
- 		if(err){res.status(400).json('err')}
- 		if(!result){
- 			res.status(400).json('not platform')
- 		}else{
- 			res.status(200).json(result);
- 		}
- 	})
+// const handleShowPlatforms=(req,res)=>{
+// 	platformSchema.find({},function(err,result){
+//  		if(err){res.status(400).json('err')}
+//  		if(!result){
+//  			res.status(400).json('not platform')
+//  		}else{
+//  			res.status(200).json(result);
+//  		}
+//  	})
+// }
+
+const handleDeletePlatform=(req,res)=>{
+	const {_id}=req.body;
+	if(!_id){
+		return res.status(400).json('not platform');
+	}
+
+	platformSchema.findOneAndRemove({_id:_id}, (err,data)=>{
+        if(err){
+            res.status(400).json('err')
+        }else{
+            pageSchema.deleteMany({platformId:_id}, (err,data)=>{
+                if(err){
+                    res.status(400).json('err')
+                }
+            });
+            userPlatformInfoSchema.deleteMany({platformId:_id}, (err,data)=>{
+                if(err){
+                    res.status(400).json('err')
+                }
+            });
+            res.status(200).json("Success remove platform");
+        }
+    });
 }
 
 router.post("*", (req,res,next)=>{
@@ -224,5 +251,6 @@ router.post("/about",(req,res)=>{handleUpdatePlatformAbout(req,res)})
 router.get("/about/:_id",(req,res)=>{handleGetPlatformAbout(req,res)})
 router.get("/:_id/:moduleName",(req,res)=>{handleGetPlatformModule(req,res)})
 router.post("/update",(req,res)=>{handleUpdatePlatformModule(req,res)})
-router.get("/",(req,res)=>{handleShowPlatforms(req,res)})
+router.post("/deletePlatform",(req,res)=>{handleDeletePlatform(req,res)})
+// router.get("/",(req,res)=>{handleShowPlatforms(req,res)})
 module.exports=router;

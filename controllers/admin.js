@@ -4,6 +4,7 @@ const mongoose=require('mongoose');
 const platformSchema=require('../models/platform.js');
 const userInfo=require('../models/userInfo.js');
 const pageSchema=require('../models/page.js');
+const userPlatformInfoSchema=require('../models/userPlatformInfo.js');
 
 const handleDeleteUser=(req,res)=>{
 	const {username}=req.body;
@@ -32,10 +33,14 @@ const handleDeletePlatform=(req,res)=>{
             pageSchema.deleteMany({platformId:_id}, (err,data)=>{
                 if(err){
                     res.status(400).json('err')
-                }else{
-                    res.status(200).json("Success remove page");
                 }
             });
+            userPlatformInfoSchema.deleteMany({platformId:_id}, (err,data)=>{
+                if(err){
+                    res.status(400).json('err')
+                }
+            });
+            res.status(200).json("Success remove platform");
         }
     });
 
