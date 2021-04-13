@@ -46,18 +46,17 @@ let mongo_url;
 var whitelist = ['localhost:3000', 'learn-io.herokuapp.com']
 if (process.env.NODE_ENV == 'production')
 {
-	/*app.use(cors(
+	app.use(cors(
 		{ 
 			credentials: true, 
 			origin:function (origin, callback) {
-				if (whitelist.indexOf(origin) !== -1) {
+				if (origin.includes(whitelist[0]) || origin.includes(whitelist[1])) {
 					callback(null, true)
 				} else {
 					callback(new Error('Not allowed by CORS'))
 				}
 	  		}
-		}));*/
-	app.use(cors());
+		}));
 	mongo_url=mongo_xin;
 }
 else
