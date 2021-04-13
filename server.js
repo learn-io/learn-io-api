@@ -51,7 +51,7 @@ if (process.env.NODE_ENV == 'production')
 			credentials: true, 
 			origin:function (origin, callback) {
 				console.log(origin);
-				if (whitelist.indexOf(origin) !== -1) {
+				if (!origin || whitelist.indexOf(origin) !== -1) {
 					callback(null, true)
 				} else {
 
