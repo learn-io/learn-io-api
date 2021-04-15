@@ -6,7 +6,8 @@ const userPlatformInfoSchema=require('../models/userPlatformInfo.js');
 const platformSchema=require('../models/platform.js');
 
 const handleUserPlay=(req,res)=>{ 
-	const {username,platformId}=req.body; // Shouldn't handleUserPlay also have fields for completedId, timeSpend, widgetsClicked, pageVisited, and badges
+	const {platformId}=req.body;
+	const username = req.session.username;
 	if(!platformId){
 		return res.status(400).json('incorrect form submission');
 	}
@@ -52,8 +53,9 @@ const handleSearchUserPlatformInfo=(req,res)=>{
 	})
 }
 const handleUpdateUserPlatformInfo=(req,res)=>{
-    const {username, platformId, completeId,timeSpend,widgetsClicked,modulesCompleted,pageVisited,badges} = req.body;
+    const {platformId, completeId,timeSpend,widgetsClicked,modulesCompleted,pageVisited,badges} = req.body;
 	query = {}
+	const username = req.session.username;
 	if(!username||!platformId){
 		return res.status(400).json('incorrect form submission');
 	}
@@ -89,7 +91,7 @@ const handleUpdateUserPlatformInfo=(req,res)=>{
 // use for profile page
 const handleGetUserPlatformInfo=(req,res)=>{
 	const {username, platform} = req.body;
-	// const {username}=req.session.username;
+	
 	if(!username){
 		return res.status(400).json('not username');
 	}
