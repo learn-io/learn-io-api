@@ -54,7 +54,6 @@ describe("Profile Tests", function(){
                 method: 'post',
                 url: profile_url+"/stats",
                 data:{
-                    username:"bob",
                     platformId:platformId 
                 },
                 headers: { Cookie: cookie }
@@ -70,7 +69,6 @@ describe("Profile Tests", function(){
                 method: 'post',
                 url: profile_url+"/update",
                 data:{
-                    username:"bob",
                     platformId:platformId,
                     timeSpend:5,
                     modulesCompleted:0,
