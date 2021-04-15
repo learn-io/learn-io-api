@@ -5,84 +5,73 @@ const bcrypt=require('bcrypt');
 const userInfo=require('../models/userInfo.js');
 
 
-const handleSetting=(req,res)=>{
+const handleSetting= async (req,res)=>{
 	const {email,dateOfBirth,oldPassword,newPassword,mute}=req.body;
 	const username = req.session.username;
 	if(!username){
-		return res.status(401).json('error');
+		return res.status(400).json('Username not returned');
 	}
-	if(!email&&!dateOfBirth&&!newPassword&&!mute){
+	if(!email&&!dateOfBirth&&!newPassword&&(mute==undefined)){
 		return res.status(400).json('nothing changed');
 	}
-	// change email address
+
+	let query={};
 	if(email){
-		userInfo.findOneAndUpdate({username:username},{email:email},(err,data)=>{
-			if(err){
-				res.status(400).json('err')
-			}else{
-				if(!data){
-					res.status(400).json('user is not exist')
-				}else{
-					res.status(200).json("Success Update Email");
-				}
-			}
-		});
+		query.email = email;
 	}
-	// change date of birth
 	if(dateOfBirth){
-		userInfo.findOneAndUpdate({username:username},{dateOfBirth:dateOfBirth},(err,data)=>{
-			if(err){
-				res.status(400).json('err')
+		query.dateOfBirth = dateOfBirth;
+	}
+	let shouldReturn = false;
+	if(newPassword&&oldPassword){
+		await userInfo.findOne({username:username}).exec().then((result) =>
+		{
+			if(!result){
+				shouldReturn = true;
+				return res.status(400).json('User does not exist');
 			}else{
-				if(!data){
-					res.status(400).json('user is not exist')
-				}else{
-					res.status(200).json("Success Update date of birth");
-				}
+				const isValid=bcrypt.compareSync(oldPassword, result.password);
+			   	if(isValid){
+				   const hash=bcrypt.hashSync(newPassword, 5);
+				   query.password = hash;
+			   }else{
+				   shouldReturn = true;
+				   return res.status(400).json('Incorrect password');
+			   }
 			}
+		}).catch((err)=>
+		{				
+			shouldReturn = true; 
+			return res.status(400).json('Error on password')
 		});
 	}
-	// change mute setting
+	//console.log("Should Return: "+shouldReturn);
+	if(shouldReturn){
+		return;
+	}
 	if(mute==true||mute==false){
-		userInfo.findOneAndUpdate({username:username},{mute:mute},(err,data)=>{
-			if(err){
-				res.status(400).json('err')
+		query.mute = mute;
+	}
+
+	userInfo.findOneAndUpdate({username:username},query,(err,data)=>{
+		if(err){
+			return res.status(400).json('err');
+		}else{
+			if(!data){
+				return res.status(400).json('User does not exist');
 			}else{
-				if(!data){
-					res.status(400).json('user is not exist')
-				}else{
-					res.status(200).json("Success mute setting");
-				}
+				return res.status(200).json("Success Update");
 			}
-		});
-	}
-	// change password
-	if(newPassword){
-		userInfo.findOne({username:username},function(err,result){
-	 		if(err){res.status(400).json('err')}
-	 		if(!result){
-	 			res.status(400).json('user is not exist')
-	 		}else{
-	 			const isValid=bcrypt.compareSync(oldPassword, result.password);
-				if(isValid){
-					const hash=bcrypt.hashSync(newPassword, 5);
-					userInfo.findOneAndUpdate({username:username},{password:hash},(err,data)=>{
-						if(err){
-							res.status(400).json('err')
-						}else{
-							res.status(200).json("Success update password");
-						}
-					});
-				}else{
-					res.status(400).json('wrong password')
-				}
-	 		}
-	 	})
-	}
+		}
+	});
 }
 
 const handleGetSetting=(req,res)=>{
-	const {username}=req.body;
+	const username=req.session.username;
+	if (!username)
+	{
+		res.status(401).json('Not Logged In')
+	}
 	userInfo.findOne({username:username},(err,data)=>{
 			if(err){
 				res.status(400).json('err')
