@@ -153,7 +153,6 @@ describe("Setting Tests", function() {
                     headers: { Cookie: cookie }
                 })
             }).then(function(response){
-                console.log(response);
                 expect(response.status).to.equal(200, response.data);
                 expect(response.data.email).to.equal("fakeemail@gmail.com");
                 expect(response.data.dateOfBirth).to.equal("03/04/2000");
