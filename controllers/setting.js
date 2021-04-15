@@ -70,7 +70,7 @@ const handleGetSetting=(req,res)=>{
 	const username=req.session.username;
 	if (!username)
 	{
-		res.status(401).json('Not Logged In')
+		return res.status(401).json('Not Logged In')
 	}
 	userInfo.findOne({username:username},(err,data)=>{
 			if(err){
