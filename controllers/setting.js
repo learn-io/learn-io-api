@@ -5,7 +5,7 @@ const bcrypt=require('bcrypt');
 const userInfo=require('../models/userInfo.js');
 
 
-const handleSetting=(req,res)=>{
+const handleSetting= async (req,res)=>{
 	const {email,dateOfBirth,oldPassword,newPassword,mute}=req.body;
 	const username = req.session.username;
 	if(!username){
@@ -24,11 +24,8 @@ const handleSetting=(req,res)=>{
 	}
 	let shouldReturn = false;
 	if(newPassword&&oldPassword){
-		userInfo.findOne({username:username},function(err,result){
-			if(err){
-				shouldReturn = true; 
-				return res.status(400).json('Error on password')
-			}
+		await userInfo.findOne({username:username}).exec().then((result) =>
+		{
 			if(!result){
 				shouldReturn = true;
 				return res.status(400).json('User does not exist');
@@ -42,9 +39,13 @@ const handleSetting=(req,res)=>{
 				   return res.status(400).json('Incorrect password');
 			   }
 			}
+		}).catch((err)=>
+		{				
+			shouldReturn = true; 
+			return res.status(400).json('Error on password')
 		});
 	}
-	console.log("Should Return: "+shouldReturn);
+	//console.log("Should Return: "+shouldReturn);
 	if(shouldReturn){
 		return;
 	}
@@ -66,7 +67,11 @@ const handleSetting=(req,res)=>{
 }
 
 const handleGetSetting=(req,res)=>{
-	const {username}=req.body;
+	const username=req.session.username;
+	if (!username)
+	{
+		res.status(401).json('Not Logged In')
+	}
 	userInfo.findOne({username:username},(err,data)=>{
 			if(err){
 				res.status(400).json('err')

@@ -45,9 +45,6 @@ describe("Setting Tests", function() {
             return axios({
                 method: 'get',
                 url: setting_url,
-                data: {
-                    username: "test1"
-                },
                 headers: { Cookie: cookie }
             }).then(function(response){
                 expect(response.status).to.equal(200);
@@ -127,9 +124,6 @@ describe("Setting Tests", function() {
             return axios({
                 method: 'get',
                 url: setting_url,
-                data: {
-                    username: "test1"
-                },
                 headers: { Cookie: cookie }
             }).then(function(response){
                 expect(response.status).to.equal(200);
@@ -140,37 +134,34 @@ describe("Setting Tests", function() {
                 expect(err.response.status).to.equal(200);
             });
         });
-    });
-    it("change all", function(){
-        return axios({
-            method: 'post',
-            url: setting_url,
-            data: {
-                email: "fakeemail@gmail.com",
-                dateOfBirth: "03/04/2000",
-                mute: false
-            },
-            headers: { Cookie: cookie }
-          }).then(function(response){
-            expect(response.status).to.equal(200);
-            expect(response.data).to.equal("Success Update Email");
+        it("change all", function(){
             return axios({
-                method: 'get',
+                method: 'post',
                 url: setting_url,
                 data: {
-                    username: "test1"
+                    email: "fakeemail@gmail.com",
+                    dateOfBirth: "03/04/2000",
+                    mute: false
                 },
                 headers: { Cookie: cookie }
+              }).then(function(response){
+                expect(response.status).to.equal(200, response.data);
+                expect(response.data).to.equal("Success Update");
+                return axios({
+                    method: 'get',
+                    url: setting_url,
+                    headers: { Cookie: cookie }
+                })
             }).then(function(response){
-                expect(response.status).to.equal(200);
+                console.log(response);
+                expect(response.status).to.equal(200, response.data);
                 expect(response.data.email).to.equal("fakeemail@gmail.com");
                 expect(response.data.dateOfBirth).to.equal("03/04/2000");
                 expect(response.data.mute).to.equal(false);
             }).catch(function(err){
-                expect(err.response.status).to.equal(200);
+                expect(err.response).to.not.equal(undefined, err);
+                expect(err.response.status).to.equal(200, err.response.data);
             });
-        }).catch(function(error){
-            expect(error.response.status).to.equal(200);
         });
     });
     context('Setting Errors', function() {
