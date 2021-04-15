@@ -72,7 +72,7 @@ describe("Search Controller", function() {
             }).then(function(response){
                 expect(response.status).to.equal(200, response.data);
                 delete response.data[0]['_id'];
-                expect(response.data).to.deep.equal([{platformName:'All Those Obscure Berries', image: "", description: "In platform you learn about berries."}]);
+                expect(response.data).to.deep.equal([{platformName:'All Those Obscure Berries', image: "", owner: "test1", description: "In platform you learn about berries."}]);
             });
         });
         it("Berry Search", function(){
@@ -82,7 +82,7 @@ describe("Search Controller", function() {
             }).then(function(response){
                 expect(response.status).to.equal(200, response.data);
                 delete response.data[0]['_id'];
-                expect(response.data).to.deep.equal([{platformName:'Berry Cool!', image: "", description: "filler text"}]);
+                expect(response.data).to.deep.equal([{platformName:'Berry Cool!', image: "", owner: "test1", description: "filler text"}]);
             });
         });
         it("Berr Search", function(){
