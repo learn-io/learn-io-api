@@ -137,8 +137,40 @@ describe("Setting Tests", function() {
                 expect(response.data.dateOfBirth).to.equal("02/02/2000");
                 expect(response.data.mute).to.equal(true);
             }).catch(function(err){
-                expect(error.response.status).to.equal(200);
+                expect(err.response.status).to.equal(200);
             });
+        });
+    });
+    it("change all", function(){
+        return axios({
+            method: 'post',
+            url: setting_url,
+            data: {
+                email: "fakeemail@gmail.com",
+                dateOfBirth: "03/04/2000",
+                mute: false
+            },
+            headers: { Cookie: cookie }
+          }).then(function(response){
+            expect(response.status).to.equal(200);
+            expect(response.data).to.equal("Success Update Email");
+            return axios({
+                method: 'get',
+                url: setting_url,
+                data: {
+                    username: "test1"
+                },
+                headers: { Cookie: cookie }
+            }).then(function(response){
+                expect(response.status).to.equal(200);
+                expect(response.data.email).to.equal("fakeemail@gmail.com");
+                expect(response.data.dateOfBirth).to.equal("03/04/2000");
+                expect(response.data.mute).to.equal(false);
+            }).catch(function(err){
+                expect(err.response.status).to.equal(200);
+            });
+        }).catch(function(error){
+            expect(error.response.status).to.equal(200);
         });
     });
     context('Setting Errors', function() {
