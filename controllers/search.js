@@ -14,7 +14,7 @@ const handleSearchPlatforms=(req,res)=>{
     }else{
 		query.platformName = new RegExp(name, 'i');
 	}
-	platformSchema.find(query, "platformName image description").limit(parseInt(count)).skip(parseInt(skip)).exec()
+	platformSchema.find(query, "platformName image description owner").limit(parseInt(count)).skip(parseInt(skip)).exec()
 	.then(function(resp){
 		res.status(200).json(resp);
 	})
