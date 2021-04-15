@@ -70,7 +70,7 @@ describe("Setting Tests", function() {
                 headers: { Cookie: cookie }
               }).then(function(response){
               	expect(response.status).to.equal(200);
-                expect(response.data).to.equal("Success Update Email");
+                expect(response.data).to.equal("Success Update");
             }).catch(function(error){
                 expect(error.response.status).to.equal(200);
             });
@@ -85,7 +85,7 @@ describe("Setting Tests", function() {
                 headers: { Cookie: cookie }
               }).then(function(response){
               	expect(response.status).to.equal(200);
-                expect(response.data).to.equal("Success Update date of birth");
+                expect(response.data).to.equal("Success Update");
             }).catch(function(error){
                 expect(error.response.status).to.equal(200);
             });
@@ -101,7 +101,7 @@ describe("Setting Tests", function() {
                 headers: { Cookie: cookie }
               }).then(function(response){
               	expect(response.status).to.equal(200);
-                expect(response.data).to.equal("Success update password");
+                expect(response.data).to.equal("Success Update");
             }).catch(function(error){
                 expect(error.response.status).to.equal(200);
             });
@@ -116,7 +116,7 @@ describe("Setting Tests", function() {
                 headers: { Cookie: cookie }
               }).then(function(response){
               	expect(response.status).to.equal(200);
-                expect(response.data).to.equal("Success mute setting");
+                expect(response.data).to.equal("Success Update");
             }).catch(function(error){
                 expect(error.response.status).to.equal(200);
             });
