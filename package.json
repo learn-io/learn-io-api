@@ -37,6 +37,7 @@
     "mocha": "^8.3.2",
     "mongodb": "^3.6.5",
     "mongoose": "^5.12.2",
+    "nodemailer": "^6.5.0",
     "start-server-and-test": "^1.12.1"
   }
 }

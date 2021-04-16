@@ -4,7 +4,7 @@ const mongoose=require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 var axios = require("axios");
-
+const nodemailer=require('nodemailer');
 const cors=require('cors');
 
 // Models
@@ -129,7 +129,52 @@ app.use("/search", search)
 app.use("/media",media)
 
 app.use("/profile",userPlatform)
-
+app.post("/send",(req,res)=>{
+	const {newAccount,email,username,password}=req.body;
+	let output;
+	if(newAccount){
+		output = `
+	    	<p>Thank you for choosing our Learn-io App</p>
+	      	<h3>This is your new account information</h3>
+	      	<ul>  
+	        	<li>Name: ${username}</li>
+	        	<li>Company: ${password}</li>
+	        	<li>Email: ${email}</li>
+	      	</ul>
+	    `;
+	}else{
+		output = `
+	    	<p>We received your request to change your account information</p>
+	      	<h3>This is the update of account information</h3>
+	      	<ul>  
+	        	<li>Name: ${username}</li>
+	        	<li>Company: ${password}</li>
+	        	<li>Email: ${email}</li>
+	      	</ul>
+	    `;
+	}
+	
+	let transporter = nodemailer.createTransport({
+      service:"outlook",
+      auth: {
+          	user: 'learn-io@outlook.com', // generated ethereal user
+	      	pass: 'Learniotest' // generated ethereal password
+      }
+    });
+	 let mailOptions = {
+        from: '"Learn-io Team" <learn-io@outlook.com>', // sender address
+        to: email, // list of receivers
+        subject: 'Learn-io account information', // Subject line
+        text: 'Hello world?', // plain text body
+        html: output // html body
+    };
+	transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            return console.log(error);
+        }
+        res.status(200).json("Email sent");
+    });
+})
 app.get("/",(req,res)=>{res.status(200).json("Pong!");});
 
 
