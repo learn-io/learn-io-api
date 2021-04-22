@@ -39,10 +39,22 @@ const handleUserPlay=(req,res)=>{
 }
 
 const handleSearchUserPlatformInfo=(req,res)=>{
-    const {user, skip, count} = req.body;
-	query = {}
-    req.username = user;
-	
+    const {user, skip, count} = req.params;
+	if (!user)
+	{
+		return res.status(400).json("No User Given")
+	}
+
+	if (user != req.session.username && req.session.isAdmin === false)
+		return res.status(401).json('Must be the user');
+
+	if (!skip || !count)
+	{
+		return res.status(400).json("Invalid skip and count")
+	}
+
+	query.username = user;
+
 	userPlatformInfoSchema.find(query, "platformId completeId timeSpend widgetsClicked modulesCompleted pageVisited badges").limit(parseInt(count)).skip(parseInt(skip)).exec()
     // platformSchema.find(query).limit(parseInt(count)).skip(parseInt(skip)).exec()
 	.then(function(resp){
@@ -91,13 +103,16 @@ const handleUpdateUserPlatformInfo=(req,res)=>{
 // use for profile page
 const handleGetUserPlatformInfo=(req,res)=>{
 	const {username, platform} = req.body;
-	
 	if(!username){
 		return res.status(400).json('not username');
 	}
 	if(!platform){
 		return res.status(400).json('not platform');
 	}
+
+	if (username != req.session.username)
+		return res.status(401).json('Must be the user');
+
 	userPlatformInfoSchema.findOne({username:username, platformName:platform},function(err,result){
  		if(err){res.status(400).json('err')}
  		if(!result.length){
@@ -118,7 +133,7 @@ router.post("*", (req,res,next)=>{
 
 
 router.post("/stats",(req,res)=>{handleUserPlay(req,res)})
-router.get("/stats/:skip/:count", (req,res)=>{handleSearchUserPlatformInfo(req, res)});
+router.get("/stats/:user/:skip/:count", (req,res)=>{handleSearchUserPlatformInfo(req, res)});
 router.get("/play",(req,res)=>{handleGetUserPlatformInfo(req,res)})
 router.post("/update",(req,res)=>{handleUpdateUserPlatformInfo(req,res)})
 module.exports=router;

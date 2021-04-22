@@ -85,7 +85,7 @@ describe("Profile Tests", function(){
         it("Get one user's platform info", function(){
             return axios({
                 method: 'get',
-                url: profile_url+"/stats/0/10",
+                url: profile_url+"/stats/bob/0/10",
             }).then(function(response){
               	expect(response.status).to.equal(200, response.data);
                 delete response.data.resp[0]['_id'];
@@ -101,9 +101,10 @@ describe("Profile Tests", function(){
                     }
                 ]});
             })
-            // .catch(function(error){
-            //     expect(error.response.status).to.equal(200, error.response.data);
-            // });
+            .catch(function(error){
+                expect(error.response).to.not.equal(null, error);
+                expect(error.response.status).to.equal(200, error.response.data);
+            });
         });
     });
     context('Cleaning Up', function() {
