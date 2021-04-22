@@ -26,7 +26,8 @@ const handleSearchPlatforms=(req,res)=>{
 const handleSearchUsers=(req,res)=>{
     const {user, skip, count} = req.params;
 	query = {}
-    query.username = new RegExp(user, 'i');
+	if (user !== ' ')
+    	query.username = new RegExp(user, 'i');
 
     userInfo.find(query, "username email dateOfBirth").limit(parseInt(count)).skip(parseInt(skip)).exec()
 	.then(function(resp){

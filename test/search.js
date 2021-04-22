@@ -197,6 +197,14 @@ describe("Search Controller", function() {
         });
     });
     context('User Search', function() {
+        it("All Search", function(){
+            return axios({
+                method: 'get',
+                url: user_url+"/%20/0/5",
+            }).then(function(response){
+                expect(response.data.length).to.equal(3, response.data);
+            });
+        });
         it("Bob Search", function(){
             return axios({
                 method: 'get',
