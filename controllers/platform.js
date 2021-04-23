@@ -37,7 +37,7 @@ const handleGetPlatform=(req,res)=>{
 	platformSchema.findOne({"_id":ObjectId(_id)},function(err,result){
  		if(err){return res.status(400).json('err')}
  		if(result){
-			res.status(200).json({"platformName":result.platformName,"image":"","description":result.description,"modules":result.modules});
+			res.status(200).json({"platformName":result.platformName,"image":"","description":result.description,"modules":result.modules, "owner":result.owner});
  		}else{
 			res.status(404).json('platform does not exist')
  		}
