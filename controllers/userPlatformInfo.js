@@ -102,20 +102,20 @@ const handleUpdateUserPlatformInfo=(req,res)=>{
 
 // use for profile page
 const handleGetUserPlatformInfo=(req,res)=>{
-	const {username, platform} = req.body;
+	const {username, platformId} = req.body;
 	if(!username){
 		return res.status(400).json('not username');
 	}
-	if(!platform){
+	if(!platformId){
 		return res.status(400).json('not platform');
 	}
 
 	if (username != req.session.username)
 		return res.status(401).json('Must be the user');
 
-	userPlatformInfoSchema.findOne({username:username, platformName:platform},function(err,result){
+	userPlatformInfoSchema.findOne({username:username, platformId:platformId},function(err,result){
  		if(err){res.status(400).json('err')}
- 		if(!result.length){
+ 		if(!result){
  			res.status(401).json('The user does not have play record');
  		}else{
 			res.status(200).json(result);
