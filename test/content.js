@@ -28,9 +28,9 @@ let imagePath = "./image/bananaduck.jpg";
 let imageStream = fs.createReadStream(imagePath, "utf8");
 let imageData = fs.readFileSync(imagePath,"utf8"); 
 //console.log("BASE64: ", imageData);
-let imageExtension = ".jpg";
+let imageExtension = "type/jpg";
 
-let imageHash = crypto.createHash('sha256').update(imageData).digest('utf8');
+let imageHash = crypto.createHash('sha256').update(imageData).update(imageExtension).digest('base64');
 
 
 let platformId = "";

@@ -35,7 +35,7 @@ const handleMedia=(req,res)=>{
 	let hash = ''
 	readStream.on('end',function() {
 		//console.log("BASE64: ", data);
-		hash = crypto.createHash('sha256').update(data).digest('utf8');
+		hash = crypto.createHash('sha256').update(data).update(extension).digest('base64');
 		
 		mediaSchema.exists({hash:hash}, function(err, doc) {
 			if (err)
