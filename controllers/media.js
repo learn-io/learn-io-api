@@ -4,8 +4,9 @@ const mediaSchema=require('../models/media.js');
 
 var crypto = require('crypto');
 const bcrypt = require('bcrypt');
-const formData = require("express-form-data");
+const formData = require("express-form-data"); //this is right
 const os = require("os");
+const fs = require("fs");
 
 const options = {
 	uploadDir: os.tmpdir(),
@@ -18,58 +19,35 @@ router.use(formData.parse(options));
 // delete from the request all empty files (size == 0)
 router.use(formData.format());
 
-router.use(formData.stream());
-
-router.use(formData.union());
-
 const handleMedia=(req,res)=>{
-	const {extension}=req.body;
-	console.log(req.files);
-	console.log(req.body);
-	const readStream=req.files.file;
-	// console.log("THE BODY: ", extension, "THE FILES: ", readStream);
-	if(!readStream||!extension){
+	const {file, extension}=req.body;
+	if(!file||!extension){
 		return res.status(400).json("Incorrect image upload");
 	}
-	let data = ''
-	readStream.setEncoding('utf8');
-	readStream.on('data', function(chunk) {
-		data += chunk;
-	});
-	let hash = ''
-	readStream.on('end',function() {
-		//console.log("BASE64: ", data);
-		hash = crypto.createHash('sha256').update(data).update(extension).digest('base64');
-		
-		mediaSchema.exists({hash:hash}, function(err, doc) {
-			if (err)
-			{
-				return res.status(400).json('unable to check media');
-			}
-			if (doc == true)
-			{
-				return res.status(200).json({hash:hash});
-			}
-			const newMedia=new mediaSchema({
-				hash:hash,
-				data:data,
-				extension:extension
-			});
-			newMedia.save()
-			.then(function(resp){
-				res.status(200).json({hash:hash});
-			})
-			.catch(function(err){
-				res.status(400).json('unable to create new media');
-			});
-		})
-	});
-
-	readStream.on('error', function(err) {
-		return res.status(400).json("Error reading image");
-	});
+	let hash = crypto.createHash('sha256').update(file).update(extension).digest('base64');
 	
- 	
+	mediaSchema.exists({hash:hash}, function(err, doc) {
+		if (err)
+		{
+			return res.status(400).json('unable to check media');
+		}
+		if (doc == true)
+		{
+			return res.status(200).json({hash:hash});
+		}
+		const newMedia=new mediaSchema({
+			hash:hash,
+			data:file,
+			extension:extension
+		});
+		newMedia.save()
+		.then(function(resp){
+			res.status(200).json({hash:hash});
+		})
+		.catch(function(err){
+			res.status(400).json('unable to create new media');
+		});
+	})
 }
 
 const handleGetMedia=(req,res)=>{
