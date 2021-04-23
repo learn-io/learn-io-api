@@ -134,6 +134,6 @@ router.post("*", (req,res,next)=>{
 
 router.post("/stats",(req,res)=>{handleUserPlay(req,res)})
 router.get("/stats/:user/:skip/:count", (req,res)=>{handleSearchUserPlatformInfo(req, res)});
-router.get("/play",(req,res)=>{handleGetUserPlatformInfo(req,res)})
+router.post("/play",(req,res)=>{handleGetUserPlatformInfo(req,res)})
 router.post("/update",(req,res)=>{handleUpdateUserPlatformInfo(req,res)})
 module.exports=router;
