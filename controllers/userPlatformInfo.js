@@ -52,7 +52,7 @@ const handleSearchUserPlatformInfo=(req,res)=>{
 	{
 		return res.status(400).json("Invalid skip and count")
 	}
-
+	let query = {}
 	query.username = user;
 
 	userPlatformInfoSchema.find(query, "platformId completeId timeSpend widgetsClicked modulesCompleted pageVisited badges").limit(parseInt(count)).skip(parseInt(skip)).exec()
