@@ -20,10 +20,12 @@ router.use(formData.format());
 
 router.use(formData.stream());
 
+router.use(formData.union());
+
 const handleMedia=(req,res)=>{
 	const {extension}=req.body;
 	console.log(req.files);
-	const readStream=req.files.data;
+	const readStream=req.files.file;
 	// console.log("THE BODY: ", extension, "THE FILES: ", readStream);
 	if(!readStream||!extension){
 		return res.status(400).json("Incorrect image upload");
