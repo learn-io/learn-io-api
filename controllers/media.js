@@ -22,6 +22,7 @@ router.use(formData.stream());
 
 const handleMedia=(req,res)=>{
 	const {extension}=req.body;
+	console.log(req.files);
 	const readStream=req.files.data;
 	// console.log("THE BODY: ", extension, "THE FILES: ", readStream);
 	if(!readStream||!extension){
