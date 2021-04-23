@@ -63,7 +63,7 @@ describe("Content Tests", function() {
     context('Media Test', function() {
         it("Uploads media to the server", function(){ 
             let form = new FormData();
-            form.append('data', imageStream);
+            form.append('file', imageStream);
             form.append('extension', imageExtension);
             let headers = form.getHeaders();
             headers.Cookie = cookie;
