@@ -155,7 +155,7 @@ describe("Content Tests", function() {
                 url: platform_url+"/"+platformId,
             }).then(function(response){
               	expect(response.status).to.equal(200);
-                expect(response.data).to.deep.equal({platformName:"All About Obscure Berries",image:"",description:"In this platform you'll learn all about berries that you didn't even know were berries.","modules":[]});
+                expect(response.data).to.deep.equal({platformName:"All About Obscure Berries",image:"",description:"In this platform you'll learn all about berries that you didn't even know were berries.","modules":[],"owner":"bob"});
             });
         });
         it("Get one platform by invalid id", function(){ 
