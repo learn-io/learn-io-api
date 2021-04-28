@@ -256,7 +256,9 @@ describe("Content Tests", function() {
                     platformId:platformId, 
                     moduleId:moduleId, //@TODO need to have moduleName be module._id
                     pageName:"New Page",
-                    widgets:[]
+                    widgets:[],
+                    rank:1,
+                    entry:true
                 },
                 headers: { Cookie: cookie }
             }).then(function(response){
@@ -280,8 +282,8 @@ describe("Content Tests", function() {
                     moduleId:moduleId,
                     pageName:"New Page",
                     widgets:[],
-                    entry:false,
-                    rank:0
+                    entry:true,
+                    rank:1
                 });
             })
             // .catch(function(error){
@@ -301,8 +303,8 @@ describe("Content Tests", function() {
                     moduleId:moduleId,
                     pageName:"New Page",
                     widgets:[],
-                    entry:false,
-                    rank:0
+                    entry:true,
+                    rank:1
                 }]);
             })
             // .catch(function(error){

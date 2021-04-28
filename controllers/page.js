@@ -5,7 +5,7 @@ const platformSchema=require('../models/platform.js');
 const pageSchema=require('../models/page.js');
 
 const handleNewPage=(req,res)=>{
-	const {platformId,moduleId,pageName,widgets}=req.body;
+	const {platformId,moduleId,pageName,widgets,rank,entry}=req.body;
     if(!platformId||!moduleId||!pageName){
 		return res.status(400).json('incorrect form submission');
 	}
@@ -13,7 +13,9 @@ const handleNewPage=(req,res)=>{
 		platformId:platformId,
 		moduleId:moduleId,
 		pageName:pageName,
-		widgets:widgets
+		widgets:widgets,
+		rank:rank,
+		entry:entry
 	});
 	var pageId = newPage._id;
 	// console.log("****NEW PAGE ID"+pageId);
