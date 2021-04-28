@@ -1,4 +1,5 @@
 var router = require('express').Router();
+const { ObjectId } = require('bson');
 const mongoose=require('mongoose');
 
 const platformSchema=require('../models/platform.js');
@@ -25,12 +26,11 @@ const handleNewPage=(req,res)=>{
 }
 
 const handleGetPage=(req,res)=>{
-	const {platformId,moduleId,pageName}=req.params;
-    if(!platformId||!moduleId||!pageName){
+	const {platformId,moduleId,pageId}=req.params;
+    if(!platformId||!moduleId||!pageId){
 		return res.status(400).json('incorrect form submission');
 	}
-	var thePageName = decodeURIComponent(pageName);
-	pageSchema.findOne({platformId:platformId,moduleId:moduleId,pageName:thePageName},function(err,result){
+	pageSchema.findOne({platformId:platformId,moduleId:moduleId,_id:ObjectId(pageId)},function(err,result){
  		if(err){res.status(400).json('err')}
  		if(!result){
  			res.status(401).json('page is not exist')
@@ -88,7 +88,7 @@ router.post("*", (req,res,next)=>{
 })
 
 router.post("/",(req,res)=>{handleNewPage(req,res)})
-router.get("/:platformId/:moduleId/:pageName",(req,res)=>{handleGetPage(req,res)}) //@TODO :moduleName to :moduleId
+router.get("/:platformId/:moduleId/:pageId",(req,res)=>{handleGetPage(req,res)}) //@TODO :moduleName to :moduleId
 router.get("/:platformId/:moduleId", (req,res)=>{handleGetPages(req,res)}) //@TODO :moduleName to :moduleId
 router.post("/update",(req,res)=>{handleUpdatePage(req,res)})
 module.exports=router;

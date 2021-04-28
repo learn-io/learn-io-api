@@ -270,7 +270,7 @@ describe("Content Tests", function() {
         it("Get a specific page for a platform's module", function(){ 
             return axios({
                 method: 'get',
-                url: page_url+"/"+platformId+"/"+moduleId+"/"+encodeURIComponent("New Page"), //"/pageId",
+                url: page_url+"/"+platformId+"/"+moduleId+"/"+pageId, //"/pageId",
             }).then(function(response){
               	expect(response.status).to.equal(200, response.data);
                 delete response.data['__v'];
