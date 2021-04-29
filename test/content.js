@@ -344,8 +344,7 @@ describe("Content Tests", function() {
                     platformId:platformId, 
                     moduleId:moduleId,
                     pageId:pageId2,
-                    oldPageName:"New Page 2",
-                    newPageName:"New Page 2 edited",
+                    pageName:"New Page 2 edited",
                     widgets:[
                         {
                             name:"widgets name",
