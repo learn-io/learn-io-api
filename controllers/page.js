@@ -58,20 +58,27 @@ const handleGetPages=(req,res)=>{ //@TODO need to get all pages for a specific p
 }
 
 const handleUpdatePage=(req,res)=>{
-	const {platformId, moduleId,oldPageName,newPageName,widgets}=req.body;
-	if(!platformId||!moduleId||!oldPageName){
+	const {platformId,moduleId,pageId,pageName,widgets,rank,entry}=req.body;
+	if(!platformId||!moduleId||!pageId){
 		return res.status(400).json('incorrect form submission');
 	}
     let query = {}
-	if(newPageName)
+	if(pageName)
 	{
-		query.pageName = newPageName;
+		query.pageName = pageName;
 	}
 	if(widgets)
 	{
 		query.widgets = widgets;
 	}
-	pageSchema.findOneAndUpdate({platformId:platformId,moduleId:moduleId,pageName:oldPageName},query,(err,result)=>{
+	if(rank)
+	{
+		query.rank = rank;
+	}
+	if(!(entry===undefined)){
+		query.entry = entry;
+	}
+	pageSchema.findOneAndUpdate({platformId:platformId,moduleId:moduleId,_id:ObjectId(pageId)},query,(err,result)=>{
 		if(err){return res.status(400).json('err')}
 		if(!result){
 			res.status(404).json('page is not exist')
