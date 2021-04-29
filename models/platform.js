@@ -4,7 +4,6 @@ const platformSchema=new mongoose.Schema({
 	platformName:{type:String,required:true,unique:true},
 	image:{type:String,default:""},
 	description:{type:String,default:""},
-	maxScore:{type:Number,default:0},
 	modules:[{
 		moduleName:{type:String,required:true},
 		moduleDescription:{type:String,required:true},
