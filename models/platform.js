@@ -4,17 +4,18 @@ const platformSchema=new mongoose.Schema({
 	platformName:{type:String,required:true,unique:true},
 	image:{type:String,default:""},
 	description:{type:String,default:""},
+	maxScore:{type:Number,default:0},
 	modules:[{
-		platformId:{type:String},
-		moduleName:{type:String},
-		moduleDescription:{type:String},
-		image:{type:String},
+		moduleName:{type:String,required:true},
+		moduleDescription:{type:String,required:true},
+		image:{type:String,default:""},
+		completionScore:{type:Number,default:10},
 		lockedby:[],
 		unlocks:[],
-		x:{type:Number},
-		y:{type:Number},
-		height:{type:Number},
-		width:{type:Number}
+		x:{type:Number,default:0},
+		y:{type:Number,default:0},
+		height:{type:Number, default:2},
+		width:{type:Number, default:2}
 	}],
 	owner:{type:String, required:true}
 });
