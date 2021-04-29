@@ -112,7 +112,7 @@ describe("Content Tests", function() {
                 data:{
                     platformName:"All Those Obscure Berries",
                     image:"",
-                    description:"In platform you learn about berries." 
+                    description:"In platform you learn about berries."
                 },
                 headers: { Cookie: cookie }
             }).then(function(response){
@@ -208,9 +208,9 @@ describe("Content Tests", function() {
                 expect(response.status).to.equal(200, response.data);
                 expect(response.data).to.deep.equal({
                     _id:response.data._id,
+                    completionScore: 10,
                     lockedby:[],
                     unlocks:[],
-                    platformId:platformId,
                     moduleName:"What are Bootany Berries?",
                     moduleDescription:"In this Module you'll learn about the",
                     image:imageHash,
