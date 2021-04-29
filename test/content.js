@@ -36,6 +36,7 @@ let imageHash = crypto.createHash('sha256').update(imageData).update(imageExtens
 let platformId = "";
 let moduleId = "";
 let pageId = "";
+let pageId2 = "";
 
 // .catch(function(error){
 //     expect(error.response.status).to.equal(200,error.response.data);
@@ -254,7 +255,7 @@ describe("Content Tests", function() {
                 url: page_url,
                 data:{
                     platformId:platformId, 
-                    moduleId:moduleId, //@TODO need to have moduleName be module._id
+                    moduleId:moduleId, 
                     pageName:"New Page",
                     widgets:[],
                     rank:1,
@@ -272,7 +273,7 @@ describe("Content Tests", function() {
         it("Get a specific page for a platform's module", function(){ 
             return axios({
                 method: 'get',
-                url: page_url+"/"+platformId+"/"+moduleId+"/"+encodeURIComponent("New Page"), //"/pageId",
+                url: page_url+"/"+platformId+"/"+moduleId+"/"+pageId, //"/pageId",
             }).then(function(response){
               	expect(response.status).to.equal(200, response.data);
                 delete response.data['__v'];
@@ -311,7 +312,150 @@ describe("Content Tests", function() {
             //     expect(error.response.status).to.equal(200, error.response.data);
             // });
         });
-    
+        
+        /* New Tests */
+        it("Create a page for a platform's module", function(){ 
+            return axios({
+                method: 'post',
+                url: page_url,
+                data:{
+                    platformId:platformId, 
+                    moduleId:moduleId, //@TODO need to have moduleName be module._id
+                    pageName:"New Page 2",
+                    widgets:[],
+                    rank:1,
+                    entry:true
+                },
+                headers: { Cookie: cookie }
+            }).then(function(response){
+              	expect(response.status).to.equal(200, response);
+                pageId2=response.data.pageId;
+            })
+            .catch(function(error){
+                expect(error.response.status).to.equal(200, error.response.data);
+            });
+        });
+
+        it("Update a page for a platform's module", function(){ 
+            return axios({
+                method:"post",
+                url:page_url+"/update",
+                data:{
+                    platformId:platformId, 
+                    moduleId:moduleId,
+                    pageId:pageId2,
+                    pageName:"New Page 2 edited",
+                    widgets:[
+                        {
+                            name:"widgets name",
+                            x:10,
+                            y:20,
+                            height:30,
+                            width:40,
+                            internals: {
+                                widgetFlavor:"Flashcard",
+                                text:{
+                                    front:"Front of flashcard",
+                                    back:"Back of flashcard"
+                                }
+                            }
+                        }
+                    ],
+                    rank:2,
+                    entry:false
+                },
+                headers: { Cookie: cookie }
+            })
+        });
+
+        it("Get an edited page for a platform's module", function(){ 
+            return axios({
+                method: 'get',
+                url: page_url+"/"+platformId+"/"+moduleId+"/"+pageId2, //"/pageId",
+            }).then(function(response){
+              	expect(response.status).to.equal(200, response.data);
+                delete response.data['__v'];
+                expect(response.data).to.deep.equal({
+                    _id:pageId2,
+                    platformId:platformId, 
+                    moduleId:moduleId,
+                    pageName:"New Page 2 edited",
+                    widgets:[
+                        {
+                            name:"widgets name",
+                            x:10,
+                            y:20,
+                            height:30,
+                            width:40,
+                            internals: {
+                                widgetFlavor:"Flashcard",
+                                text:{
+                                    front:"Front of flashcard",
+                                    back:"Back of flashcard"
+                                }
+                            }
+                        }      
+                    ],
+                    entry:false,
+                    rank:2
+                });
+            })
+            // .catch(function(error){
+            //     expect(error.response.status).to.equal(400);
+            // });
+        });
+
+    //     it("Get all pages for an updated platform's module", function(){ 
+    //         return axios({
+    //             method: 'get',
+    //             url: page_url+"/"+platformId+"/"+moduleId //encodeURIComponent("What are Botany Berries?")
+    //         }).then(function(response){
+    //           	expect(response.status).to.equal(200, response.data);
+    //             delete response.data[0]['__v'];
+    //             delete response.data[1]['__v'];
+    //             console.log(response.data);
+    //             console.log(response.data[1].widgets)
+    //             console.log(response.data[1].widgets[0].internals)
+    //             expect(response.data).to.deep.equal([
+    //                 {
+    //                     _id:pageId2,
+    //                     platformId:platformId, 
+    //                     moduleId:moduleId,
+    //                     pageName:"New Page 2 edited",
+    //                     widgets:[
+    //                         {
+    //                             name:"widgets name",
+    //                             x:10,
+    //                             y:20,
+    //                             height:30,
+    //                             width:40,
+    //                             internals: {
+    //                                 widgetFlavor:"Flashcard",
+    //                                 text:{
+    //                                     front:"Front of flashcard",
+    //                                     back:"Back of flashcard"
+    //                                 }
+    //                             }
+    //                         }      
+    //                     ],
+    //                     entry:false,
+    //                     rank:2
+    //                 },
+    //                 {
+    //                     rank: 1,
+    //                     entry: true,
+    //                     widgets: [],
+    //                     _id: pageId,
+    //                     platformId: platformId,
+    //                     moduleId: moduleId,
+    //                     pageName: 'New Page'
+    //                 }
+    //             ]);
+    //         })
+    //         // .catch(function(error){
+    //         //     expect(error.response.status).to.equal(200, error.response.data);
+    //         // });
+    //     });
     });
     context("Widget Test", function(){
         it("Get empty widget templates", function(){
