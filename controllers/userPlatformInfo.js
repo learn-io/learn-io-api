@@ -21,7 +21,7 @@ const handleUserPlay=(req,res)=>{
 			return res.status(400).json(err);
 		}
 		if(!result){
-			platformSchema.findOne({"_id":ObjectId(platformId)},function(err,result){
+			platformSchema.findOne({"_id":platformId},function(err,result){
 				if(err){res.status(400).json(err)}
 				if(!result){
 					return res.status(404).json('platform is not exist');
