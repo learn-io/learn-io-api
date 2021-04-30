@@ -15,27 +15,36 @@ const handleUserPlay=(req,res)=>{
 		return res.status(200).json("guest");
 	}
 	var platformOwner=false;
-	platformSchema.findOne({"_id":ObjectId(platformId)},function(err,result){
- 		if(err){res.status(400).json('err')}
- 		if(!result){
- 			res.status(401).json('platform is not exist')
- 		}else{
-			if(result.owner==username){
-				platformOwner=true;
-			}
-			const newPlatformUser=new userPlatformInfoSchema({
-		 		username:username,
-				platformId:platformId,
-				ownPlatform:platformOwner
-			});
-			newPlatformUser.save()
-			.then(data=>{
-				res.status(200).json("create new platform user")
+
+	userPlatformInfoSchema.findOne({"platformId":ObjectId(platformId), "username":username},function(err,result){
+		if (err){
+			return res.status(400).json(err);
+		}
+		if(!result){
+			platformSchema.findOne({"_id":ObjectId(platformId)},function(err,result){
+				if(err){res.status(400).json(err)}
+				if(!result){
+					return res.status(404).json('platform is not exist');
+				}else{
+					if(result.owner==username){
+						platformOwner=true;
+					}
+					const newPlatformUser=new userPlatformInfoSchema({
+						username:username,
+						platformId:platformId,
+						ownPlatform:platformOwner
+					});
+					newPlatformUser.save()
+					.then(data=>{
+						return res.status(200).json(data);
+					})
+					.catch(err=>{res.status(400).json('unable to create new platform user')});
+				}
 			})
-			.catch(err=>{res.status(400).json('unable to create new platform user')});
- 		}
- 	})
- 	
+		}else{
+		   return res.status(200).json(result);
+		}
+	});
 }
 
 const handleSearchUserPlatformInfo=(req,res)=>{
