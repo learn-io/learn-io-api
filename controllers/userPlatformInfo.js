@@ -74,7 +74,7 @@ const handleSearchUserPlatformInfo=(req,res)=>{
 	})
 }
 const handleUpdateUserPlatformInfo=(req,res)=>{
-    const {platformId, completeId,timeSpend,widgetsClicked,modulesCompleted,pageVisited,badges} = req.body;
+    const {platformId, completeId,timeSpend,widgetsClicked,modulesCompleted,pageVisited,score,badges} = req.body;
 	query = {}
 	const username = req.session.username;
 	if(!username||!platformId){
@@ -97,6 +97,9 @@ const handleUpdateUserPlatformInfo=(req,res)=>{
 	}
 	if(badges){
 		query.badges=badges;
+	}
+	if(score){
+		query.score=score;
 	}
 
  	userPlatformInfoSchema.findOneAndUpdate({username:username, platformId:platformId},query,(err,result)=>{

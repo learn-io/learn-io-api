@@ -72,7 +72,8 @@ describe("Profile Tests", function(){
                     platformId:platformId,
                     timeSpend:5,
                     modulesCompleted:0,
-                    pageVisited:1
+                    pageVisited:1,
+                    score:6
                 },
                 headers: { Cookie: cookie}
             }).then(function(response){
