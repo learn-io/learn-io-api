@@ -16,7 +16,7 @@ const handleUserPlay=(req,res)=>{
 	}
 	var platformOwner=false;
 
-	userPlatformInfoSchema.findOne({"platformId":ObjectId(platformId), "username":username},function(err,result){
+	userPlatformInfoSchema.findOne({"platformId":platformId, "username":username},function(err,result){
 		if (err){
 			return res.status(400).json(err);
 		}
