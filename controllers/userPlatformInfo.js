@@ -22,7 +22,7 @@ const handleUserPlay=(req,res)=>{
 		}
 		if(!result){
 			platformSchema.findOne({"_id":platformId},function(err,result){
-				if(err){res.status(400).json(err)}
+				if(err){return res.status(400).json(err)}
 				if(!result){
 					return res.status(404).json('platform is not exist');
 				}else{
@@ -38,7 +38,7 @@ const handleUserPlay=(req,res)=>{
 					.then(data=>{
 						return res.status(200).json(data);
 					})
-					.catch(err=>{res.status(400).json('unable to create new platform user')});
+					.catch(err=>{return res.status(400).json('unable to create new platform user')});
 				}
 			})
 		}else{
