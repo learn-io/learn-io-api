@@ -15,27 +15,36 @@ const handleUserPlay=(req,res)=>{
 		return res.status(200).json("guest");
 	}
 	var platformOwner=false;
-	platformSchema.findOne({"_id":ObjectId(platformId)},function(err,result){
- 		if(err){res.status(400).json('err')}
- 		if(!result){
- 			res.status(401).json('platform is not exist')
- 		}else{
-			if(result.owner==username){
-				platformOwner=true;
-			}
-			const newPlatformUser=new userPlatformInfoSchema({
-		 		username:username,
-				platformId:platformId,
-				ownPlatform:platformOwner
-			});
-			newPlatformUser.save()
-			.then(data=>{
-				res.status(200).json("create new platform user")
+
+	userPlatformInfoSchema.findOne({"platformId":platformId, "username":username},function(err,result){
+		if (err){
+			return res.status(400).json(err);
+		}
+		if(!result){
+			platformSchema.findOne({"_id":platformId},function(err,result){
+				if(err){return res.status(400).json(err)}
+				if(!result){
+					return res.status(404).json('platform is not exist');
+				}else{
+					if(result.owner==username){
+						platformOwner=true;
+					}
+					const newPlatformUser=new userPlatformInfoSchema({
+						username:username,
+						platformId:platformId,
+						ownPlatform:platformOwner
+					});
+					newPlatformUser.save()
+					.then(data=>{
+						return res.status(200).json(data);
+					})
+					.catch(err=>{return res.status(400).json('unable to create new platform user')});
+				}
 			})
-			.catch(err=>{res.status(400).json('unable to create new platform user')});
- 		}
- 	})
- 	
+		}else{
+		   return res.status(200).json(result);
+		}
+	});
 }
 
 const handleSearchUserPlatformInfo=(req,res)=>{
@@ -65,7 +74,7 @@ const handleSearchUserPlatformInfo=(req,res)=>{
 	})
 }
 const handleUpdateUserPlatformInfo=(req,res)=>{
-    const {platformId, completeId,timeSpend,widgetsClicked,modulesCompleted,pageVisited,badges} = req.body;
+    const {platformId, completeId,timeSpend,widgetsClicked,modulesCompleted,pageVisited,score,badges} = req.body;
 	query = {}
 	const username = req.session.username;
 	if(!username||!platformId){
@@ -89,6 +98,9 @@ const handleUpdateUserPlatformInfo=(req,res)=>{
 	if(badges){
 		query.badges=badges;
 	}
+	if(score){
+		query.score=score;
+	}
 
  	userPlatformInfoSchema.findOneAndUpdate({username:username, platformId:platformId},query,(err,result)=>{
 		if(err){return res.status(400).json('err')}
@@ -100,29 +112,6 @@ const handleUpdateUserPlatformInfo=(req,res)=>{
 	});
 }
 
-// use for profile page
-const handleGetUserPlatformInfo=(req,res)=>{
-	const {username, platformId} = req.body;
-	if(!username){
-		return res.status(400).json('not username');
-	}
-	if(!platformId){
-		return res.status(400).json('not platform');
-	}
-
-	if (username != req.session.username)
-		return res.status(401).json('Must be the user');
-
-	userPlatformInfoSchema.findOne({username:username, platformId:platformId},function(err,result){
- 		if(err){res.status(400).json('err')}
- 		if(!result){
- 			res.status(401).json('The user does not have play record');
- 		}else{
-			res.status(200).json(result);
- 		}
- 	})
-}
-
 router.post("*", (req,res,next)=>{
 	if(req.session.username)
 		next();
@@ -132,8 +121,7 @@ router.post("*", (req,res,next)=>{
 })
 
 
-router.post("/stats",(req,res)=>{handleUserPlay(req,res)})
+router.post("/play",(req,res)=>{handleUserPlay(req,res)})
 router.get("/stats/:user/:skip/:count", (req,res)=>{handleSearchUserPlatformInfo(req, res)});
-router.post("/play",(req,res)=>{handleGetUserPlatformInfo(req,res)})
 router.post("/update",(req,res)=>{handleUpdateUserPlatformInfo(req,res)})
 module.exports=router;

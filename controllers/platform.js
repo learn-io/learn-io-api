@@ -45,7 +45,7 @@ const handleGetPlatform=(req,res)=>{
 }
 // After the player add new module into platform
 const handleNewModule=(req,res)=>{
-	const {_id,moduleName,moduleDescription,completionScore,image,lockedby,unlocks,x,y,height,width}=req.body;
+	const {_id,moduleName,moduleDescription,image,lockedby,unlocks,x,y,height,width,completionScore}=req.body;
 	if(!_id){
 		return res.status(400).json('incorrect form submission');
 	}
@@ -61,7 +61,8 @@ const handleNewModule=(req,res)=>{
 			x:x,
 			y:y,
 			height:height,
-			width:width
+			width:width,
+			completionScore:completionScore
 		}}},(err,data)=>{
 		if(err){
 			return res.status(400).json('err')
@@ -100,8 +101,8 @@ const handleGetPlatformModule=(req,res)=>{
 }
 
 const handleUpdatePlatformModule=(req,res)=>{
-	const {_id,oldModuleName,newModuleName,moduleDescription,completionScore,image,lockedby,unlocks,x,y,height,width}=req.body;
-	if(!_id||!newModuleName){
+	const {_id,oldModuleName,newModuleName, moduleDescription,image,lockedby,unlocks,x,y,height,width,completionScore}=req.body;
+	if(!_id||!oldModuleName){
 		return res.status(400).json('incorrect form submission');
 	}
 	platformSchema.findOne({_id:ObjectId(_id), owner:req.session.username},function(err,result){
@@ -140,6 +141,10 @@ const handleUpdatePlatformModule=(req,res)=>{
 				}
 				if(width){
 					found.width=width;
+				}
+				if(completionScore)
+				{
+					found.completionScore=completionScore;
 				}
 				result.save();
 				res.status(200).json('module updated');
