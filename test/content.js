@@ -225,13 +225,13 @@ describe("Content Tests", function() {
             //     expect(error.response.status).to.equal(200,error.response.data);
             // })
         });
-        it("Update platform's module", function(){ 
+        it("Update platform's module", function(){
             return axios({
                 method:"post",
                 url: platform_url+"/update",
                 data:{
                     _id:platformId,
-                    oldModuleName:"What are Bootany Berries?",
+                    moduleId:moduleId,
                     newModuleName:"What are Botany Berries?", 
                     moduleDescription:"In this Module you'll learn about the the wonderful and fascinating world of Botany Berries.",
                     completionScore:"5",
@@ -247,9 +247,10 @@ describe("Content Tests", function() {
             }).then(function(response){
                 expect(response.status).to.equal(200, response.data);
             })
-            // .catch(function(error){
-            //     expect(error.response.status).to.equal(200,error.response);
-            // })
+            .catch(function(error){
+                expect(error.response).to.not.equal(undefined,error);
+                expect(error.response.status).to.equal(200,error.response.data);
+            })
         });
         it("Create a page for a platform's module", function(){ 
             return axios({
