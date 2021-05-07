@@ -101,8 +101,8 @@ const handleGetPlatformModule=(req,res)=>{
 }
 
 const handleUpdatePlatformModule=(req,res)=>{
-	const {_id,oldModuleName,newModuleName, moduleDescription,image,lockedby,unlocks,x,y,height,width,completionScore}=req.body;
-	if(!_id||!oldModuleName){
+	const {_id,moduleId,newModuleName, moduleDescription,image,lockedby,unlocks,x,y,height,width,completionScore}=req.body;
+	if(!_id||!moduleId){
 		return res.status(400).json('incorrect form submission');
 	}
 	platformSchema.findOne({_id:ObjectId(_id), owner:req.session.username},function(err,result){
@@ -110,7 +110,7 @@ const handleUpdatePlatformModule=(req,res)=>{
  		if(!result){
  			res.status(404).json('platform is not exist')
  		}else{
-			const found=result.modules.find(element=>element.moduleName==oldModuleName);
+			const found=result.modules.find(element=>{console.log(element._id + " vs " + moduleId); return element._id===moduleId});
 			if(found){
 				if(newModuleName){
 					found.moduleName=newModuleName;
