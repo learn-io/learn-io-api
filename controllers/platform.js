@@ -45,7 +45,7 @@ const handleGetPlatform=(req,res)=>{
 }
 // After the player add new module into platform
 const handleNewModule=(req,res)=>{
-	const {_id,moduleName,moduleDescription,image,lockedby,unlocks,x,y,height,width}=req.body;
+	const {_id,moduleName,moduleDescription,completionScore,image,lockedby,unlocks,x,y,height,width}=req.body;
 	if(!_id){
 		return res.status(400).json('incorrect form submission');
 	}
@@ -54,6 +54,7 @@ const handleNewModule=(req,res)=>{
 			platformId:_id,
 			moduleName:moduleName,
 			moduleDescription:moduleDescription,
+			completionScore:completionScore,
 			image:image,
 			lockedby:lockedby,
 			unlocks:unlocks,
@@ -99,8 +100,8 @@ const handleGetPlatformModule=(req,res)=>{
 }
 
 const handleUpdatePlatformModule=(req,res)=>{
-	const {_id,oldModuleName,newModuleName, moduleDescription,image,lockedby,unlocks,x,y,height,width}=req.body;
-	if(!_id||!oldModuleName){
+	const {_id,oldModuleName,newModuleName,moduleDescription,completionScore,image,lockedby,unlocks,x,y,height,width}=req.body;
+	if(!_id||!newModuleName){
 		return res.status(400).json('incorrect form submission');
 	}
 	platformSchema.findOne({_id:ObjectId(_id), owner:req.session.username},function(err,result){
@@ -115,6 +116,9 @@ const handleUpdatePlatformModule=(req,res)=>{
 				}
 				if(moduleDescription){
 					found.moduleDescription=moduleDescription;
+				}
+				if(completionScore){
+					found.completionScore=completionScore;
 				}
 				if(image){
 					found.image=image;
