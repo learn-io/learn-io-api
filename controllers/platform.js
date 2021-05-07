@@ -63,12 +63,13 @@ const handleNewModule=(req,res)=>{
 			height:height,
 			width:width,
 			completionScore:completionScore
-		}}},(err,data)=>{
+		}}}, {new: true}, (err,data)=>{
 		if(err){
 			return res.status(400).json('err')
 		}else{
 			if(data){
-				moduleId=data._id;
+				let index = data.modules.length-1;
+				moduleId=data.modules[index]._id;
 				res.status(200).json({moduleId:moduleId});	
 			}else{
 				res.status(400).json('platform is not exist')
@@ -110,7 +111,7 @@ const handleUpdatePlatformModule=(req,res)=>{
  		if(!result){
  			res.status(404).json('platform is not exist')
  		}else{
-			const found=result.modules.find(element=>{console.log(element._id + " vs " + moduleId); return element._id===moduleId});
+			const found=result.modules.find(element=>element._id==moduleId);
 			if(found){
 				if(newModuleName){
 					found.moduleName=newModuleName;
