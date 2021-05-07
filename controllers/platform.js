@@ -54,6 +54,7 @@ const handleNewModule=(req,res)=>{
 			platformId:_id,
 			moduleName:moduleName,
 			moduleDescription:moduleDescription,
+			completionScore:completionScore,
 			image:image,
 			lockedby:lockedby,
 			unlocks:unlocks,
@@ -116,6 +117,9 @@ const handleUpdatePlatformModule=(req,res)=>{
 				}
 				if(moduleDescription){
 					found.moduleDescription=moduleDescription;
+				}
+				if(completionScore){
+					found.completionScore=completionScore;
 				}
 				if(image){
 					found.image=image;
