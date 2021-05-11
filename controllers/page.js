@@ -88,6 +88,20 @@ const handleUpdatePage=(req,res)=>{
 	});
 }
 
+const handleDeletePage=(req,res)=>{ //@TODO need to get all pages for a specific platform's module using platform._id and module._id 
+	const {platformId,moduleId,pageId}=req.body;
+    if(!platformId||!moduleId||!pageId){
+		return res.status(400).json('incorrect form submission');
+	}
+ 	pageSchema.findOneAndRemove({platformId:platformId,moduleId:moduleId,_id:pageId}, (err,data)=>{
+        if(err){
+            res.status(400).json('err')
+        }else{
+        	res.status(200).json("Success Delete page");
+        }
+    });
+}
+
 router.post("*", (req,res,next)=>{
 	if(req.session.username)
 		next();
@@ -98,6 +112,7 @@ router.post("*", (req,res,next)=>{
 
 router.post("/",(req,res)=>{handleNewPage(req,res)})
 router.get("/:platformId/:moduleId/:pageId",(req,res)=>{handleGetPage(req,res)}) //@TODO :moduleName to :moduleId
+router.post("/delete",(req,res)=>{handleDeletePage(req,res)}) //@TODO :moduleName to :moduleId
 router.get("/:platformId/:moduleId", (req,res)=>{handleGetPages(req,res)}) //@TODO :moduleName to :moduleId
 router.post("/update",(req,res)=>{handleUpdatePage(req,res)})
 module.exports=router;
