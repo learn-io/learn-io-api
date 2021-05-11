@@ -32,7 +32,8 @@ const handleUserPlay=(req,res)=>{
 					const newPlatformUser=new userPlatformInfoSchema({
 						username:username,
 						platformId:platformId,
-						ownPlatform:platformOwner
+						ownPlatform:platformOwner,
+						badges:[false,false,false,false]
 					});
 					newPlatformUser.save()
 					.then(data=>{

@@ -98,7 +98,7 @@ describe("Profile Tests", function(){
                         widgetsClicked:0,
                         modulesCompleted:0,
                         pageVisited:1,
-                        badges:[]
+                        badges:[false,false,false,false]
                     }
                 ]});
             })
