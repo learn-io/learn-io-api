@@ -245,6 +245,20 @@ const handleDeletePlatform=(req,res)=>{
     });
 }
 
+const handleDeleteModule=(req,res)=>{
+	const {platformId,moduleId}=req.body;
+	if(!platformId||!moduleId){
+		return res.status(400).json('need platform Id and module Id');
+	}
+    pageSchema.deleteMany({platformId:platformId,moduleId:moduleId}, (err,data)=>{
+        if(err){
+            res.status(400).json('err')
+        }else{
+        	res.status(200).json("Success remove module");
+        }
+    });
+}
+
 router.post("*", (req,res,next)=>{
 	if(req.session.username)
 		next();
@@ -262,5 +276,6 @@ router.get("/about/:_id",(req,res)=>{handleGetPlatformAbout(req,res)})
 router.get("/:_id/:moduleName",(req,res)=>{handleGetPlatformModule(req,res)})
 router.post("/update",(req,res)=>{handleUpdatePlatformModule(req,res)})
 router.post("/deletePlatform",(req,res)=>{handleDeletePlatform(req,res)})
+router.post("/deleteModule",(req,res)=>{handleDeleteModule(req,res)})
 // router.get("/",(req,res)=>{handleShowPlatforms(req,res)})
 module.exports=router;
