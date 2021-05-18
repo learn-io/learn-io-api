@@ -257,7 +257,7 @@ const handleDeleteModule=(req,res)=>{
 			platformSchema.findOne({"_id":ObjectId(platformId)},function(err,result){
 				if(err){return res.status(400).json('err')}
 				if(result){
-				   	result.modules = result.modules.filter(item => item._id != moduleDeleteId)
+				   	result.modules = result.modules.filter(item => item._id != moduleId)
 					result.save().then(doc => {
 						res.status(200).json("Success remove module");
 					});
