@@ -254,7 +254,17 @@ const handleDeleteModule=(req,res)=>{
         if(err){
             res.status(400).json('err')
         }else{
-        	res.status(200).json("Success remove module");
+			platformSchema.findOne({"_id":ObjectId(platformId)},function(err,result){
+				if(err){return res.status(400).json('err')}
+				if(result){
+				   	result.modules = result.modules.filter(item => item._id != moduleDeleteId)
+					result.save().then(doc => {
+						res.status(200).json("Success remove module");
+					});
+				}else{
+				   res.status(404).json('platform does not exist')
+				}
+			})
         }
     });
 }
